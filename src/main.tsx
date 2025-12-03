@@ -1,25 +1,22 @@
-import './index.css'
-import App from './App.tsx'
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { ThemeProvider } from "@material-tailwind/react";
-import { AuthProvider } from "react-oidc-context";
-import { WebStorageStateStore } from "oidc-client-ts";
-import { KEYCLOAK_CLIENT_ID } from './constants.tsx';
+import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
+import App from './App.tsx';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { MantineProvider, createTheme } from '@mantine/core';
+import { AppAuthProvider } from './utilties/AuthProvider.tsx';
 
-const oidcConfig = {
-  authority: import.meta.env.VITE_KEYCLOAK_URL,
-  client_id: KEYCLOAK_CLIENT_ID,
-  redirect_uri: window.location.origin,
-  userStore: new WebStorageStateStore({ store: window.localStorage }),
-};
+const theme = createTheme({
+  primaryColor: 'blue',
+  autoContrast: true, // Automatically adjusts text color based on background
+});
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider>
-      <AuthProvider {...oidcConfig}>
+    <MantineProvider theme={theme} defaultColorScheme="dark">
+      <AppAuthProvider>
         <App />
-      </AuthProvider>
-    </ThemeProvider>
+      </AppAuthProvider>
+    </MantineProvider>
   </StrictMode>,
 )

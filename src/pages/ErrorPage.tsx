@@ -1,36 +1,66 @@
-import { useNavigate } from 'react-router-dom';
-import { AlertTriangle } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Container, Title, Text, Button, Paper, Center, Stack, RingProgress, rem } from '@mantine/core';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-export const ErrorPage = ({ message = "您没有权限访问此页面" }: { message?: string }) => {
+interface ErrorPageState {
+  title?: string;
+  description?: string;
+}
+
+export const ErrorPage: React.FC = () => {
+  const location = useLocation();
   const navigate = useNavigate();
+  const state = location.state as ErrorPageState;
+  const [countdown, setCountdown] = useState(5);
 
-  const handleGoBack = () => {
-    navigate(-1);
-  };
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          navigate('/', { replace: true });
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
 
-  const handleGoHome = () => {
-    navigate('/');
-  };
+    return () => clearInterval(timer);
+  }, [navigate]);
+
+  const title = state?.title || 'Access Denied';
+  const description = state?.description || 'You do not have permission to access this resource.';
 
   return (
-    <div className="flex flex-col items-center justify-center h-full w-full bg-slate-900 text-slate-200">
-      <AlertTriangle size={64} className="text-red-500 mb-4" />
-      <h1 className="text-2xl font-bold mb-2">访问被拒绝</h1>
-      <p className="text-lg mb-6">{message}</p>
-      <div className="flex gap-4">
-        <button
-          onClick={handleGoBack}
-          className="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-md transition-colors"
-        >
-          返回上一页
-        </button>
-        <button
-          onClick={handleGoHome}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-md transition-colors"
-        >
-          回到首页
-        </button>
-      </div>
-    </div>
+    <Container size="md" style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Paper shadow="md" p="xl" radius="md" withBorder style={{ width: '100%', maxWidth: 500 }}>
+        <Stack align="center" gap="lg">
+            <ExclamationTriangleIcon style={{ width: rem(64), height: rem(64), color: 'var(--mantine-color-red-6)' }} />
+            
+            <div style={{ textAlign: 'center' }}>
+                <Title order={2} mb="xs">{title}</Title>
+                <Text c="dimmed">{description}</Text>
+            </div>
+
+            <RingProgress
+                sections={[{ value: (countdown / 5) * 100, color: 'red' }]}
+                label={
+                    <Center>
+                        <Text fw={700} size="xl">
+                            {countdown}
+                        </Text>
+                    </Center>
+                }
+            />
+
+            <Text size="sm">Redirecting to home page in {countdown} seconds...</Text>
+
+            <Button variant="subtle" onClick={() => navigate('/', { replace: true })}>
+                Go to Home immediately
+            </Button>
+        </Stack>
+      </Paper>
+    </Container>
   );
 };
