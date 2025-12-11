@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useState, useEffect } from 'react';
 import {
   TextInput,
   ActionIcon,
@@ -6,119 +6,100 @@ import {
   Stack,
   Text,
   Group,
-  SimpleGrid,
   Button,
   rem,
 } from '@mantine/core';
-import { DateInput } from '@mantine/dates';
+import { DateTimePicker } from '@mantine/dates';
 import {
   MagnifyingGlassIcon,
   AdjustmentsHorizontalIcon,
-  MapPinIcon,
   CalendarDaysIcon,
+  CalendarDateRangeIcon,
 } from '@heroicons/react/24/solid';
-import { useAppStore } from '../utilties/useAppStore';
-
-interface Filters {
-  query: string;
-  country: string;
-  state: string;
-  start: Date;
-  end: Date;
-}
+import { useSearchState, useSearchActions } from '../utilties/useSearchState';
+import { AddressAutocomplete } from './AddressAutoComplete';
 
 export function GlobalSearch() {
-  const { geoApi, setEvents } = useAppStore();
-  const [filters, setFilters] = useReducer(
-    (state: Filters, newState: Partial<Filters>) => ({ ...state, ...newState }),
-    {
-      query: '',
-      country: '',
-      state: '',
-      start: new Date(new Date().setHours(0, 0, 0, 0)),
-      end: new Date(new Date().setHours(23, 59, 59, 999)),
-    }
-  );
+  const { query, dateRange } = useSearchState();
+  const { setQuery, setLocation, setDateRange } = useSearchActions();
+  const [opened, setOpened] = useState(false);
 
   useEffect(() => {
-    geoApi.v1.geoServiceGetEvents({
-      startTime: (filters.start.getTime() / 1000).toString(),
-      endTime: (filters.end.getTime() / 1000).toString(),
-    }).then((response) => {
-      console.log('Get events response:', response.data);
-      setEvents(response.data.events || [], response.data.relations || []);
-    });
-  }, [filters]);
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    const end = new Date();
+    end.setHours(23, 59, 59, 999);
+    setDateRange([start, end]);
+  }, [setDateRange]);
 
   return (
-    <Group gap="xs" style={{ flex: 1, maxWidth: '600px' }}>
+    <Group gap="xs" style={{ flex: 1, maxWidth: '500px' }}>
       <div style={{ flex: 1 }}>
-        <TextInput
-          placeholder="Search events, entities..."
-          value={filters.query}
-          onChange={(e) => setFilters({ query: e.target.value })}
-          leftSection={<MagnifyingGlassIcon style={{ width: rem(16) }} />}
-          rightSection={
-            <Popover width={400} position="bottom-end" withArrow shadow="md" trapFocus>
-              <Popover.Target>
-                <ActionIcon variant="transparent" color="gray">
+        <Popover
+          width="target"
+          position="bottom"
+          withArrow
+          shadow="md"
+          trapFocus={false}
+          opened={opened}
+          onChange={setOpened}
+        >
+          <Popover.Target>
+            <TextInput
+              placeholder="Search events, entities..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              leftSection={<MagnifyingGlassIcon style={{ width: rem(16) }} />}
+              rightSection={
+                <ActionIcon variant="transparent" color="gray" onClick={() => setOpened((o) => !o)}>
                   <AdjustmentsHorizontalIcon style={{ width: rem(16) }} />
                 </ActionIcon>
-              </Popover.Target>
-              <Popover.Dropdown>
-                <Stack gap="sm">
-                  <Text size="sm" fw={700} c="dimmed">
-                    Advanced Filters
-                  </Text>
+              }
+            />
+          </Popover.Target>
+          <Popover.Dropdown>
+            <Stack gap="sm">
+              <Text size="sm" fw={700} c="dimmed">
+                高级搜索
+              </Text>
 
-                  {/* Location Section */}
-                  <div>
-                    <Group gap="xs" mb="xs">
-                      <MapPinIcon style={{ width: rem(12) }} className="text-gray-500" />
-                      <Text size="xs" fw={700} tt="uppercase" c="dimmed">Location</Text>
-                    </Group>
-                    <SimpleGrid cols={2}>
-                      <TextInput
-                        placeholder="Country (e.g. US)"
-                        value={filters.country}
-                        onChange={(e) => setFilters({ country: e.target.value })}
-                      />
-                      <TextInput
-                        placeholder="State/Province"
-                        value={filters.state}
-                        onChange={(e) => setFilters({ state: e.target.value })}
-                      />
-                    </SimpleGrid>
-                  </div>
+              {/* Location Section */}
+              <AddressAutocomplete onSelect={setLocation} withinPortal={false} />
 
-                  {/* Date Section */}
-                  <div>
-                    <Group gap="xs" mb="xs" mt="xs">
-                      <CalendarDaysIcon style={{ width: rem(12) }} className="text-gray-500" />
-                      <Text size="xs" fw={700} tt="uppercase" c="dimmed">Time Range</Text>
-                    </Group>
-                    <Group grow>
-                      <DateInput
-                        value={filters.start}
-                        onChange={(date) => date && setFilters({ start: new Date(date) })}
-                        placeholder="Start Date"
-                        valueFormat="YYYY/MM/DD"
-                      />
-                      <DateInput
-                        value={filters.end}
-                        onChange={(date) => date && setFilters({ end: new Date(date) })}
-                        placeholder="End Date"
-                        valueFormat="YYYY/MM/DD"
-                      />
-                    </Group>
-                  </div>
+              {/* Date Section */}
+              <div>
+                <Group gap="xs" mb="xs" mt="xs">
+                  <CalendarDaysIcon style={{ width: rem(12) }} className="text-gray-500" />
+                  <Text size="xs" fw={700} tt="uppercase" c="dimmed">日期范围</Text>
+                </Group>
+                <Group grow>
+                  <DateTimePicker
+                    placeholder="Start date"
+                    popoverProps={{ withinPortal: false }}
+                    value={dateRange[0]}
+                    onChange={(date) => {
+                      date && setDateRange([new Date(date), dateRange[1]]);
+                    }}
+                    clearable
+                    leftSection={<CalendarDateRangeIcon style={{ width: rem(16) }} />}
+                  />
+                  <DateTimePicker
+                    placeholder="End date"
+                    popoverProps={{ withinPortal: false }}
+                    value={dateRange[1]}
+                    onChange={(date) => {
+                      date && setDateRange([dateRange[0], new Date(date)]);
+                    }}
+                    clearable
+                    leftSection={<CalendarDateRangeIcon style={{ width: rem(16) }} />}
+                  />
+                </Group>
+              </div>
 
-                  <Button fullWidth variant="light" mt="xs">Apply Filters</Button>
-                </Stack>
-              </Popover.Dropdown>
-            </Popover>
-          }
-        />
+              <Button fullWidth variant="light" mt="xs">搜索</Button>
+            </Stack>
+          </Popover.Dropdown>
+        </Popover>
       </div>
     </Group>
   );

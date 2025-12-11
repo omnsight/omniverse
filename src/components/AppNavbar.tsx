@@ -1,6 +1,6 @@
-import { AppShell, Group, Burger, ActionIcon, useMantineColorScheme, rem } from '@mantine/core';
-import { SunIcon, MoonIcon } from '@heroicons/react/24/solid';
+import { AppShell, Group, Burger } from '@mantine/core';
 import { GlobalSearch } from './GlobalSearch';
+import { SettingsDropdown } from './SettingsDropdown';
 
 interface AppNavbarProps {
   opened: boolean;
@@ -8,7 +8,6 @@ interface AppNavbarProps {
 }
 
 export function AppNavbar({ opened, toggle }: AppNavbarProps) {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   return (
     <AppShell.Header>
@@ -19,19 +18,7 @@ export function AppNavbar({ opened, toggle }: AppNavbarProps) {
         </Group>
 
         <Group>
-          <ActionIcon
-            variant="default"
-            size="lg"
-            onClick={() => toggleColorScheme()}
-            title="Toggle color scheme"
-            radius="md"
-          >
-            {colorScheme === 'dark' ? (
-              <SunIcon style={{ width: rem(18), height: rem(18) }} />
-            ) : (
-              <MoonIcon style={{ width: rem(18), height: rem(18) }} />
-            )}
-          </ActionIcon>
+          <SettingsDropdown />
         </Group>
       </Group>
     </AppShell.Header>

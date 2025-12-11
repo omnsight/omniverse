@@ -1,31 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Box, ScrollArea, Text, Paper, Loader, Center } from '@mantine/core';
+import { Box, ScrollArea, Text, Paper, Loader, Center, Switch, Group } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { EventMap } from '../components/osint/EventMap';
 import { EventEntity } from '../components/osint/entities/EventEntity';
-import { useAppStore } from '../utilties/useAppStore';
 import type { V1Event } from '@omnsight/clients/dist/geovision/geovision.js';
 import { useAuth } from '../utilties/AuthProvider';
+import { useGlobalSearch } from '../utilties/useGlobalSearchResult';
 
 export const DataPlane: React.FC = () => {
-  const { events } = useAppStore();
+  const { t } = useTranslation();
+  const { data } = useGlobalSearch();
+  const { events = [], relations = [] } = data?.data || {};
   const { hasRole, isLoading } = useAuth();
   const navigate = useNavigate();
-  const [selectedEvent, setSelectedEvent] = useState<V1Event | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<V1Event | undefined>(undefined);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !hasRole('admin')) {
       navigate('/error', {
         state: {
-          title: 'Access Denied',
-          description: 'You do not have permission to access the Data Plane. Admin role required.'
+          title: t('errorPage.defaultTitle'),
+          description: t('dataPlane.accessDeniedDescription')
         },
         replace: true
       });
     }
-  }, [hasRole, isLoading, navigate]);
+  }, [hasRole, isLoading, navigate, t]);
 
-  if (isLoading) {
+  if (isLoading || !hasRole('admin')) {
     return (
       <Center h="100%">
         <Loader size="lg" />
@@ -33,39 +37,43 @@ export const DataPlane: React.FC = () => {
     );
   }
 
-  // Double check to prevent render flash
-  if (!hasRole('admin')) {
-    return (
-      <Center h="100%">
-        <Loader size="lg" />
-      </Center>
-    );
-  }
+  const handleEventSelect = (event: V1Event | undefined) => {
+    // If we are in edit mode and the event is already selected, do nothing
+    // This prevents the inputs from losing focus/resetting when clicking inside the component
+    if (isEditMode && selectedEvent?.key === event?.key) {
+      return;
+    }
 
-  const handleEventSelect = (event: V1Event | null) => {
     setSelectedEvent(event);
 
-    // Scroll into view logic could be added here if needed
     if (event) {
       const element = document.getElementById(`event-item-${event.key}`);
       element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };
 
-  const handleUpdateEvent = (updatedEvent: V1Event) => {
-    // In a real app, this would call an API or store action
-    console.log('Updating event:', updatedEvent);
-    // For now, we might update local state or store if available
-    // updateEvent(updatedEvent); 
+  const handleUpdateEvent = (updates: Partial<V1Event>) => {
+    if (selectedEvent) {
+    }
   };
 
   return (
-    <Grid gutter={0} style={{ height: '100%', overflow: 'hidden' }}>
+    <Box style={{ height: '100%', width: '100%', display: 'flex', overflow: 'hidden' }}>
       {/* Left Panel: Event List */}
-      <Grid.Col span={4} style={{ height: '100%', borderRight: '1px solid #eee' }}>
+      <Box style={{ width: '33.33%', height: '100%', borderRight: '1px solid #eee', display: 'flex', flexDirection: 'column' }}>
         <ScrollArea h="100%" type="scroll">
           <Box p="md">
-            <Text size="lg" fw={700} mb="md">Events</Text>
+            <Group justify="space-between" mb="md">
+              <Text size="lg" fw={700}>{t('dataPlane.events')}</Text>
+              <Switch
+                label={t('sidebar.editMode')}
+                checked={isEditMode}
+                onChange={(event) => {
+                  setIsEditMode(event.currentTarget.checked);
+                  setSelectedEvent(undefined);
+                }}
+              />
+            </Group>
             {events.map(event => (
               <Paper
                 key={event.key}
@@ -80,11 +88,11 @@ export const DataPlane: React.FC = () => {
                   borderColor: selectedEvent?.key === event.key ? '#228be6' : undefined
                 }}
               >
-                {selectedEvent?.key === event.key ? (
-                  <EventEntity event={event} edit={true} onUpdate={handleUpdateEvent} />
+                {selectedEvent?.key === event.key && isEditMode ? (
+                  <EventEntity event={selectedEvent!} edit={true} onUpdate={handleUpdateEvent} />
                 ) : (
                   <Box>
-                    <Text fw={600} truncate>{event.title || 'Untitled Event'}</Text>
+                    <Text fw={600} truncate>{event.title || t('dataPlane.untitledEvent')}</Text>
                     <Text size="sm" c="dimmed" lineClamp={2}>{event.description}</Text>
                   </Box>
                 )}
@@ -92,15 +100,17 @@ export const DataPlane: React.FC = () => {
             ))}
           </Box>
         </ScrollArea>
-      </Grid.Col>
+      </Box>
 
       {/* Right Panel: Map */}
-      <Grid.Col span={8} style={{ height: '100%' }}>
+      <Box style={{ flex: 1, height: '100%', position: 'relative' }}>
         <EventMap
-          selectedEvent={selectedEvent}
+          events={events}
+          relations={relations}
+          selectedEvent={isEditMode ? undefined : selectedEvent}
           onEventSelect={handleEventSelect}
         />
-      </Grid.Col>
-    </Grid>
+      </Box>
+    </Box>
   );
 };

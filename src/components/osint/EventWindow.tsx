@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Box, Breadcrumbs, Anchor, ActionIcon, Group, Text, ScrollArea, useMantineTheme, rem } from '@mantine/core';
-import { XMarkIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
+import { notifications } from '@mantine/notifications';
 import type { V1Event, V1RelatedEntity } from '@omnsight/clients/dist/geovision/geovision.js';
 import { EventWindowPageOne } from './EventWindowPageOne';
 import { EventWindowPageTwo, type PageTwoContext } from './EventWindowPageTwo';
-import { useAppStore } from '../../utilties/useAppStore';
+import { useGeoApi } from '../../utilties/useGeoApi';
+import { useQuery } from '@tanstack/react-query';
+import { WindowModal, type WindowBreadcrumb } from './WindowModal';
 
 interface EventWindowProps {
   isOpen: boolean;
@@ -12,84 +13,68 @@ interface EventWindowProps {
   event: V1Event;
 }
 
-export const EventWindow: React.FC<EventWindowProps> = ({
-  isOpen,
-  onClose,
-  event,
-}) => {
-  const theme = useMantineTheme();
-  const { geoApi } = useAppStore();
-  const [relatedEntities, setRelatedEntities] = useState<V1RelatedEntity[]>([]);
+export const EventWindow: React.FC<EventWindowProps> = ({ isOpen, onClose, event }) => {
+  const api = useGeoApi();
+
   const [pageTwo, setPageTwo] = useState<PageTwoContext | null>(null);
 
-  useEffect(() => {
-    if (event.key) {
-      geoApi.v1.geoServiceGetEventRelatedEntities(event.key).then((response) => {
-        setRelatedEntities(response.data.entities || []);
-      });
-    }
-  }, [event.key]);
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['event-related-entities', event.key],
+    queryFn: async () => {
+      const res = await api.v1.geoServiceGetEventRelatedEntities(event.key!);
+      return res.data;
+    },
+    enabled: !!event.key && isOpen,
+    retry: 1,
+  });
 
-  const handleSave = () => { console.log('Saving...'); };
+  useEffect(() => {
+    if (error) {
+      notifications.show({
+        title: '错误',
+        message: '无法加载事件详情，请稍后重试。',
+        color: 'red',
+      });
+      onClose();
+    }
+  }, [error, onClose]);
 
   // Helper to get display name for breadcrumbs
   const getEntityName = (entity: V1RelatedEntity) => {
-    return entity.person?.name || entity.organization?.name || entity.source?.name || entity.website?.domain || 'New Entity';
+    return entity.person?.name || entity.organization?.name || entity.source?.name || entity.website?.domain || '新实体';
   };
 
+  const breadcrumbs: WindowBreadcrumb[] = [
+    {
+      label: event.title || '无标题事件',
+      onClick: () => setPageTwo(null),
+    }
+  ];
+
+  if (pageTwo) {
+    breadcrumbs.push({
+      label: getEntityName(pageTwo.entity),
+    });
+  }
+
   return (
-    <Modal 
-      opened={isOpen} 
-      onClose={onClose} 
-      size="lg" 
-      padding={0} 
-      withCloseButton={false}
-      styles={{
-        body: { height: '80vh', display: 'flex', flexDirection: 'column' }
-      }}
+    <WindowModal
+      opened={isOpen}
+      onClose={onClose}
+      isLoading={isLoading}
+      breadcrumbs={breadcrumbs}
+      onBack={pageTwo ? () => setPageTwo(null) : undefined}
     >
-      {/* 1. STICKY HEADER */}
-      <Box p="md" style={{ borderBottom: `1px solid ${theme.colors.gray[2]}` }}>
-        <Group justify="space-between" mb={5}>
-          <Breadcrumbs separator=">">
-            <Anchor component="button" size="sm" onClick={() => setPageTwo(null)}>
-              Event: {event.title || 'Untitled Event'}
-            </Anchor>
-            {pageTwo && (
-              <Text size="sm" c="dimmed">
-                {pageTwo.mode === 'create' ? 'New Relation' : getEntityName(pageTwo.entity)}
-              </Text>
-            )}
-          </Breadcrumbs>
-
-          <Group gap="xs">
-            {pageTwo && (
-              <ActionIcon onClick={() => setPageTwo(null)} variant="light">
-                <ArrowLeftIcon style={{ width: rem(20), height: rem(20) }} />
-              </ActionIcon>
-            )}
-            <ActionIcon onClick={onClose} variant="subtle" color="red">
-              <XMarkIcon style={{ width: rem(20), height: rem(20) }} />
-            </ActionIcon>
-          </Group>
-        </Group>
-      </Box>
-
-      {/* 2. BODY CONTENT */}
-      <Box style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
-        {!pageTwo ? (
+      {!pageTwo ? (
           <EventWindowPageOne
             event={event}
-            relatedEntities={relatedEntities}
-            onNavigate={(relatedEntity) => setPageTwo({ mode: 'view', entity: relatedEntity })}
-            onCreate={(newEntity) => setPageTwo({ mode: 'create', entity: newEntity })}
+            relatedEntities={data?.entities || []}
+            onNavigate={(relatedEntity) => setPageTwo({ entity: relatedEntity, create: false })}
+            onCreate={(newEntity) => setPageTwo({ entity: newEntity, create: true })}
           />
         ) : (
-          <ScrollArea h="100%">
-             <EventWindowPageTwo context={pageTwo} onSave={handleSave} />
-          </ScrollArea>
+          <EventWindowPageTwo context={pageTwo} onSave={() => setPageTwo(null)} />
         )}
-      </Box>
-    </Modal>
+    </WindowModal>
   );
 };

@@ -1,0 +1,128 @@
+{
+  "common": {
+    "settings": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode",
+    "system": "System",
+    "english": "English",
+    "chinese": "Chinese",
+    "selectLanguage": "Select language",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info",
+    "tags": "Tags",
+    "name": "Name",
+    "type": "Type",
+    "role": "Role",
+    "nationality": "Nationality",
+    "domain": "Domain",
+    "title": "Title",
+    "description": "Description",
+    "relationType": "Relation Type",
+    "confidence": "Confidence",
+    "notes": "Notes",
+    "address": "Address",
+    "unknown": "Unknown",
+    "created": "Created at",
+    "updated": "Updated at"
+  },
+  "map": {
+    "normalMode": "Normal Mode",
+    "rulerMode": "Ruler Mode",
+    "start": "Start",
+    "totalDistance": "TOTAL DISTANCE",
+    "clickToReset": "(Click tool to reset)",
+    "moveCursor": "Move cursor on map"
+  },
+  "navbar": {
+    "toggleColorScheme": "Toggle color scheme",
+    "settings": "Settings"
+  },
+  "sidebar": {
+    "omniverse": "Omniverse",
+    "intelligencePlatform": "Intelligence Platform",
+    "geovision": "Geovision",
+    "dataPlane": "Data Plane",
+    "editMode": "Edit Mode"
+  },
+  "source": {
+    "unassociated": "Unassociated Source",
+    "associated": "Associated Source",
+    "reliability": "Source Reliability",
+    "relatedSources": "Related Sources",
+    "notFound": "No related source found"
+  },
+  "organization": {
+    "foundedDate": "Founded Date",
+    "discoveredDate": "Discovered Date",
+    "notFound": "No related organization found",
+    "relatedOrganizations": "Related Organizations"
+  },
+  "person": {
+    "birthDate": "Birth Date",
+    "aliases": "Aliases",
+    "notFound": "No related person found",
+    "namePlaceholder": "e.g., John Doe",
+    "rolePlaceholder": "e.g., Researcher, Manager...",
+    "relatedPersons": "Related Persons"
+  },
+  "website": {
+    "foundedDate": "Founded Date",
+    "notFound": "No related website found",
+    "relatedWebsites": "Related Websites"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "Profile",
+    "settings": "Settings",
+    "accessAccount": "Access your account",
+    "application": "Application",
+    "signOut": "Sign out"
+  },
+  "error": {
+    "pageNotFound": "Page Not Found",
+    "somethingWentWrong": "Something went wrong",
+    "tryAgain": "Try Again"
+  },
+  "event": {
+    "title": "Title",
+    "happenedAt": "Happened At",
+    "description": "Description",
+    "location": "Location",
+    "address": "Address",
+    "locality": "Locality",
+    "countryCode": "Country Code",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "tags": "Tags",
+    "enterTags": "Enter tags",
+    "roles": "Roles",
+    "enterRoles": "Enter roles",
+    "dateUnknown": "Date unknown",
+    "addressUnknown": "Address unknown",
+    "localityUnknown": "Locality unknown",
+    "administrativeAreaUnknown": "Administrative area unknown",
+    "countryUnknown": "Country unknown"
+  },
+  "errorPage": {
+    "defaultTitle": "Access Denied",
+    "defaultDescription": "You do not have permission to access this resource.",
+    "redirecting": "Redirecting to home page in {{count}} seconds...",
+    "goHome": "Go to Home immediately"
+  },
+  "dataPlane": {
+    "events": "Events",
+    "untitledEvent": "Untitled Event",
+    "accessDeniedDescription": "You do not have permission to access the Data Plane. Admin role required."
+  }
+}

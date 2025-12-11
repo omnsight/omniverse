@@ -1,9 +1,9 @@
 interface ImportMetaEnv {
-  readonly REALM: string;
-  readonly KEYCLOAK_CLIENT_ID: string;
-  readonly KEYCLOAK_API_URL: string;
-  readonly BASE_API_URL: string;
-  readonly GEO_API_URL: string;
+  readonly VITE_REALM: string;
+  readonly VITE_KEYCLOAK_CLIENT_ID: string;
+  readonly VITE_KEYCLOAK_API_URL: string;
+  readonly VITE_BASE_API_URL: string;
+  readonly VITE_GEO_API_URL: string;
 }
 
 interface ImportMeta {

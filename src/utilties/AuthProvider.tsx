@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import { AuthProvider as OidcProvider, useAuth as useOidcAuth, type AuthProviderProps } from 'react-oidc-context';
 import { User } from 'oidc-client-ts';
+import { Center, Loader } from '@mantine/core';
+import { jwtDecode } from "jwt-decode";
 
 // --- 1. Environment Configuration ---
-const CLIENT_ID = import.meta.env.KEYCLOAK_CLIENT_ID;
-const AUTHORITY = `${import.meta.env.KEYCLOAK_API_URL}/realms/${import.meta.env.REALM}`;
+const CLIENT_ID = import.meta.env.VITE_KEYCLOAK_CLIENT_ID;
+const AUTHORITY = `${import.meta.env.VITE_KEYCLOAK_API_URL}/realms/${import.meta.env.VITE_REALM}`;
 
 // --- 2. Type Definitions ---
 // This is the "Generic" User type your app will use everywhere.
@@ -31,18 +33,18 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-// --- 3. Helper: Parse Keycloak Roles ---
 const parseKeycloakRoles = (user: User | null): string[] => {
-  if (!user || !user.profile) return [];
+  if (!user || !user.access_token) return [];
   
-  // Keycloak stores client roles in: resource_access.[client_id].roles
-  const resourceAccess = user.profile.resource_access as any;
-  const clientRoles = resourceAccess?.[CLIENT_ID]?.roles || [];
-  
-  // Optional: Include Realm roles if needed
-  // const realmRoles = (user.profile.realm_access as any)?.roles || [];
-  
-  return clientRoles;
+  try {
+    const decoded = jwtDecode(user.access_token) as any;
+    const resourceAccess = decoded.resource_access;
+    const clientRoles = resourceAccess?.[CLIENT_ID]?.roles || [];
+    return clientRoles;
+  } catch (error) {
+    console.error("Failed to decode JWT", error);
+    return [];
+  }
 };
 
 // --- 4. The Internal Adapter (Web Implementation) ---
@@ -78,8 +80,11 @@ const AuthAdapter = ({ children }: { children: React.ReactNode }) => {
   };
 
   if (auth.isLoading) {
-    // You can replace this with a Mantine Loading Overlay
-    return <div>Loading Authentication...</div>;
+    return (
+      <Center h="100%">
+        <Loader size="lg" />
+      </Center>
+    );
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -87,15 +92,15 @@ const AuthAdapter = ({ children }: { children: React.ReactNode }) => {
 
 // --- 5. The Main Provider Component ---
 export const AppAuthProvider = ({ children }: { children: React.ReactNode }) => {
-  
+
   // OIDC Configuration
   const oidcConfig: AuthProviderProps = {
     authority: AUTHORITY,
     client_id: CLIENT_ID,
-    redirect_uri: window.location.origin, // Vite default
+    redirect_uri: window.location.origin,
     onSigninCallback: () => {
-        // Removes the code/state from URL after login
-        window.history.replaceState({}, document.title, window.location.pathname);
+      // Removes the code/state from URL after login
+      window.history.replaceState({}, document.title, window.location.pathname);
     }
   };
 

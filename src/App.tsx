@@ -13,17 +13,17 @@ function App() {
   return (
     <BrowserRouter>
       <AppShell
+        layout="alt"
         header={{ height: 60 }}
         navbar={{
-          width: 280,
+          width: 200,
           breakpoint: 'sm',
           collapsed: { mobile: !opened },
         }}
         padding="0"
       >
-        <AppNavbar opened={opened} toggle={toggle} />
-
         <AppSidebar />
+        <AppNavbar opened={opened} toggle={toggle} />
 
         <AppShell.Main style={{ height: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 60 }}>
           <Routes>

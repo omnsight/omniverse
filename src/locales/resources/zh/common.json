@@ -1,0 +1,128 @@
+{
+  "common": {
+    "settings": "设置",
+    "language": "语言",
+    "theme": "主题",
+    "darkMode": "深色模式",
+    "lightMode": "浅色模式",
+    "system": "系统",
+    "english": "英文",
+    "chinese": "中文",
+    "selectLanguage": "选择语言",
+    "save": "保存",
+    "cancel": "取消",
+    "edit": "编辑",
+    "delete": "删除",
+    "search": "搜索",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "warning": "警告",
+    "info": "信息",
+    "tags": "标签",
+    "name": "名称",
+    "type": "类型",
+    "role": "角色",
+    "nationality": "国籍",
+    "domain": "域名",
+    "title": "标题",
+    "description": "描述",
+    "relationType": "关联类型",
+    "confidence": "置信度",
+    "notes": "备注",
+    "address": "地址",
+    "unknown": "未知",
+    "created": "创建于",
+    "updated": "更新于"
+  },
+  "map": {
+    "normalMode": "普通模式",
+    "rulerMode": "测距模式",
+    "start": "起点",
+    "totalDistance": "总距离",
+    "clickToReset": "(点击工具重置)",
+    "moveCursor": "在地图上移动光标"
+  },
+  "navbar": {
+    "toggleColorScheme": "切换颜色主题",
+    "settings": "设置"
+  },
+  "sidebar": {
+    "omniverse": "Omniverse",
+    "intelligencePlatform": "信息及情报可视化平台",
+    "geovision": "地理可视化",
+    "dataPlane": "数据控制面板",
+    "editMode": "编辑模式"
+  },
+  "source": {
+    "unassociated": "未关联信源",
+    "associated": "已关联信源",
+    "reliability": "信源可靠性",
+    "relatedSources": "相关信源",
+    "notFound": "未找到相关信源"
+  },
+  "organization": {
+    "foundedDate": "创立日期",
+    "discoveredDate": "发现日期",
+    "notFound": "未找到相关组织",
+    "relatedOrganizations": "相关组织"
+  },
+  "person": {
+    "birthDate": "出生日期",
+    "aliases": "别名",
+    "notFound": "未找到相关个人",
+    "namePlaceholder": "例如：小李",
+    "rolePlaceholder": "例如：研究员、公司管理...",
+    "relatedPersons": "相关个人"
+  },
+  "website": {
+    "foundedDate": "创立日期",
+    "notFound": "未找到相关网站",
+    "relatedWebsites": "相关网站"
+  },
+  "auth": {
+    "login": "登录",
+    "logout": "登出",
+    "profile": "个人资料",
+    "settings": "设置",
+    "accessAccount": "访问您的账户",
+    "application": "应用",
+    "signOut": "退出登录"
+  },
+  "error": {
+    "pageNotFound": "页面未找到",
+    "somethingWentWrong": "出错了",
+    "tryAgain": "重试"
+  },
+  "event": {
+    "title": "标题",
+    "happenedAt": "发生时间",
+    "description": "描述",
+    "location": "位置",
+    "address": "地址",
+    "locality": "地区",
+    "countryCode": "国家代码",
+    "latitude": "纬度",
+    "longitude": "经度",
+    "tags": "标签",
+    "enterTags": "输入标签",
+    "roles": "角色",
+    "enterRoles": "输入角色",
+    "dateUnknown": "日期未知",
+    "addressUnknown": "地址未知",
+    "localityUnknown": "地区未知",
+    "administrativeAreaUnknown": "行政区域未知",
+    "countryUnknown": "国家未知"
+  },
+  "errorPage": {
+    "defaultTitle": "访问被拒绝",
+    "defaultDescription": "您没有权限访问此资源。",
+    "redirecting": "{{count}} 秒后重定向至首页...",
+    "goHome": "立即返回首页"
+  },
+  "dataPlane": {
+    "events": "事件",
+    "untitledEvent": "未命名事件",
+    "accessDeniedDescription": "您没有权限访问数据平面。需要管理员权限。"
+  }
+}

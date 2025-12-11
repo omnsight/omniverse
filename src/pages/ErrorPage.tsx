@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Container, Title, Text, Button, Paper, Center, Stack, RingProgress, rem } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
+import { Container, Title, Text, Button, Paper, Stack, rem, Loader } from '@mantine/core';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 interface ErrorPageState {
@@ -9,6 +10,7 @@ interface ErrorPageState {
 }
 
 export const ErrorPage: React.FC = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const state = location.state as ErrorPageState;
@@ -29,8 +31,8 @@ export const ErrorPage: React.FC = () => {
     return () => clearInterval(timer);
   }, [navigate]);
 
-  const title = state?.title || 'Access Denied';
-  const description = state?.description || 'You do not have permission to access this resource.';
+  const title = state?.title || t('errorPage.defaultTitle');
+  const description = state?.description || t('errorPage.defaultDescription');
 
   return (
     <Container size="md" style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -43,21 +45,21 @@ export const ErrorPage: React.FC = () => {
                 <Text c="dimmed">{description}</Text>
             </div>
 
-            <RingProgress
-                sections={[{ value: (countdown / 5) * 100, color: 'red' }]}
-                label={
-                    <Center>
-                        <Text fw={700} size="xl">
-                            {countdown}
-                        </Text>
-                    </Center>
-                }
-            />
+            <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Loader size={80} color="red" />
+              <Text 
+                fw={700} 
+                size="xl" 
+                style={{ position: 'absolute' }}
+              >
+                {countdown}
+              </Text>
+            </div>
 
-            <Text size="sm">Redirecting to home page in {countdown} seconds...</Text>
+            <Text size="sm">{t('errorPage.redirecting', { count: countdown })}</Text>
 
             <Button variant="subtle" onClick={() => navigate('/', { replace: true })}>
-                Go to Home immediately
+                {t('errorPage.goHome')}
             </Button>
         </Stack>
       </Paper>
