@@ -6,9 +6,10 @@ import type { V1Relation } from '@omnsight/clients/dist/geovision/geovision';
 interface RelationCardProps {
   data: V1Relation;
   edit: boolean;
+  onChange?: (data: Partial<V1Relation>) => void;
 }
 
-export const RelationCard: React.FC<RelationCardProps> = ({ data, edit }) => {
+export const RelationCard: React.FC<RelationCardProps> = ({ data, edit, onChange }) => {
   const { t } = useTranslation();
 
   if (!edit) {
@@ -27,9 +28,24 @@ export const RelationCard: React.FC<RelationCardProps> = ({ data, edit }) => {
   } else {
     return (
       <Stack>
-        <TextInput label={t('common.relationType')} defaultValue={data?.name} placeholder="e.g., attended, organized" />
-        <NumberInput label={t('common.confidence')} defaultValue={data?.confidence} />
-        <Textarea label={t('common.notes')} autosize minRows={2} />
+        <TextInput
+          label={t('common.relationType')}
+          defaultValue={data?.name}
+          placeholder={t('common.enterRelationType')}
+          onChange={(e) => onChange?.({ name: e.target.value })}
+        />
+        <NumberInput
+          label={t('common.confidence')}
+          defaultValue={data?.confidence}
+          placeholder={t('common.enterConfidence')}
+          onChange={(val) => onChange?.({ confidence: Number(val) })}
+        />
+        <Textarea
+          label={t('common.notes')}
+          autosize
+          minRows={2}
+          placeholder={t('common.enterNotes')}
+        />
       </Stack>
     );
   }
@@ -60,8 +76,8 @@ export const RelationTooltip: React.FC<RelationTooltipProps> = ({ relation, chil
   const formatDate = (ts?: string) => {
     if (!ts) return 'N/A';
     try {
-      const d = new Date(parseInt(ts));
-      return d.toLocaleDateString();
+      const d = new Date(parseInt(ts) * 1000);
+      return d.toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
     } catch (e) {
       return 'Invalid Date';
     }

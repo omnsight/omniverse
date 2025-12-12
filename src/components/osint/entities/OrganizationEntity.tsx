@@ -1,7 +1,7 @@
 import React from 'react';
 import { Group, Text, Stack, Avatar, Box, TextInput, rem, Tooltip, Button, TagsInput, Badge, HoverCard } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { DateInput } from '@mantine/dates';
+import { DateTimePicker } from '@mantine/dates';
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import type { V1Organization, V1RelatedEntity, V1Relation } from '@omnsight/clients/dist/geovision/geovision.js';
 import { RelationTooltip } from './RelationEntity';
@@ -29,20 +29,25 @@ export const OrganizationCard: React.FC<OrganizationCardProps> = ({ data, edit, 
   if (edit) {
     return (
       <Stack>
-        <TextInput label={t('common.name')} defaultValue={data?.name} onChange={e => onChange?.({ name: e.target.value })} />
-        <TextInput label={t('common.type')} defaultValue={data?.type} onChange={e => onChange?.({ type: e.target.value })} />
-        <DateInput
+        <TextInput label={t('common.name')} placeholder={t('common.enterName')} defaultValue={data?.name} onChange={e => onChange?.({ name: e.target.value })} />
+        <TextInput label={t('common.type')} placeholder={t('common.enterType')} defaultValue={data?.type} onChange={e => onChange?.({ type: e.target.value })} />
+        <DateTimePicker
           label={t('organization.foundedDate')}
-          value={data?.foundedAt ? new Date(parseInt(data.foundedAt)) : null}
-          onChange={(date: any) => onChange?.({ foundedAt: date ? new Date(date).getTime().toString() : undefined })}
+          placeholder={t('organization.selectFoundedDate')}
+          value={data?.foundedAt ? new Date(parseInt(data.foundedAt) * 1000) : null}
+          onChange={(date: any) => onChange?.({ foundedAt: date ? (new Date(date).getTime() / 1000).toString() : undefined })}
+          valueFormat="YYYY-MM-DD HH:mm"
         />
-        <DateInput
+        <DateTimePicker
           label={t('organization.discoveredDate')}
-          value={data?.discoveredAt ? new Date(parseInt(data.discoveredAt)) : null}
-          onChange={(date: any) => onChange?.({ discoveredAt: date ? new Date(date).getTime().toString() : undefined })}
+          placeholder={t('organization.selectDiscoveredDate')}
+          value={data?.discoveredAt ? new Date(parseInt(data.discoveredAt) * 1000) : null}
+          onChange={(date: any) => onChange?.({ discoveredAt: date ? (new Date(date).getTime() / 1000).toString() : undefined })}
+          valueFormat="YYYY-MM-DD HH:mm"
         />
         <TagsInput
           label={t('common.tags')}
+          placeholder={t('common.enterTags')}
           defaultValue={data?.tags}
           onChange={(tags) => onChange?.({ tags })}
         />
@@ -51,8 +56,8 @@ export const OrganizationCard: React.FC<OrganizationCardProps> = ({ data, edit, 
   } else {
     const formatDate = (ts?: string) => {
       if (!ts) return null;
-      const d = new Date(parseInt(ts));
-      return `${d.getFullYear()}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate().toString().padStart(2, '0')}`;
+      const d = new Date(parseInt(ts) * 1000);
+      return d.toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
     };
 
     return (
@@ -85,7 +90,7 @@ export const OrganizationAvatar: React.FC<OrganizationAvatarProps> = ({ data, re
     return (
       <HoverCard
         key={data.id}
-        width={300}
+        width={400}
         withArrow
         shadow="md"
         withinPortal

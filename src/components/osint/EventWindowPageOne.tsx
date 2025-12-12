@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, ScrollArea, Divider, SimpleGrid, Switch } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import type { V1Event, V1RelatedEntity } from '@omnsight/clients/dist/geovision/geovision.js';
 import { PersonList } from './entities/PersonEntity';
 import { OrganizationList } from './entities/OrganizationEntity';
@@ -13,16 +14,20 @@ interface EventWindowPageOneProps {
   relatedEntities: V1RelatedEntity[];
   onNavigate: (entity: V1RelatedEntity) => void;
   onCreate: (entity: V1RelatedEntity) => void;
+  isEditMode: boolean;
+  onEditModeChange: (isEdit: boolean) => void;
 }
 
 export const EventWindowPageOne: React.FC<EventWindowPageOneProps> = ({
   event,
   relatedEntities,
   onNavigate,
-  onCreate
+  onCreate,
+  isEditMode,
+  onEditModeChange
 }) => {
+  const { t } = useTranslation();
   const { hasRole } = useAuth();
-  const [isEditMode, setIsEditMode] = useState(false);
 
   const canEdit = hasRole('admin');
 
@@ -37,7 +42,7 @@ export const EventWindowPageOne: React.FC<EventWindowPageOneProps> = ({
       <ScrollArea h="100%" type="scroll" offsetScrollbars>
         <Box p="lg" pb={100}>
           {/* Section 1: Event Description & Location */}
-          <EventEntity event={event} />
+          <EventEntity event={event} withTitle={false} />
 
           <Divider my="sm" />
 
@@ -97,14 +102,13 @@ export const EventWindowPageOne: React.FC<EventWindowPageOneProps> = ({
         </Box>
       }
 
-
       {/* D. STICKY BOTTOM RIGHT: EDIT TOGGLE */}
       {canEdit && (
         <Box style={{ position: 'absolute', bottom: 15, right: 15, zIndex: 10 }}>
           <Switch
-            label="Edit Mode"
+            label={t('common.editMode')}
             checked={isEditMode}
-            onChange={(event) => setIsEditMode(event.currentTarget.checked)}
+            onChange={(event) => onEditModeChange(event.currentTarget.checked)}
             styles={{ label: { color: 'var(--mantine-color-dimmed)' } }}
           />
         </Box>

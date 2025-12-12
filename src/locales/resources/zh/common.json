@@ -33,7 +33,32 @@
     "address": "地址",
     "unknown": "未知",
     "created": "创建于",
-    "updated": "更新于"
+    "updated": "更新于",
+    "enterName": "输入名称",
+    "enterType": "输入类型",
+    "enterRole": "输入角色",
+    "enterNationality": "输入国籍",
+    "enterTags": "输入标签",
+    "enterAliases": "输入别名",
+    "enterRelationType": "输入关联类型",
+    "enterConfidence": "输入置信度",
+    "enterNotes": "输入备注",
+    "enterUrl": "输入链接",
+    "enterReliability": "输入可靠性",
+    "enterDomain": "输入域名",
+    "enterTitle": "输入标题",
+    "enterDescription": "输入描述",
+    "untitledEvent": "无标题事件",
+    "editMode": "编辑模式",
+    "entityCreated": "实体创建成功",
+    "entityUpdated": "实体更新成功",
+    "eventwindow": {
+      "createPerson": "创建人员",
+      "createOrganization": "创建组织",
+      "createWebsite": "创建网站",
+      "createSource": "创建信源",
+      "newEntity": "新实体"
+    }
   },
   "map": {
     "normalMode": "普通模式",
@@ -65,7 +90,9 @@
     "foundedDate": "创立日期",
     "discoveredDate": "发现日期",
     "notFound": "未找到相关组织",
-    "relatedOrganizations": "相关组织"
+    "relatedOrganizations": "相关组织",
+    "selectFoundedDate": "选择创立日期",
+    "selectDiscoveredDate": "选择发现日期"
   },
   "person": {
     "birthDate": "出生日期",
@@ -73,12 +100,14 @@
     "notFound": "未找到相关个人",
     "namePlaceholder": "例如：小李",
     "rolePlaceholder": "例如：研究员、公司管理...",
-    "relatedPersons": "相关个人"
+    "relatedPersons": "相关个人",
+    "selectBirthDate": "选择出生日期"
   },
   "website": {
     "foundedDate": "创立日期",
     "notFound": "未找到相关网站",
-    "relatedWebsites": "相关网站"
+    "relatedWebsites": "相关网站",
+    "selectFoundedDate": "选择创立日期"
   },
   "auth": {
     "login": "登录",
@@ -106,13 +135,36 @@
     "longitude": "经度",
     "tags": "标签",
     "enterTags": "输入标签",
-    "roles": "角色",
+    "roles": "权限角色",
+    "enterName": "输入名称",
+    "enterType": "输入类型",
+    "enterRole": "输入角色",
+    "enterNationality": "输入国籍",
+    "enterDomain": "输入域名",
+    "enterUrl": "输入链接",
+    "enterTitle": "输入标题",
+    "enterDescription": "输入描述",
+    "enterRelationType": "例如：参加、组织",
+    "enterConfidence": "输入置信度",
+    "enterNotes": "输入备注",
     "enterRoles": "输入角色",
+    "enterAliases": "输入别名",
+    "enterReliability": "输入可靠性",
+    "enterAddress": "输入地址",
+    "enterLocality": "输入地区",
+    "enterCountryCode": "输入国家代码",
+    "enterLatitude": "输入纬度",
+    "enterLongitude": "输入经度",
+    "selectDate": "选择日期",
+    "selectFoundedDate": "选择创立日期",
+    "selectDiscoveredDate": "选择发现日期",
+    "selectBirthDate": "选择出生日期",
     "dateUnknown": "日期未知",
     "addressUnknown": "地址未知",
     "localityUnknown": "地区未知",
     "administrativeAreaUnknown": "行政区域未知",
-    "countryUnknown": "国家未知"
+    "countryUnknown": "国家未知",
+    "loadError": "无法加载事件详情，请稍后重试。"
   },
   "errorPage": {
     "defaultTitle": "访问被拒绝",

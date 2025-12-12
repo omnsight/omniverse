@@ -15,7 +15,7 @@
     "@mantine/dates": "^8.3.9",
     "@mantine/hooks": "^8.3.9",
     "@mantine/notifications": "^8.3.9",
-    "@omnsight/clients": "^1.0.6",
+    "@omnsight/clients": "^1.0.8",
     "@tanstack/react-query": "^5.90.11",
     "i18next": "^25.7.2",
     "i18next-browser-languagedetector": "^8.2.0",

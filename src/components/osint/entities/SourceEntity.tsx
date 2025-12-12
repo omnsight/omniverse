@@ -45,11 +45,12 @@ export const SourceCard: React.FC<SourceCardProps> = ({ data, edit, onChange }) 
   } else {
     return (
       <Stack>
-        <TextInput label={t('common.name')} defaultValue={data?.name} onChange={e => onChange?.({ name: e.target.value })} />
-        <TextInput label="URL" defaultValue={data?.url} onChange={e => onChange?.({ url: e.target.value })} />
-        <NumberInput label={t('source.reliability')} defaultValue={data?.reliability} max={100} min={0} onChange={val => onChange?.({ reliability: Number(val) })} />
+        <TextInput label={t('common.name')} placeholder={t('common.enterName')} defaultValue={data?.name} onChange={e => onChange?.({ name: e.target.value })} />
+        <TextInput label="URL" placeholder={t('common.enterUrl')} defaultValue={data?.url} onChange={e => onChange?.({ url: e.target.value })} />
+        <NumberInput label={t('source.reliability')} placeholder={t('common.enterReliability')} defaultValue={data?.reliability} max={100} min={0} onChange={val => onChange?.({ reliability: Number(val) })} />
         <TagsInput
           label={t('common.tags')}
+          placeholder={t('common.enterTags')}
           defaultValue={data?.tags}
           onChange={(tags) => onChange?.({ tags })}
         />
@@ -71,7 +72,7 @@ export const SourceAvatar: React.FC<SourceAvatarProps> = ({ data, relation, edit
     return (
       <HoverCard
         key={data.id}
-        width={300}
+        width={400}
         position="left"
         withArrow
         shadow="md"

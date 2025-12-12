@@ -15,14 +15,19 @@ export interface PageTwoContext {
 
 interface EventWindowPageTwoProps {
   context: PageTwoContext;
-  onSave: () => void;
+  onSave: (entity: V1RelatedEntity) => Promise<void>;
 }
 
 export const EventWindowPageTwo: React.FC<EventWindowPageTwoProps> = ({ context, onSave }) => {
   const { entity } = context;
+  const [localEntity, setLocalEntity] = React.useState<V1RelatedEntity>(entity);
 
-  const handleSave = () => {
-    onSave();
+  React.useEffect(() => {
+    setLocalEntity(entity);
+  }, [entity]);
+
+  const handleSave = async () => {
+    await onSave(localEntity);
   };
 
   return (
@@ -30,10 +35,34 @@ export const EventWindowPageTwo: React.FC<EventWindowPageTwoProps> = ({ context,
       <Box p="lg">
         {/* BLOCK 1: THE ENTITY (Person, Org, etc.) */}
         <Box>
-          {entity.person && <PersonCard data={entity.person} edit={true} />}
-          {entity.organization && <OrganizationCard data={entity.organization} edit={true} />}
-          {entity.source && <SourceCard data={entity.source} edit={true} />}
-          {entity.website && <WebsiteCard data={entity.website} edit={true} />}
+          {localEntity.person && (
+            <PersonCard
+              data={localEntity.person}
+              edit={true}
+              onChange={(data) => setLocalEntity((prev) => ({ ...prev, person: { ...prev.person!, ...data } }))}
+            />
+          )}
+          {localEntity.organization && (
+            <OrganizationCard
+              data={localEntity.organization}
+              edit={true}
+              onChange={(data) => setLocalEntity((prev) => ({ ...prev, organization: { ...prev.organization!, ...data } }))}
+            />
+          )}
+          {localEntity.source && (
+            <SourceCard
+              data={localEntity.source}
+              edit={true}
+              onChange={(data) => setLocalEntity((prev) => ({ ...prev, source: { ...prev.source!, ...data } }))}
+            />
+          )}
+          {localEntity.website && (
+            <WebsiteCard
+              data={localEntity.website}
+              edit={true}
+              onChange={(data) => setLocalEntity((prev) => ({ ...prev, website: { ...prev.website!, ...data } }))}
+            />
+          )}
         </Box>
 
         {/* DIVIDER */}
@@ -44,8 +73,12 @@ export const EventWindowPageTwo: React.FC<EventWindowPageTwoProps> = ({ context,
           <Text fw={700} mb="md" size="lg" c="blue">
             关联详情
           </Text>
-          {entity.relation ? (
-            <RelationCard data={entity.relation!} edit={true} />
+          {localEntity.relation ? (
+            <RelationCard
+              data={localEntity.relation!}
+              edit={true}
+              onChange={(data) => setLocalEntity((prev) => ({ ...prev, relation: { ...prev.relation!, ...data } }))}
+            />
           ) : (
             <Center py="xl">
               <Stack align="center" gap="xs">

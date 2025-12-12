@@ -33,7 +33,32 @@
     "address": "Address",
     "unknown": "Unknown",
     "created": "Created at",
-    "updated": "Updated at"
+    "updated": "Updated at",
+    "enterName": "Enter name",
+    "enterType": "Enter type",
+    "enterRole": "Enter role",
+    "enterNationality": "Enter nationality",
+    "enterTags": "Enter tags",
+    "enterAliases": "Enter aliases",
+    "enterRelationType": "Enter relation type",
+    "enterConfidence": "Enter confidence",
+    "enterNotes": "Enter notes",
+    "enterUrl": "Enter URL",
+    "enterReliability": "Enter reliability",
+    "enterDomain": "Enter domain",
+    "enterTitle": "Enter title",
+    "enterDescription": "Enter description",
+    "untitledEvent": "Untitled Event",
+    "editMode": "Edit Mode",
+    "entityCreated": "Entity created successfully",
+    "entityUpdated": "Entity updated successfully",
+    "eventwindow": {
+      "createPerson": "Create Person",
+      "createOrganization": "Create Organization",
+      "createWebsite": "Create Website",
+      "createSource": "Create Source",
+      "newEntity": "New Entity"
+    }
   },
   "map": {
     "normalMode": "Normal Mode",
@@ -65,7 +90,9 @@
     "foundedDate": "Founded Date",
     "discoveredDate": "Discovered Date",
     "notFound": "No related organization found",
-    "relatedOrganizations": "Related Organizations"
+    "relatedOrganizations": "Related Organizations",
+    "selectFoundedDate": "Select founded date",
+    "selectDiscoveredDate": "Select discovered date"
   },
   "person": {
     "birthDate": "Birth Date",
@@ -73,12 +100,14 @@
     "notFound": "No related person found",
     "namePlaceholder": "e.g., John Doe",
     "rolePlaceholder": "e.g., Researcher, Manager...",
-    "relatedPersons": "Related Persons"
+    "relatedPersons": "Related Persons",
+    "selectBirthDate": "Select birth date"
   },
   "website": {
     "foundedDate": "Founded Date",
     "notFound": "No related website found",
-    "relatedWebsites": "Related Websites"
+    "relatedWebsites": "Related Websites",
+    "selectFoundedDate": "Select founded date"
   },
   "auth": {
     "login": "Login",
@@ -106,13 +135,36 @@
     "longitude": "Longitude",
     "tags": "Tags",
     "enterTags": "Enter tags",
-    "roles": "Roles",
+    "roles": "Permissive roles",
+    "enterName": "Enter name",
+    "enterType": "Enter type",
+    "enterRole": "Enter role",
+    "enterNationality": "Enter nationality",
+    "enterDomain": "Enter domain",
+    "enterUrl": "Enter URL",
+    "enterTitle": "Enter title",
+    "enterDescription": "Enter description",
+    "enterRelationType": "e.g., attended, organized",
+    "enterConfidence": "Enter confidence",
+    "enterNotes": "Enter notes",
     "enterRoles": "Enter roles",
+    "enterAliases": "Enter aliases",
+    "enterReliability": "Enter reliability",
+    "enterAddress": "Enter address",
+    "enterLocality": "Enter locality",
+    "enterCountryCode": "Enter country code",
+    "enterLatitude": "Enter latitude",
+    "enterLongitude": "Enter longitude",
+    "selectDate": "Select date",
+    "selectFoundedDate": "Select founded date",
+    "selectDiscoveredDate": "Select discovered date",
+    "selectBirthDate": "Select birth date",
     "dateUnknown": "Date unknown",
     "addressUnknown": "Address unknown",
     "localityUnknown": "Locality unknown",
     "administrativeAreaUnknown": "Administrative area unknown",
-    "countryUnknown": "Country unknown"
+    "countryUnknown": "Country unknown",
+    "loadError": "Unable to load event details, please try again later."
   },
   "errorPage": {
     "defaultTitle": "Access Denied",

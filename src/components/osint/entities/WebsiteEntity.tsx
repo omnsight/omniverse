@@ -1,7 +1,7 @@
 import React from 'react';
 import { Group, Text, ActionIcon, Stack, Avatar, Box, TextInput, rem, Tooltip, Button, TagsInput, Badge, Textarea, HoverCard } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { DateInput } from '@mantine/dates';
+import { DateTimePicker } from '@mantine/dates';
 import { PlusIcon, ArrowTopRightOnSquareIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import type { V1Website, V1RelatedEntity, V1Relation } from '@omnsight/clients/dist/geovision/geovision.js';
 import { RelationTooltip } from './RelationEntity';
@@ -28,17 +28,20 @@ export const WebsiteCard: React.FC<WebsiteCardProps> = ({ data, edit, onChange }
   if (edit) {
     return (
       <Stack>
-        <TextInput label={t('common.domain')} defaultValue={data?.domain} onChange={e => onChange?.({ domain: e.target.value })} />
-        <TextInput label="URL" defaultValue={data?.url} onChange={e => onChange?.({ url: e.target.value })} />
-        <TextInput label={t('common.title')} defaultValue={data?.title} onChange={e => onChange?.({ title: e.target.value })} />
-        <Textarea label={t('common.description')} defaultValue={data?.description} onChange={e => onChange?.({ description: e.target.value })} />
-        <DateInput
+        <TextInput label={t('common.domain')} placeholder={t('common.enterDomain')} defaultValue={data?.domain} onChange={e => onChange?.({ domain: e.target.value })} />
+        <TextInput label="URL" placeholder={t('common.enterUrl')} defaultValue={data?.url} onChange={e => onChange?.({ url: e.target.value })} />
+        <TextInput label={t('common.title')} placeholder={t('common.enterTitle')} defaultValue={data?.title} onChange={e => onChange?.({ title: e.target.value })} />
+        <Textarea label={t('common.description')} placeholder={t('common.enterDescription')} defaultValue={data?.description} onChange={e => onChange?.({ description: e.target.value })} />
+        <DateTimePicker
           label={t('website.foundedDate')}
-          value={data?.foundedAt ? new Date(parseInt(data.foundedAt)) : null}
-          onChange={(date: any) => onChange?.({ foundedAt: date ? new Date(date).getTime().toString() : undefined })}
+          placeholder={t('website.selectFoundedDate')}
+          value={data?.foundedAt ? new Date(parseInt(data.foundedAt) * 1000) : null}
+          onChange={(date: any) => onChange?.({ foundedAt: date ? (new Date(date).getTime() / 1000).toString() : undefined })}
+          valueFormat="YYYY-MM-DD HH:mm"
         />
         <TagsInput
           label={t('common.tags')}
+          placeholder={t('common.enterTags')}
           defaultValue={data?.tags}
           onChange={(tags) => onChange?.({ tags })}
         />
@@ -47,8 +50,8 @@ export const WebsiteCard: React.FC<WebsiteCardProps> = ({ data, edit, onChange }
   } else {
     const formatDate = (ts?: string) => {
       if (!ts) return null;
-      const d = new Date(parseInt(ts));
-      return `${d.getFullYear()}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate().toString().padStart(2, '0')}`;
+      const d = new Date(parseInt(ts) * 1000);
+      return d.toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
     };
 
     return (
@@ -90,7 +93,7 @@ export const WebsiteAvatar: React.FC<WebsiteAvatarProps> = ({ data, relation, ed
     return (
       <HoverCard
         key={data.id}
-        width={300}
+        width={400}
         withArrow
         shadow="md"
         withinPortal

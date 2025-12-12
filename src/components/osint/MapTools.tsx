@@ -27,6 +27,16 @@ const formatDistance = (meters: number) => {
   return `${(meters / 1000).toFixed(2)} km`;
 };
 
+const toDMS = (deg: number, isLat: boolean) => {
+  const absolute = Math.abs(deg);
+  const degrees = Math.floor(absolute);
+  const minutesNotTruncated = (absolute - degrees) * 60;
+  const minutes = Math.floor(minutesNotTruncated);
+  const seconds = ((minutesNotTruncated - minutes) * 60).toFixed(1);
+  const direction = isLat ? (deg >= 0 ? 'N' : 'S') : (deg >= 0 ? 'E' : 'W');
+  return `${degrees}º ${minutes}' ${seconds}'' ${direction}`;
+};
+
 // Custom DivIcon for the close button on the last point
 const CloseIcon = L.divIcon({
   className: 'custom-close-icon',
@@ -37,6 +47,20 @@ const CloseIcon = L.divIcon({
   </div>`,
   iconSize: [16, 16],
   iconAnchor: [-8, 8], // Offset to appear next to the point
+});
+
+const GhostPointIcon = L.divIcon({
+  className: 'ghost-point-icon',
+  html: `<div style="
+    background-color: rgba(255, 255, 255, 0.6);
+    border: 2px dashed rgba(255, 0, 0, 0.6);
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    box-sizing: border-box;
+  "></div>`,
+  iconSize: [12, 12],
+  iconAnchor: [18, 18], // Places icon to the top-left of the cursor
 });
 
 // Wrapper to stop event propagation (prevents map clicks when interacting with UI)
@@ -68,7 +92,6 @@ export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
     if (mode === 'normal') {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setRulerPoints([]);
-      setCursorPos(null);
     }
   }, [mode]);
 
@@ -93,9 +116,7 @@ export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
       }
     },
     mousemove(e) {
-      if (mode === 'ruler') {
-        setCursorPos({ lat: e.latlng.lat, lng: e.latlng.lng });
-      }
+      setCursorPos({ lat: e.latlng.lat, lng: e.latlng.lng });
     },
     contextmenu() {
       if (mode === 'ruler' && rulerPoints.length > 0) {
@@ -103,10 +124,6 @@ export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
       }
     }
   });
-
-  const resetRuler = () => {
-    setRulerPoints([]);
-  };
 
   return (
     <>
@@ -119,10 +136,15 @@ export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
             pathOptions={{ color: 'red', fillColor: 'white', fillOpacity: 1 }}
           >
             <Tooltip permanent direction="top" offset={[0, -5]}>
-              {idx === 0 ? t('map.start') : formatDistance(point.distanceFromStart)}
+              <div style={{ textAlign: 'center' }}>
+                <div>{idx === 0 ? t('map.start') : formatDistance(point.distanceFromStart)}</div>
+                <div style={{ fontSize: '0.8em', color: '#666' }}>
+                  {point.lat.toFixed(5)}, {point.lng.toFixed(5)}
+                </div>
+              </div>
             </Tooltip>
           </CircleMarker>
-          
+
           {/* Connector to previous point */}
           {idx > 0 && (
             <Polyline
@@ -166,6 +188,15 @@ export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
         />
       )}
 
+      {/* Ghost Point (following cursor in ruler mode) */}
+      {mode === 'ruler' && cursorPos && (
+        <Marker
+          position={[cursorPos.lat, cursorPos.lng]}
+          icon={GhostPointIcon}
+          interactive={false}
+        />
+      )}
+
       {/* 2. UI OVERLAYS (Bottom Left Tools - Vertical & Smaller) */}
       <MapControl style={{ bottom: 20, left: 20 }}>
         <Paper shadow="md" p={4} radius="md">
@@ -185,7 +216,12 @@ export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
                 variant={mode === 'ruler' ? 'filled' : 'subtle'}
                 color={mode === 'ruler' ? 'red' : 'gray'}
                 size="md"
-                onClick={() => onChangeMode('ruler')}
+                onClick={() => {
+                  if (mode === 'ruler') {
+                    setRulerPoints([]);
+                  }
+                  onChangeMode('ruler');
+                }}
               >
                 <MapIcon style={{ width: '70%', height: '70%' }} />
               </ActionIcon>
@@ -194,33 +230,18 @@ export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
         </Paper>
       </MapControl>
 
-      {/* 3. INFO PANEL (Upper Left) */}
-      {mode === 'ruler' && (
-        <MapControl style={{ top: 20, left: 60 }}>
-          <Paper shadow="md" p="xs" style={{ minWidth: 200 }}>
-            <Stack gap={2}>
-              <Text size="xs" fw={700} c="dimmed">{t('map.rulerMode')}</Text>
-              {cursorPos ? (
-                <>
-                  <Text size="sm">{t('event.latitude')}: {cursorPos.lat.toFixed(6)}</Text>
-                  <Text size="sm">{t('event.longitude')}: {cursorPos.lng.toFixed(6)}</Text>
-                </>
-              ) : (
-                <Text size="sm" fs="italic">{t('map.moveCursor')}</Text>
-              )}
-              {rulerPoints.length > 0 && (
-                <>
-                  <Text size="xs" mt="xs" fw={700} c="dimmed">{t('map.totalDistance')}</Text>
-                  <Text size="sm">{formatDistance(rulerPoints[rulerPoints.length - 1].distanceFromStart)}</Text>
-                  <Text size="xs" c="dimmed" style={{ cursor: 'pointer' }} onClick={resetRuler}>
-                    {t('map.clickToReset')}
-                  </Text>
-                </>
-              )}
-            </Stack>
-          </Paper>
-        </MapControl>
-      )}
+      {/* 3. Lat/Lon Display (Bottom Center) */}
+      <MapControl style={{ bottom: 20, left: '50%', transform: 'translateX(-50%)' }}>
+        <Paper shadow="md" p={6} radius="md" bg="rgba(50, 50, 50, 0.8)" style={{ backdropFilter: 'blur(2px)' }}>
+          <Text size="xs" fw={700} c="white" style={{ whiteSpace: 'nowrap', fontFamily: 'monospace' }}>
+            {cursorPos ? (
+              `${toDMS(cursorPos.lat, true)}   ${toDMS(cursorPos.lng, false)}`
+            ) : (
+              '--º --\' --. --\'\' N   --º --\' --. --\'\' E'
+            )}
+          </Text>
+        </Paper>
+      </MapControl>
     </>
   );
 };

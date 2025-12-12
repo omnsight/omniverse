@@ -1,7 +1,7 @@
 import React from 'react';
 import { Avatar, Tooltip, Stack, TextInput, Text, rem, Group, Badge, Button, Box, TagsInput, HoverCard } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { DateInput } from '@mantine/dates';
+import { DateTimePicker } from '@mantine/dates';
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import type { V1Person, V1RelatedEntity, V1Relation } from '@omnsight/clients/dist/geovision/geovision.js';
 import { RelationTooltip } from './RelationEntity';
@@ -29,21 +29,25 @@ export const PersonCard: React.FC<PersonCardProps> = ({ data, edit, onChange }) 
   if (edit) {
     return (
       <Stack>
-        <TextInput label={t('common.name')} defaultValue={data?.name} placeholder={t('person.namePlaceholder')} onChange={e => onChange?.({ name: e.target.value })} />
-        <TextInput label={t('common.role')} defaultValue={data?.role} placeholder={t('person.rolePlaceholder')} onChange={e => onChange?.({ role: e.target.value })} />
-        <TextInput label={t('common.nationality')} defaultValue={data?.nationality} onChange={e => onChange?.({ nationality: e.target.value })} />
-        <DateInput
+        <TextInput label={t('common.name')} defaultValue={data?.name} placeholder={t('common.enterName')} onChange={e => onChange?.({ name: e.target.value })} />
+        <TextInput label={t('common.role')} defaultValue={data?.role} placeholder={t('common.enterRole')} onChange={e => onChange?.({ role: e.target.value })} />
+        <TextInput label={t('common.nationality')} defaultValue={data?.nationality} placeholder={t('common.enterNationality')} onChange={e => onChange?.({ nationality: e.target.value })} />
+        <DateTimePicker
           label={t('person.birthDate')}
-          value={data?.birthDate ? new Date(parseInt(data.birthDate)) : null}
-          onChange={(date: any) => onChange?.({ birthDate: date ? new Date(date).getTime().toString() : undefined })}
+          placeholder={t('person.selectBirthDate')}
+          value={data?.birthDate ? new Date(parseInt(data.birthDate) * 1000) : null}
+          onChange={(date: any) => onChange?.({ birthDate: date ? (new Date(date).getTime() / 1000).toString() : undefined })}
+          valueFormat="YYYY-MM-DD HH:mm"
         />
         <TagsInput
           label={t('common.tags')}
+          placeholder={t('common.enterTags')}
           defaultValue={data?.tags}
           onChange={(tags) => onChange?.({ tags })}
         />
         <TagsInput
           label={t('person.aliases')}
+          placeholder={t('common.enterAliases')}
           defaultValue={data?.aliases}
           onChange={(aliases) => onChange?.({ aliases })}
         />
@@ -52,8 +56,8 @@ export const PersonCard: React.FC<PersonCardProps> = ({ data, edit, onChange }) 
   } else {
     const formatDate = (ts?: string) => {
       if (!ts) return null;
-      const d = new Date(parseInt(ts));
-      return `${d.getFullYear()}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate().toString().padStart(2, '0')}`;
+      const d = new Date(parseInt(ts) * 1000);
+      return d.toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
     };
 
     return (
@@ -94,7 +98,7 @@ export const PersonAvatar: React.FC<PersonAvatarProps> = ({ data, relation, edit
     return (
       <HoverCard
         key={data.id}
-        width={300}
+        width={400}
         position="top"
         withArrow
         shadow="md"

@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet';
-import L from 'leaflet';
+import { MapContainer, TileLayer, Polyline, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { EventWindow } from './EventWindow';
 import type { V1Event, V1Relation } from '@omnsight/clients/dist/geovision/geovision.js';
 import { Box, useMantineColorScheme } from '@mantine/core';
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import { getMinZoomForScreen, VerticalConstraint } from './MapZoomConstraint';
 import { MapTools, type ToolMode } from './MapTools';
-
-const DefaultIcon = L.icon({
-  iconUrl: icon,
-  shadowUrl: iconShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41]
-});
+import { EventMarker } from './entities/EventEntity';
 
 function MapUpdater({ center }: { center: [number, number] | undefined }) {
   const map = useMap();
@@ -83,15 +74,13 @@ export const EventMap: React.FC<EventMapProps> = ({ events, relations, selectedE
           const coords = getCoords(event);
           if (!coords) return null;
           return (
-            <Marker
+            <EventMarker
               key={event.key || Math.random().toString()}
+              event={event}
               position={coords}
-              icon={DefaultIcon}
-              eventHandlers={{
-                click: () => {
-                  if (toolMode === 'normal') {
-                    onEventSelect(event);
-                  }
+              onClick={() => {
+                if (toolMode === 'normal') {
+                  onEventSelect(event);
                 }
               }}
             />

@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { Box, ScrollArea, Text, Paper, Loader, Center, Switch, Group } from '@mantine/core';
+import { Box, ScrollArea, Text, Paper, Loader, Center, Switch, Group, rem, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { PlusIcon } from '@heroicons/react/24/solid';
 import { EventMap } from '../components/osint/EventMap';
 import { EventEntity } from '../components/osint/entities/EventEntity';
 import type { V1Event } from '@omnsight/clients/dist/geovision/geovision.js';
 import { useAuth } from '../utilties/AuthProvider';
-import { useGlobalSearch } from '../utilties/useGlobalSearchResult';
+import { useGlobalSearch, useInvalidateGlobalSearch } from '../utilties/useGlobalSearchResult';
+import { useBaseApi } from '../utilties/useBaseApi';
 
 export const DataPlane: React.FC = () => {
   const { t } = useTranslation();
   const { data } = useGlobalSearch();
+  const invalidateGlobalSearch = useInvalidateGlobalSearch();
   const { events = [], relations = [] } = data?.data || {};
   const { hasRole, isLoading } = useAuth();
+  const baseApi = useBaseApi();
   const navigate = useNavigate();
   const [selectedEvent, setSelectedEvent] = useState<V1Event | undefined>(undefined);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !hasRole('admin')) {
@@ -38,8 +43,6 @@ export const DataPlane: React.FC = () => {
   }
 
   const handleEventSelect = (event: V1Event | undefined) => {
-    // If we are in edit mode and the event is already selected, do nothing
-    // This prevents the inputs from losing focus/resetting when clicking inside the component
     if (isEditMode && selectedEvent?.key === event?.key) {
       return;
     }
@@ -52,9 +55,17 @@ export const DataPlane: React.FC = () => {
     }
   };
 
-  const handleUpdateEvent = (updates: Partial<V1Event>) => {
+  const handleUpdateEvent = async (updates: Partial<V1Event>) => {
     if (selectedEvent) {
+      await baseApi.v1.eventServiceUpdateEvent(selectedEvent.key!, updates);
+      invalidateGlobalSearch();
     }
+  };
+
+  const handleCreateEvent = async (event: V1Event) => {
+    await baseApi.v1.eventServiceCreateEvent(event);
+    setIsCreating(false);
+    invalidateGlobalSearch();
   };
 
   return (
@@ -74,6 +85,7 @@ export const DataPlane: React.FC = () => {
                 }}
               />
             </Group>
+
             {events.map(event => (
               <Paper
                 key={event.key}
@@ -89,7 +101,12 @@ export const DataPlane: React.FC = () => {
                 }}
               >
                 {selectedEvent?.key === event.key && isEditMode ? (
-                  <EventEntity event={selectedEvent!} edit={true} onUpdate={handleUpdateEvent} />
+                  <EventEntity
+                    event={selectedEvent!}
+                    edit={true}
+                    onUpdate={handleUpdateEvent}
+                    onClose={() => handleEventSelect(undefined)}
+                  />
                 ) : (
                   <Box>
                     <Text fw={600} truncate>{event.title || t('dataPlane.untitledEvent')}</Text>
@@ -98,6 +115,23 @@ export const DataPlane: React.FC = () => {
                 )}
               </Paper>
             ))}
+            {isCreating ? (
+              <Paper withBorder p="sm" mb="sm">
+                <EventEntity
+                  event={{} as V1Event}
+                  edit={true}
+                  onUpdate={handleCreateEvent}
+                  onClose={() => setIsCreating(false)}
+                />
+              </Paper>
+            ) : (
+              <Button
+                fullWidth
+                variant="light"
+                leftSection={<PlusIcon style={{ width: rem(18), height: rem(18) }} />}
+                onClick={() => { setIsCreating(true); setSelectedEvent(undefined); }}
+              />
+            )}
           </Box>
         </ScrollArea>
       </Box>
