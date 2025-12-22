@@ -5,7 +5,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MantineProvider, Modal, Popover, createTheme } from '@mantine/core';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AppAuthProvider } from './utilties/AuthProvider.tsx';
+import { AppAuthProvider } from './provider/AuthProvider.tsx';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './locales/index.ts';
 
@@ -21,7 +21,7 @@ const theme = createTheme({
     }),
     Tooltip: {
       defaultProps: { zIndex: 1400 },
-    }
+    },
   },
 });
 
@@ -30,7 +30,7 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <MantineProvider theme={theme} defaultColorScheme="dark">
+      <MantineProvider theme={theme} defaultColorScheme="light">
         <I18nextProvider i18n={i18n}>
           <AppAuthProvider>
             <App />
@@ -39,4 +39,4 @@ createRoot(document.getElementById('root')!).render(
       </MantineProvider>
     </QueryClientProvider>
   </StrictMode>,
-)
+);

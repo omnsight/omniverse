@@ -1,14 +1,14 @@
 import { AppShell } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AppNavbar } from './components/AppNavbar';
-import { AppSidebar } from './components/AppSidebar';
 import { Geovision } from './pages/Geovision';
-import { DataPlane } from './pages/DataPlane';
 import { ErrorPage } from './pages/ErrorPage';
+import { AppTopbar } from './components/common/Topbar';
+import { AppSidebar } from './components/common/Sidebar';
+import { SparkGraph } from './pages/SparkGraph';
 
 function App() {
-  const [opened, { toggle }] = useDisclosure();
+  const [opened] = useDisclosure();
 
   return (
     <BrowserRouter>
@@ -22,14 +22,16 @@ function App() {
         }}
         padding="0"
       >
+        <AppTopbar />
         <AppSidebar />
-        <AppNavbar opened={opened} toggle={toggle} />
 
-        <AppShell.Main style={{ height: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 60 }}>
+        <AppShell.Main
+          style={{ height: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 60 }}
+        >
           <Routes>
             <Route path="/" element={<Navigate to="/geovision" replace />} />
             <Route path="/geovision" element={<Geovision />} />
-            <Route path="/dataplane" element={<DataPlane />} />
+            <Route path="/sparkgraph" element={<SparkGraph />} />
             <Route path="/error" element={<ErrorPage />} />
           </Routes>
         </AppShell.Main>
@@ -38,4 +40,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

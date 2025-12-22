@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -7,16 +7,16 @@ export default defineConfig({
   server: {
     // Proxy configuration to bypass CORS
     proxy: {
-      '/apibase': {
+      '/apidata': {
         target: 'http://localhost:8081',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/apibase/, ''),
+        rewrite: (path) => path.replace(/^\/apidata/, ''),
       },
-      '/apigeo': {
+      '/apiauth': {
         target: 'http://localhost:8082',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/apigeo/, ''),
+        rewrite: (path) => path.replace(/^\/apiauth/, ''),
       },
     },
   },
-})
+});

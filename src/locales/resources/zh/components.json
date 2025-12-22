@@ -1,0 +1,164 @@
+{
+  "common": {
+    "Sidebar": {
+      "omniverse": "Omniverse",
+      "intelligencePlatform": "情报平台",
+      "geovision": "地理视图",
+      "dataPlane": "数据平面",
+      "theme": "主题",
+      "lightMode": "亮色模式",
+      "darkMode": "暗色模式",
+      "system": "跟随系统",
+      "language": "语言",
+      "english": "英语",
+      "chinese": "中文",
+      "selectLanguage": "选择语言",
+      "auth": {
+        "application": "应用",
+        "profile": "个人资料",
+        "signOut": "登出",
+        "login": "登录",
+        "accessAccount": "访问账户"
+      }
+    },
+    "Topbar": {
+      "error": "错误",
+      "loadError": "加载实体失败",
+      "selectCountry": "选择国家",
+      "selectDateRange": "选择日期范围",
+      "dateLimitExceeded": "超出日期限制",
+      "dateLimitMessage": "最大日期范围为一个月。结束日期已自动调整。",
+      "presets": "预设",
+      "today": "今天",
+      "yesterday": "昨天",
+      "lastWeek": "上周",
+      "lastMonth": "上月"
+    }
+  },
+  "entity": {
+    "common": {
+      "AvatarRowList": {
+        "notFound": "未找到"
+      },
+      "EmptyAvatar": {
+        "notFound": "未找到"
+      }
+    },
+    "event": {
+      "Card": {
+        "dateUnknown": "日期未知",
+        "addressUnknown": "地址未知",
+        "localityUnknown": "地区未知",
+        "administrativeAreaUnknown": "行政区未知",
+        "countryUnknown": "国家未知"
+      },
+      "Window": {
+        "untitledEvent": "无标题事件",
+        "relatedOrganizations": "相关组织",
+        "relatedWebsites": "相关网站",
+        "relatedSources": "相关来源"
+      }
+    },
+    "organization": {
+      "Card": {
+        "type": "类型",
+        "foundedDate": "成立日期"
+      },
+      "Form": {
+        "name": "名称",
+        "enterName": "输入名称",
+        "type": "类型",
+        "enterType": "输入类型",
+        "foundedDate": "成立日期",
+        "selectFoundedDate": "选择成立日期",
+        "discoveredDate": "发现日期",
+        "selectDiscoveredDate": "选择发现日期",
+        "tags": "标签",
+        "enterTags": "输入标签"
+      }
+    },
+    "person": {
+      "Card": {
+        "role": "角色",
+        "nationality": "国籍",
+        "birthDate": "出生日期",
+        "tags": "标签",
+        "aliases": "别名"
+      },
+      "Form": {
+        "name": "名称",
+        "enterName": "输入名称",
+        "role": "角色",
+        "enterRole": "输入角色",
+        "nationality": "国籍",
+        "enterNationality": "输入国籍",
+        "birthDate": "出生日期",
+        "selectBirthDate": "选择出生日期",
+        "tags": "标签",
+        "enterTags": "输入标签",
+        "aliases": "别名",
+        "enterAliases": "输入别名"
+      }
+    },
+    "relation": {
+      "Card": {
+        "type": "类型",
+        "unknown": "未知",
+        "confidence": "置信度"
+      },
+      "Form": {
+        "relationType": "关系类型",
+        "enterRelationType": "输入关系类型",
+        "confidence": "置信度",
+        "enterConfidence": "输入置信度",
+        "notes": "备注",
+        "enterNotes": "输入备注"
+      },
+      "ToolTip": {
+        "confidence": "置信度",
+        "created": "创建于",
+        "updated": "更新于"
+      }
+    },
+    "source": {
+      "Card": {
+        "title": "标题",
+        "reliability": "可靠性"
+      },
+      "Form": {
+        "name": "名称",
+        "enterName": "输入名称",
+        "enterUrl": "输入 URL",
+        "reliability": "可靠性",
+        "enterReliability": "输入可靠性",
+        "tags": "标签",
+        "enterTags": "输入标签"
+      }
+    },
+    "website": {
+      "Card": {
+        "foundedDate": "成立日期",
+        "tags": "标签"
+      },
+      "Form": {
+        "enterUrl": "输入 URL",
+        "title": "标题",
+        "enterTitle": "输入标题",
+        "description": "描述",
+        "enterDescription": "输入描述",
+        "foundedDate": "成立日期",
+        "selectFoundedDate": "选择成立日期",
+        "tags": "标签",
+        "enterTags": "输入标签"
+      }
+    }
+  },
+  "graph": {},
+  "map": {
+    "MapTools": {
+      "start": "起点",
+      "normalMode": "普通模式",
+      "rulerMode": "测距模式"
+    }
+  }
+}

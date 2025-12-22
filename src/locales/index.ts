@@ -2,15 +2,23 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-import enCommon from './resources/en/common.json';
-import zhCommon from './resources/zh/common.json';
+import enComponents from './resources/en/components.json';
+import zhComponents from './resources/zh/components.json';
+import enPages from './resources/en/pages.json';
+import zhPages from './resources/zh/pages.json';
 
 const resources = {
   en: {
-    translation: enCommon,
+    translation: {
+      ...enComponents,
+      ...enPages,
+    },
   },
   zh: {
-    translation: zhCommon,
+    translation: {
+      ...zhComponents,
+      ...zhPages,
+    },
   },
 };
 

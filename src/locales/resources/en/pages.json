@@ -1,0 +1,12 @@
+{
+  "ErrorPage": {
+    "defaultTitle": "Something went wrong",
+    "defaultDescription": "We encountered an unexpected error. Please try again later.",
+    "redirecting": "Redirecting in {{count}} seconds...",
+    "goHome": "Go Home"
+  },
+  "Geovision": {
+    "error": "Error",
+    "loadError": "Failed to load related data."
+  }
+}
