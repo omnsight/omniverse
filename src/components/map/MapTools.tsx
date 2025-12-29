@@ -141,7 +141,9 @@ export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
             <Tooltip permanent direction="top" offset={[0, -5]}>
               <div style={{ textAlign: 'center' }}>
                 <div>
-                  {idx === 0 ? t('map.MapTools.start') : formatDistance(point.distanceFromStart)}
+                  {idx === 0
+                    ? t('components.MapTools.start')
+                    : formatDistance(point.distanceFromStart)}
                 </div>
                 <div style={{ fontSize: '0.8em', color: '#666' }}>
                   {point.lat.toFixed(5)}, {point.lng.toFixed(5)}
@@ -206,7 +208,7 @@ export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
       <MapControl style={{ bottom: 20, left: 20 }}>
         <Paper shadow="md" p={4} radius="md">
           <Stack gap={4}>
-            <MantineTooltip label={t('map.MapTools.normalMode')} withArrow position="right">
+            <MantineTooltip label={t('components.MapTools.normalMode')} withArrow position="right">
               <ActionIcon
                 variant={mode === 'normal' ? 'filled' : 'subtle'}
                 color="blue"
@@ -216,7 +218,7 @@ export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
                 <CursorArrowRaysIcon style={{ width: '70%', height: '70%' }} />
               </ActionIcon>
             </MantineTooltip>
-            <MantineTooltip label={t('map.MapTools.rulerMode')} withArrow position="right">
+            <MantineTooltip label={t('components.MapTools.rulerMode')} withArrow position="right">
               <ActionIcon
                 variant={mode === 'ruler' ? 'filled' : 'subtle'}
                 color={mode === 'ruler' ? 'red' : 'gray'}

@@ -1,69 +1,133 @@
-import React from 'react';
-import { Stack, Text, Group, Badge } from '@mantine/core';
+import { useState } from 'react';
+import { Stack, Text, Group, ActionIcon } from '@mantine/core';
+import { CheckIcon } from '@heroicons/react/24/outline';
+import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import type { V1Person } from '@omnsight/clients/dist/omndapi/omndapi.js';
-import { getLocalizedAttribute } from '../common/localeSupport';
+import { EditableText } from '../common/EditableText';
+import { EditableDate } from '../common/EditableDate';
+import { EditableTags } from '../common/EditableTags';
+import { useEntityAuth } from '../common/useEntityAuth';
+import { useDataApi } from '../../../api/dataApi';
+import { useLocalDataState } from '../../../store/localData';
+import { EditableTitle } from '../common/EditableTitle';
+import { getChangedFields } from '../common/utils';
 
 interface Props {
-  data?: V1Person;
+  data: V1Person;
+  readonly?: boolean;
 }
 
-export const PersonCard: React.FC<Props> = ({ data }) => {
-  const { t, i18n } = useTranslation();
+export const PersonCard: React.FC<Props> = ({ data, readonly }) => {
+  const { t } = useTranslation();
+  const auth = useEntityAuth(data);
+  const canEdit = auth.canEdit && !readonly;
+  const api = useDataApi();
+  const { addEntities } = useLocalDataState((state) => state.actions);
+  const [pendingUpdates, setPendingUpdates] = useState<Partial<V1Person>>({});
 
-  const formatDate = (ts?: string) => {
-    if (!ts) return null;
-    const d = new Date(parseInt(ts) * 1000);
-    return d.toLocaleString(undefined, {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
+  const handleLocalUpdate = (updates: Partial<V1Person>) => {
+    setPendingUpdates((prev) => {
+      const candidate = { ...prev, ...updates };
+      return getChangedFields(candidate, data);
     });
   };
 
+  const saveUpdates = async () => {
+    if (Object.keys(pendingUpdates).length === 0) return;
+    try {
+      const res = await api.v1.entityServiceUpdateEntity('person', data.key!, {
+        person: pendingUpdates,
+      });
+
+      if (res.data.entity) {
+        addEntities([res.data.entity]);
+        setPendingUpdates({});
+      }
+    } catch (error) {
+      console.error('Failed to update person:', error);
+      notifications.show({
+        title: t('common.error'),
+        message: t('common.updateError'),
+        color: 'red',
+      });
+    }
+  };
+
   return (
-    <Stack gap="xs">
-      <Text size="xl" fw={700}>
-        {getLocalizedAttribute(data, 'Name', i18n.language) || data?.name}
-      </Text>
-      <Text>
-        {t('entity.person.Card.role')}:{' '}
-        {getLocalizedAttribute(data, 'Role', i18n.language) || data?.role}
-      </Text>
-      <Text>
-        {t('entity.person.Card.nationality')}:{' '}
-        {getLocalizedAttribute(data, 'Nationality', i18n.language) || data?.nationality}
-      </Text>
-      {data?.birthDate && (
+    <Stack gap="xs" style={{ position: 'relative' }}>
+      {!readonly && (
+        <ActionIcon
+          onClick={saveUpdates}
+          size="md"
+          pos="absolute"
+          top={0}
+          right={0}
+          style={{ zIndex: 10 }}
+          color="green"
+          disabled={Object.keys(pendingUpdates).length === 0}
+          variant={Object.keys(pendingUpdates).length > 0 ? 'filled' : 'light'}
+          radius="xl"
+        >
+          <CheckIcon
+            style={{
+              width: '70%',
+              height: '70%',
+              color: Object.keys(pendingUpdates).length > 0 ? 'white' : undefined,
+            }}
+          />
+        </ActionIcon>
+      )}
+      <EditableTitle
+        value={pendingUpdates.name || data.name}
+        onChange={(val) => handleLocalUpdate({ name: val })}
+        canEdit={canEdit}
+        placeholder={t('entity.person.name')}
+        order={4}
+      />
+
+      <Group gap={4}>
+        <Text>{t('placeholder.role')}:</Text>
+        <EditableText
+          value={pendingUpdates.role || data.role}
+          onChange={(val) => handleLocalUpdate({ role: val })}
+          canEdit={canEdit}
+          placeholder={t('placeholder.role')}
+        />
+      </Group>
+
+      <Group gap={4}>
+        <Text>{t('placeholder.nationality')}:</Text>
+        <EditableText
+          value={pendingUpdates.nationality || data.nationality}
+          onChange={(val) => handleLocalUpdate({ nationality: val })}
+          canEdit={canEdit}
+          placeholder={t('placeholder.nationality')}
+        />
+      </Group>
+
+      <Group gap={4}>
         <Text size="sm" c="dimmed">
-          {t('entity.person.Card.birthDate')}: {formatDate(data.birthDate)}
+          {t('placeholder.birthDate')}:
         </Text>
-      )}
-      {data?.tags && data.tags.length > 0 && (
-        <Group gap={4}>
-          <Text size="sm">{t('entity.person.Card.tags')}:</Text>
-          {(getLocalizedAttribute(data, 'Tags', i18n.language) || data.tags).map((tag: string) => (
-            <Badge key={tag} size="sm" variant="outline">
-              {tag}
-            </Badge>
-          ))}
-        </Group>
-      )}
-      {data?.aliases && data.aliases.length > 0 && (
-        <Group gap={4}>
-          <Text size="sm">{t('entity.person.Card.aliases')}:</Text>
-          {(getLocalizedAttribute(data, 'Aliases', i18n.language) || data.aliases).map(
-            (alias: string) => (
-              <Badge key={alias} size="sm" color="gray">
-                {alias}
-              </Badge>
-            ),
-          )}
-        </Group>
-      )}
+        <EditableDate
+          value={parseInt(pendingUpdates.birthDate || data.birthDate || '0') * 1000}
+          onChange={(date) =>
+            handleLocalUpdate({
+              birthDate: (new Date(date).getTime() / 1000).toString(),
+            })
+          }
+          canEdit={canEdit}
+          placeholder={t('placeholder.birthDate')}
+        />
+      </Group>
+
+      <EditableTags
+        value={pendingUpdates.tags || data.tags || []}
+        onChange={(tags) => handleLocalUpdate({ tags })}
+        canEdit={canEdit}
+        placeholder={t('placeholder.tags')}
+      />
     </Stack>
   );
 };

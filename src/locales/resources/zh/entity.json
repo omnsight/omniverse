@@ -1,0 +1,26 @@
+{
+  "event": {
+    "title": "事件标题",
+    "Window": {
+      "untitledEvent": "未命名事件",
+      "relatedOrganizations": "相关组织",
+      "relatedWebsites": "相关网站",
+      "relatedSources": "相关来源"
+    }
+  },
+  "organization": {
+    "name": "组织名称"
+  },
+  "person": {
+    "name": "人员姓名"
+  },
+  "source": {
+    "title": "来源标题"
+  },
+  "website": {
+    "name": "网站名称"
+  },
+  "relation": {
+    "name": "关系名称"
+  }
+}

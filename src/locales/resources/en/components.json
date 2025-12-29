@@ -1,164 +1,49 @@
 {
-  "common": {
-    "Sidebar": {
-      "omniverse": "Omniverse",
-      "intelligencePlatform": "Intelligence Platform",
-      "geovision": "Geovision",
-      "dataPlane": "Data Plane",
-      "theme": "Theme",
-      "lightMode": "Light Mode",
-      "darkMode": "Dark Mode",
-      "system": "System",
-      "language": "Language",
-      "english": "English",
-      "chinese": "Chinese",
-      "selectLanguage": "Select Language",
-      "auth": {
-        "application": "Application",
-        "profile": "Profile",
-        "signOut": "Sign Out",
-        "login": "Login",
-        "accessAccount": "Access Account"
-      }
-    },
-    "Topbar": {
-      "error": "Error",
-      "loadError": "Failed to load entities",
-      "selectCountry": "Select Country",
-      "selectDateRange": "Select Date Range",
-      "dateLimitExceeded": "Date Limit Exceeded",
-      "dateLimitMessage": "The maximum date range is one month. The end date has been adjusted.",
-      "presets": "Presets",
-      "today": "Today",
-      "yesterday": "Yesterday",
-      "lastWeek": "Last Week",
-      "lastMonth": "Last Month"
+  "GraphTools": {
+    "viewMode": "View Mode",
+    "graph": "Graph",
+    "compare": "Compare",
+    "warning": "Warning",
+    "badSelection": "Please select between 2 and 9 entities of the same type to compare."
+  },
+  "MapTools": {
+    "start": "Start",
+    "normalMode": "Normal Mode",
+    "rulerMode": "Ruler Mode"
+  },
+  "Sidebar": {
+    "omniverse": "Omniverse",
+    "intelligencePlatform": "Intelligence Platform",
+    "geovision": "Geovision",
+    "sparkgraph": "Spark Graph",
+    "dataPlane": "Data Plane",
+    "theme": "Theme",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode",
+    "system": "System",
+    "language": "Language",
+    "english": "English",
+    "chinese": "Chinese",
+    "selectLanguage": "Select Language",
+    "auth": {
+      "application": "Application",
+      "profile": "Profile",
+      "signOut": "Sign Out",
+      "login": "Login",
+      "accessAccount": "Access Account"
     }
   },
-  "entity": {
-    "common": {
-      "AvatarRowList": {
-        "notFound": "Not Found"
-      },
-      "EmptyAvatar": {
-        "notFound": "Not Found"
-      }
-    },
-    "event": {
-      "Card": {
-        "dateUnknown": "Date Unknown",
-        "addressUnknown": "Address Unknown",
-        "localityUnknown": "Locality Unknown",
-        "administrativeAreaUnknown": "State/Province Unknown",
-        "countryUnknown": "Country Unknown"
-      },
-      "Window": {
-        "untitledEvent": "Untitled Event",
-        "relatedOrganizations": "Related Organizations",
-        "relatedWebsites": "Related Websites",
-        "relatedSources": "Related Sources"
-      }
-    },
-    "organization": {
-      "Card": {
-        "type": "Type",
-        "foundedDate": "Founded Date"
-      },
-      "Form": {
-        "name": "Name",
-        "enterName": "Enter name",
-        "type": "Type",
-        "enterType": "Enter type",
-        "foundedDate": "Founded Date",
-        "selectFoundedDate": "Select founded date",
-        "discoveredDate": "Discovered Date",
-        "selectDiscoveredDate": "Select discovered date",
-        "tags": "Tags",
-        "enterTags": "Enter tags"
-      }
-    },
-    "person": {
-      "Card": {
-        "role": "Role",
-        "nationality": "Nationality",
-        "birthDate": "Birth Date",
-        "tags": "Tags",
-        "aliases": "Aliases"
-      },
-      "Form": {
-        "name": "Name",
-        "enterName": "Enter name",
-        "role": "Role",
-        "enterRole": "Enter role",
-        "nationality": "Nationality",
-        "enterNationality": "Enter nationality",
-        "birthDate": "Birth Date",
-        "selectBirthDate": "Select birth date",
-        "tags": "Tags",
-        "enterTags": "Enter tags",
-        "aliases": "Aliases",
-        "enterAliases": "Enter aliases"
-      }
-    },
-    "relation": {
-      "Card": {
-        "type": "Type",
-        "unknown": "Unknown",
-        "confidence": "Confidence"
-      },
-      "Form": {
-        "relationType": "Relation Type",
-        "enterRelationType": "Enter relation type",
-        "confidence": "Confidence",
-        "enterConfidence": "Enter confidence",
-        "notes": "Notes",
-        "enterNotes": "Enter notes"
-      },
-      "ToolTip": {
-        "confidence": "Confidence",
-        "created": "Created",
-        "updated": "Updated"
-      }
-    },
-    "source": {
-      "Card": {
-        "title": "Title",
-        "reliability": "Reliability"
-      },
-      "Form": {
-        "name": "Name",
-        "enterName": "Enter name",
-        "enterUrl": "Enter URL",
-        "reliability": "Reliability",
-        "enterReliability": "Enter reliability",
-        "tags": "Tags",
-        "enterTags": "Enter tags"
-      }
-    },
-    "website": {
-      "Card": {
-        "foundedDate": "Founded Date",
-        "tags": "Tags"
-      },
-      "Form": {
-        "enterUrl": "Enter URL",
-        "title": "Title",
-        "enterTitle": "Enter title",
-        "description": "Description",
-        "enterDescription": "Enter description",
-        "foundedDate": "Founded Date",
-        "selectFoundedDate": "Select founded date",
-        "tags": "Tags",
-        "enterTags": "Enter tags"
-      }
-    }
-  },
-  "graph": {},
-  "map": {
-    "MapTools": {
-      "start": "Start",
-      "normalMode": "Normal Mode",
-      "rulerMode": "Ruler Mode"
-    }
+  "Topbar": {
+    "error": "Error",
+    "loadError": "Failed to load entities",
+    "selectCountry": "Select Country",
+    "selectDateRange": "Select Date Range",
+    "dateLimitExceeded": "Date Limit Exceeded",
+    "dateLimitMessage": "The maximum date range is one month. The end date has been adjusted.",
+    "presets": "Presets",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "lastWeek": "Last Week",
+    "lastMonth": "Last Month"
   }
 }

@@ -32,10 +32,8 @@ export const Geovision: React.FC = () => {
   useEffect(() => {
     console.log('relatedData', relatedData);
     if (relatedData) {
-      const entities = relatedData.entities || [];
-      const relations = relatedData.relations || [];
-      addEntities(entities);
-      addRelations(relations);
+      addEntities(relatedData.entities || []);
+      addRelations(relatedData.relations || []);
     }
   }, [relatedData, addEntities, addRelations]);
 

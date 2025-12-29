@@ -52,10 +52,10 @@ export const AppSidebar: React.FC = () => {
           <GlobeAltIcon style={{ width: rem(34), flexShrink: 0 }} className="text-blue-600" />
           <Stack gap={0}>
             <Text fw={700} size="md" lh={1}>
-              {t('common.Sidebar.omniverse')}
+              {t('components.Sidebar.omniverse')}
             </Text>
             <Text size={rem(10)} c="dimmed" lh={1.2}>
-              {t('common.Sidebar.intelligencePlatform')}
+              {t('components.Sidebar.intelligencePlatform')}
             </Text>
           </Stack>
         </Group>
@@ -65,7 +65,7 @@ export const AppSidebar: React.FC = () => {
       {/* --- Main Navigation --- */}
       <AppShell.Section grow component={ScrollArea}>
         <NavLink
-          label={t('common.Sidebar.geovision')}
+          label={t('components.Sidebar.geovision')}
           leftSection={<GlobeAltIcon style={{ width: rem(20) }} />}
           active={isActive('/geovision')}
           variant="light"
@@ -74,7 +74,7 @@ export const AppSidebar: React.FC = () => {
         />
         {hasRole('admin') && (
           <NavLink
-            label="Spark Graph"
+            label={t('components.Sidebar.sparkgraph')}
             leftSection={<SparklesIcon style={{ width: rem(20) }} />}
             active={isActive('/sparkgraph')}
             variant="light"
@@ -104,47 +104,47 @@ export const AppSidebar: React.FC = () => {
             </Menu.Target>
 
             <Menu.Dropdown>
-              <Menu.Label>{t('common.Sidebar.auth.application')}</Menu.Label>
+              <Menu.Label>{t('components.Sidebar.auth.application')}</Menu.Label>
               <Menu.Item leftSection={<UserCircleIcon style={{ width: rem(14) }} />}>
-                {t('common.Sidebar.auth.profile')}
+                {t('components.Sidebar.auth.profile')}
               </Menu.Item>
 
               <Menu.Divider />
 
-              <Menu.Label>{t('common.Sidebar.theme')}</Menu.Label>
+              <Menu.Label>{t('components.Sidebar.theme')}</Menu.Label>
               <Menu.Item
                 leftSection={<SunIcon style={{ width: rem(14), height: rem(14) }} />}
                 onClick={() => setColorScheme('light')}
                 rightSection={<Switch size="xs" checked={colorScheme === 'light'} readOnly />}
               >
-                {t('common.Sidebar.lightMode')}
+                {t('components.Sidebar.lightMode')}
               </Menu.Item>
               <Menu.Item
                 leftSection={<MoonIcon style={{ width: rem(14), height: rem(14) }} />}
                 onClick={() => setColorScheme('dark')}
                 rightSection={<Switch size="xs" checked={colorScheme === 'dark'} readOnly />}
               >
-                {t('common.Sidebar.darkMode')}
+                {t('components.Sidebar.darkMode')}
               </Menu.Item>
               <Menu.Item
                 leftSection={<ComputerDesktopIcon style={{ width: rem(14), height: rem(14) }} />}
                 onClick={() => setColorScheme('auto')}
                 rightSection={<Switch size="xs" checked={colorScheme === 'auto'} readOnly />}
               >
-                {t('common.Sidebar.system')}
+                {t('components.Sidebar.system')}
               </Menu.Item>
 
               <Menu.Divider />
 
-              <Menu.Label>{t('common.Sidebar.language')}</Menu.Label>
+              <Menu.Label>{t('components.Sidebar.language')}</Menu.Label>
               <Select
                 data={[
-                  { value: 'en', label: t('common.Sidebar.english') },
-                  { value: 'zh', label: t('common.Sidebar.chinese') },
+                  { value: 'en', label: t('components.Sidebar.english') },
+                  { value: 'zh', label: t('components.Sidebar.chinese') },
                 ]}
                 value={i18n.language}
                 onChange={(value) => value && handleLanguageChange(value)}
-                placeholder={t('common.Sidebar.selectLanguage')}
+                placeholder={t('components.Sidebar.selectLanguage')}
                 size="xs"
                 mx="xs"
                 mb="xs"
@@ -156,15 +156,15 @@ export const AppSidebar: React.FC = () => {
                 onClick={logout}
                 leftSection={<ArrowLeftCircleIcon style={{ width: rem(14) }} />}
               >
-                {t('common.Sidebar.auth.signOut')}
+                {t('components.Sidebar.auth.signOut')}
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
         ) : (
           <NavLink
             component="button"
-            label={t('common.Sidebar.auth.login')}
-            description={t('common.Sidebar.auth.accessAccount')}
+            label={t('components.Sidebar.auth.login')}
+            description={t('components.Sidebar.auth.accessAccount')}
             onClick={login}
             leftSection={
               <Avatar radius="xl" size="sm" color="gray">

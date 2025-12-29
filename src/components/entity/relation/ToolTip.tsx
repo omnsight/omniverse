@@ -1,7 +1,6 @@
 import { Stack, Group, Text, Box, rem, RingProgress } from '@mantine/core';
 import type { V1Relation } from '@omnsight/clients/dist/omndapi/omndapi.js';
 import { useTranslation } from 'react-i18next';
-import { getLocalizedAttribute } from '../common/localeSupport';
 
 interface Props {
   relation?: V1Relation;
@@ -9,7 +8,7 @@ interface Props {
 }
 
 export const RelationTooltip: React.FC<Props> = ({ relation, children }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   if (!relation) return <>{children}</>;
 
   const confVal = relation.confidence || 0;
@@ -41,11 +40,11 @@ export const RelationTooltip: React.FC<Props> = ({ relation, children }) => {
     <Stack gap="xs" p={4}>
       <Group justify="space-between" align="center">
         <Text fw={700} size="sm" style={{ lineHeight: 1 }}>
-          {getLocalizedAttribute(relation, 'Name', i18n.language) || relation.name || 'Relation'}
+          {relation.label || t('placeholder.relation')}
         </Text>
         <Group gap={4}>
           <Text size="xs" c="dimmed">
-            {t('entity.relation.ToolTip.confidence')}
+            {t('placeholder.confidence')}
           </Text>
           <RingProgress
             size={36}
@@ -65,10 +64,10 @@ export const RelationTooltip: React.FC<Props> = ({ relation, children }) => {
 
       <Group justify="space-between" mt={4}>
         <Text size="xs" c="dimmed" style={{ fontSize: rem(10) }}>
-          {t('entity.relation.ToolTip.created')}: {formatDate(relation.createdAt)}
+          {t('placeholder.createdDate')}: {formatDate(relation.createdAt)}
         </Text>
         <Text size="xs" c="dimmed" style={{ fontSize: rem(10) }}>
-          {t('entity.relation.ToolTip.updated')}: {formatDate(relation.updatedAt)}
+          {t('placeholder.updatedDate')}: {formatDate(relation.updatedAt)}
         </Text>
       </Group>
     </Stack>

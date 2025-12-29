@@ -12,7 +12,6 @@ import { PersonAvatar } from '../person/Avatar';
 import { SourceAvatar, SourceAvatarRow } from '../source/Avatar';
 import { AvatarDropdown } from '../common/AvatarDropdown';
 import { ChevronDownIcon, LinkIcon } from '@heroicons/react/16/solid';
-import { getLocalizedAttribute } from '../common/localeSupport';
 
 interface EventWindowProps {
   isOpen: boolean;
@@ -21,7 +20,7 @@ interface EventWindowProps {
 }
 
 export const EventWindow: React.FC<EventWindowProps> = ({ isOpen, onClose, event }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { organizations, websites, sources, persons } = useEventRelatedEntities(event.id);
 
   return (
@@ -31,9 +30,7 @@ export const EventWindow: React.FC<EventWindowProps> = ({ isOpen, onClose, event
       isLoading={false}
       breadcrumbs={[
         {
-          label:
-            getLocalizedAttribute(event, 'Title', i18n.language) ||
-            t('entity.event.Window.untitledEvent'),
+          label: event.title || t('entity.event.Window.untitledEvent'),
         },
       ]}
     >
@@ -41,7 +38,7 @@ export const EventWindow: React.FC<EventWindowProps> = ({ isOpen, onClose, event
       <ScrollArea h="100%" type="scroll" offsetScrollbars>
         <Box p="lg" pb={100}>
           {/* Section 1: Event Description & Location */}
-          <EventCard event={event} withTitle={false} />
+          <EventCard event={event} withTitle={false} readonly={true} />
 
           <Divider my="sm" />
 

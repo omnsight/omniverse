@@ -6,7 +6,7 @@ export const EmptyAvatar: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <Tooltip key="notfound" label={t('entity.common.EmptyAvatar.notFound')} withArrow>
+    <Tooltip key="notfound" label={t('common.notFound')} withArrow>
       <Avatar size="md" radius="xl" color="gray" variant="light">
         <XMarkIcon />
       </Avatar>

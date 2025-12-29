@@ -13,7 +13,7 @@ export const AvatarRowList: React.FC<Props> = ({ children }) => {
     <Avatar.Group>
       {children.length === 0 ? (
         <Text c="dimmed" size="sm" fs="italic">
-          {t('entity.common.AvatarRowList.notFound')}
+          {t('common.notFound')}
         </Text>
       ) : (
         children

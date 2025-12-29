@@ -15,7 +15,7 @@ interface Props {
 
 const defaultRenderWebsiteTooltip = (data: V1Website, relation?: V1Relation) => (
   <RelationTooltip relation={relation}>
-    <WebsiteCard data={data} />
+    <WebsiteCard data={data} readonly={true} />
   </RelationTooltip>
 );
 

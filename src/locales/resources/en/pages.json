@@ -8,5 +8,9 @@
   "Geovision": {
     "error": "Error",
     "loadError": "Failed to load related data."
+  },
+  "SparkGraph": {
+    "loadError": "Error Loading Graph",
+    "fetchRelatedDataError": "Failed to fetch related data."
   }
 }

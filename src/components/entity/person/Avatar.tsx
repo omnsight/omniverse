@@ -5,7 +5,6 @@ import { PersonCard } from './Card';
 import { RelationTooltip } from '../relation/ToolTip';
 import '../EntityStyles.css';
 import { useTranslation } from 'react-i18next';
-import { getLocalizedAttribute } from '../common/localeSupport';
 
 interface Props {
   data: V1Person;
@@ -16,7 +15,7 @@ interface Props {
 
 const defaultRenderPersonTooltip = (data: V1Person, relation?: V1Relation) => (
   <RelationTooltip relation={relation}>
-    <PersonCard data={data} />
+    <PersonCard data={data} readonly={true} />
   </RelationTooltip>
 );
 
@@ -26,7 +25,6 @@ export const PersonAvatar: React.FC<Props> = ({
   onClick,
   renderTooltip = defaultRenderPersonTooltip,
 }) => {
-  const { i18n } = useTranslation();
   return (
     <HoverCard key={data.id} width={400} position="top" withArrow shadow="md" withinPortal>
       <HoverCard.Target>
@@ -43,7 +41,7 @@ export const PersonAvatar: React.FC<Props> = ({
           }}
           onClick={() => onClick?.()}
         >
-          {getLocalizedAttribute(data, 'Name', i18n.language)?.[0] || data.name?.[0]}
+          {data.name?.[0]}
         </Avatar>
       </HoverCard.Target>
       <HoverCard.Dropdown>{renderTooltip(data, relation)}</HoverCard.Dropdown>

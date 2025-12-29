@@ -1,43 +1,47 @@
 import React, { memo } from 'react';
-import { Handle, Position, type NodeProps } from 'reactflow';
-import { Avatar, HoverCard } from '@mantine/core';
+import { type NodeProps } from 'reactflow';
+import { Avatar, Box, Text } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import { GlobeAltIcon } from '@heroicons/react/24/solid';
-import { WebsiteCard } from './Card';
-import type { EntityData } from '../../graph/types';
+import { NodeHandles } from '../../common/NodeHandles';
+import type { EntityType } from '../../../store/graphData';
 import type { V1Website } from '@omnsight/clients/dist/omndapi/omndapi.js';
 
-export const WebsiteNode: React.FC<NodeProps<EntityData>> = memo(
-  ({ data, selected }: NodeProps<EntityData>) => {
-    return (
-      <HoverCard width={300} shadow="md" withArrow openDelay={200} closeDelay={0}>
-        <HoverCard.Target>
-          <div style={{ position: 'relative' }}>
-            <Handle type="target" position={Position.Top} style={{ background: '#555', top: -5 }} />
-            <Avatar
-              color="orange"
-              radius="xl"
-              size="lg"
-              style={{
-                border: selected
-                  ? '2px solid var(--mantine-color-blue-6)'
-                  : '2px solid transparent',
-                cursor: 'pointer',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
-              }}
-            >
-              <GlobeAltIcon style={{ width: '60%', height: '60%' }} />
-            </Avatar>
-            <Handle
-              type="source"
-              position={Position.Bottom}
-              style={{ background: '#555', bottom: -5 }}
-            />
-          </div>
-        </HoverCard.Target>
-        <HoverCard.Dropdown>
-          <WebsiteCard data={data.details as V1Website} />
-        </HoverCard.Dropdown>
-      </HoverCard>
-    );
-  },
-);
+export const WebsiteNode: React.FC<NodeProps<EntityType>> = memo(({ data, selected }) => {
+  const { t } = useTranslation();
+  const website = data as V1Website;
+
+  return (
+    <Box style={{ position: 'relative' }}>
+      <NodeHandles />
+      <Avatar
+        color="orange"
+        radius="xl"
+        size="md"
+        style={{
+          border: selected ? '2px solid var(--mantine-color-blue-6)' : '2px solid transparent',
+          cursor: 'pointer',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+        }}
+      >
+        <GlobeAltIcon style={{ width: '60%', height: '60%' }} />
+      </Avatar>
+      <Text
+        fz={8}
+        fw={500}
+        c="dimmed"
+        pos="absolute"
+        top="100%"
+        left="50%"
+        mt={4}
+        style={{
+          transform: 'translateX(-50%)',
+          whiteSpace: 'nowrap',
+          pointerEvents: 'none',
+        }}
+      >
+        {website.title || t('placeholder.unknown') + t('entity.website.name')}
+      </Text>
+    </Box>
+  );
+});

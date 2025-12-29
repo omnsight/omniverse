@@ -1,0 +1,26 @@
+{
+  "event": {
+    "title": "Event Title",
+    "Window": {
+      "untitledEvent": "Untitled Event",
+      "relatedOrganizations": "Related Organizations",
+      "relatedWebsites": "Related Websites",
+      "relatedSources": "Related Sources"
+    }
+  },
+  "organization": {
+    "name": "Organization Name"
+  },
+  "person": {
+    "name": "Person Name"
+  },
+  "source": {
+    "title": "Source Title"
+  },
+  "website": {
+    "name": "Website Name"
+  },
+  "relation": {
+    "name": "Relation Name"
+  }
+}

@@ -5,8 +5,6 @@ import type { V1Source, V1Relation } from '@omnsight/clients/dist/omndapi/omndap
 import { SourceCard } from './Card';
 import { RelationTooltip } from '../relation/ToolTip';
 import '../EntityStyles.css';
-import { useTranslation } from 'react-i18next';
-import { getLocalizedAttribute } from '../common/localeSupport';
 
 interface Props {
   width: number;
@@ -17,7 +15,7 @@ interface Props {
 
 const defaultRenderSourceTooltip = (data: V1Source, relation?: V1Relation) => (
   <RelationTooltip relation={relation}>
-    <SourceCard data={data} />
+    <SourceCard data={data} readonly={true} />
   </RelationTooltip>
 );
 
@@ -53,14 +51,12 @@ export const SourceAvatarRow: React.FC<Props> = ({
   relation,
   renderTooltip = defaultRenderSourceTooltip,
 }) => {
-  const { i18n } = useTranslation();
-
   return (
     <Group wrap="nowrap" gap={0}>
       <HoverCard width={width} openDelay={500} withArrow shadow="md">
         <HoverCard.Target>
           <Text size="sm" fw={500} truncate="end">
-            {getLocalizedAttribute(data, 'Name', i18n.language) || data.name || data.url}
+            {data.name || data.url}
           </Text>
         </HoverCard.Target>
         <HoverCard.Dropdown>{renderTooltip(data, relation)}</HoverCard.Dropdown>

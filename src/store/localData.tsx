@@ -21,8 +21,10 @@ interface LocalDataState {
   actions: {
     setEntities: (entities: V1Entity[]) => void;
     addEntities: (entities: V1Entity[]) => void;
+    removeEntities: (entityIds: string[]) => void;
     setRelations: (relations: V1Relation[]) => void;
     addRelations: (relations: V1Relation[]) => void;
+    removeRelations: (relationIds: string[]) => void;
   };
 }
 
@@ -35,7 +37,7 @@ export const useLocalDataState = create<LocalDataState>((set) => ({
   relations: new Map(),
 
   actions: {
-    setEntities: (entities) => {
+    setEntities: (entities: V1Entity[]) => {
       const events = new Map<string, V1Event>();
       const persons = new Map<string, V1Person>();
       const organizations = new Map<string, V1Organization>();
@@ -58,8 +60,8 @@ export const useLocalDataState = create<LocalDataState>((set) => ({
         sources,
       });
     },
-    addEntities: (entities) =>
-      set((state) => {
+    addEntities: (entities: V1Entity[]) =>
+      set((state: LocalDataState) => {
         const events = new Map(state.events);
         const persons = new Map(state.persons);
         const organizations = new Map(state.organizations);
@@ -82,19 +84,43 @@ export const useLocalDataState = create<LocalDataState>((set) => ({
           sources,
         };
       }),
-    setRelations: (relations) => {
+    removeEntities: (entityIds: string[]) =>
+      set((state: LocalDataState) => {
+        const events = new Map(state.events);
+        const persons = new Map(state.persons);
+        const organizations = new Map(state.organizations);
+        const websites = new Map(state.websites);
+        const sources = new Map(state.sources);
+
+        entityIds.forEach((id) => {
+          events.delete(id);
+          persons.delete(id);
+          organizations.delete(id);
+          websites.delete(id);
+          sources.delete(id);
+        });
+
+        return { events, persons, organizations, websites, sources };
+      }),
+    setRelations: (relations: V1Relation[]) => {
       const relationsMap = new Map<string, V1Relation>();
       relations.forEach((r) => {
         if (r.id) relationsMap.set(r.id, r);
       });
       set({ relations: relationsMap });
     },
-    addRelations: (relations) =>
-      set((state) => {
+    addRelations: (relations: V1Relation[]) =>
+      set((state: LocalDataState) => {
         const relationsMap = new Map(state.relations);
         relations.forEach((r) => {
           if (r.id) relationsMap.set(r.id, r);
         });
+        return { relations: relationsMap };
+      }),
+    removeRelations: (relationIds: string[]) =>
+      set((state: LocalDataState) => {
+        const relationsMap = new Map(state.relations);
+        relationIds.forEach((id) => relationsMap.delete(id));
         return { relations: relationsMap };
       }),
   },
@@ -118,7 +144,11 @@ export const useEntitiesRelations = () => {
 };
 
 export const useEventRelatedEntities = (eventId?: string) => {
-  const { persons, organizations, websites, sources, relations } = useLocalDataState();
+  const persons = useLocalDataState((state) => state.persons);
+  const organizations = useLocalDataState((state) => state.organizations);
+  const websites = useLocalDataState((state) => state.websites);
+  const sources = useLocalDataState((state) => state.sources);
+  const relations = useLocalDataState((state) => state.relations);
 
   if (!eventId) {
     return {

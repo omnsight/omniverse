@@ -1,0 +1,23 @@
+{
+  "unknown": "Unknown",
+  "enter": "Enter",
+  "country": "Country",
+  "confidence": "Confidence",
+  "relation": "Relation",
+  "url": "URL",
+  "description": "Description",
+  "tags": "Tags",
+  "reliability": "Reliability",
+  "createdDate": "Created Date",
+  "updatedDate": "Updated Date",
+  "role": "Role",
+  "nationality": "Nationality",
+  "birthDate": "Birth Date",
+  "type": "Type",
+  "foundedDate": "Founded Date",
+  "discoveredDate": "Discovered Date",
+  "date": "Date",
+  "address": "Address",
+  "locality": "Locality",
+  "administrativeArea": "Administrative Area"
+}

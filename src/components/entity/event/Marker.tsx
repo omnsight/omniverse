@@ -29,7 +29,7 @@ export const EventMarker: React.FC<Props> = ({ event, position, onClick }) => {
       }}
     >
       <LeafletTooltip>
-        <EventCard event={event} width={300} />
+        <EventCard event={event} width={300} readonly={true} />
       </LeafletTooltip>
     </Marker>
   );

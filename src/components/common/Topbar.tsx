@@ -72,8 +72,8 @@ export const AppTopbar: React.FC = () => {
   useEffect(() => {
     if (searchError) {
       notifications.show({
-        title: t('common.Topbar.error'),
-        message: t('common.Topbar.loadError'),
+        title: t('components.Topbar.error'),
+        message: t('components.Topbar.loadError'),
         color: 'red',
       });
       console.error('Failed to fetch entities', searchError);
@@ -91,8 +91,8 @@ export const AppTopbar: React.FC = () => {
 
       if (end > maxEndDate) {
         notifications.show({
-          title: t('common.Topbar.dateLimitExceeded'),
-          message: t('common.Topbar.dateLimitMessage'),
+          title: t('components.Topbar.dateLimitExceeded'),
+          message: t('components.Topbar.dateLimitMessage'),
           color: 'orange',
         });
         setDateRange([start, maxEndDate]);
@@ -131,7 +131,7 @@ export const AppTopbar: React.FC = () => {
   };
 
   const formatDateRange = (range: [Date | undefined, Date | undefined]) => {
-    if (!range[0]) return t('common.Topbar.selectDateRange');
+    if (!range[0]) return t('components.Topbar.selectDateRange');
     const startStr = range[0].toLocaleDateString();
     const endStr = range[1] ? range[1].toLocaleDateString() : '...';
     return `${startStr} - ${endStr}`;
@@ -142,7 +142,7 @@ export const AppTopbar: React.FC = () => {
       <Group h="100%" px="md" justify="space-between">
         <Group>
           <Select
-            placeholder={t('common.Topbar.selectCountry')}
+            placeholder={t('components.Topbar.selectCountry')}
             data={countryOptions}
             value={country}
             onChange={(val) => val && setCountry(val)}
@@ -171,24 +171,24 @@ export const AppTopbar: React.FC = () => {
               <Group align="flex-start">
                 <Stack gap="xs">
                   <Text size="sm" fw={500} mb={5}>
-                    {t('common.Topbar.presets')}
+                    {t('components.Topbar.presets')}
                   </Text>
                   <Button variant="light" size="xs" onClick={() => applyPreset('today')}>
-                    {t('common.Topbar.today')}
+                    {t('components.Topbar.today')}
                   </Button>
                   <Button variant="light" size="xs" onClick={() => applyPreset('yesterday')}>
-                    {t('common.Topbar.yesterday')}
+                    {t('components.Topbar.yesterday')}
                   </Button>
                   <Button variant="light" size="xs" onClick={() => applyPreset('lastWeek')}>
-                    {t('common.Topbar.lastWeek')}
+                    {t('components.Topbar.lastWeek')}
                   </Button>
                   <Button variant="light" size="xs" onClick={() => applyPreset('lastMonth')}>
-                    {t('common.Topbar.lastMonth')}
+                    {t('components.Topbar.lastMonth')}
                   </Button>
                 </Stack>
                 <Stack gap="xs">
                   <Text size="sm" fw={500} mb={5}>
-                    {t('common.Topbar.selectDateRange')}
+                    {t('components.Topbar.selectDateRange')}
                   </Text>
                   <DatePicker
                     type="range"
