@@ -13,7 +13,6 @@ import {
 } from '../../store/viewMetadata';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
-import './Editor.css';
 
 interface Props {
   viewType: EntityViewType;
@@ -27,8 +26,13 @@ export const Editor: React.FC<Props> = ({ viewType, setViewType }) => {
 
   const editor = useEditor({
     extensions: [StarterKit, ViewExtension, Highlight],
+    editorProps: {
+      attributes: {
+        style: 'outline: none',
+      },
+    },
     content: `
-      <h1>${t('components.editor.title')}</h1>
+      <h2>${t('components.editor.title')}</h2>
       <p>${t('components.editor.placeholder')}</p>
     `,
   });
