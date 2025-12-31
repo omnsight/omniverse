@@ -1,18 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Box } from '@mantine/core';
 import { GeoMap } from '../components/map/Geomap';
-import type { V1Event } from '@omnsight/clients/dist/omndapi/omndapi';
 import { useDataApi } from '../api/dataApi';
 import { useTranslation } from 'react-i18next';
-import { useLocalDataActions } from '../store/localData';
+import { useLocalDataActions, useLocalDataState } from '../store/localData';
 import { useQuery } from '@tanstack/react-query';
 import { notifications } from '@mantine/notifications';
+import { useSelection, useSelectionActions } from '../store/selection';
 
 export const Geovision: React.FC = () => {
   const { t } = useTranslation();
   const dataApi = useDataApi();
   const { addEntities, addRelations } = useLocalDataActions();
-  const [selectedEvent, setSelectedEvent] = useState<V1Event | undefined>(undefined);
+  const { clear } = useSelectionActions();
+  const selectedIds = useSelection((state) => state.selectedIds);
+  const events = useLocalDataState((state) => state.events);
+
+  useEffect(() => {
+    clear();
+  }, [clear]);
+
+  const selectedEvent = useMemo(() => {
+    if (selectedIds.length > 0) {
+      const id = selectedIds[0];
+      return events.get(id);
+    }
+    return undefined;
+  }, [selectedIds, events]);
 
   const { data: relatedData, error: relatedError } = useQuery({
     queryKey: ['event-related-entities', selectedEvent?.id],
@@ -50,7 +64,7 @@ export const Geovision: React.FC = () => {
 
   return (
     <Box style={{ height: '100%', width: '100%' }}>
-      <GeoMap selectedEvent={selectedEvent} setSelectedEvent={setSelectedEvent} />
+      <GeoMap selectedEvent={selectedEvent} />
     </Box>
   );
 };

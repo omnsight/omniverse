@@ -4,16 +4,19 @@ import { useTranslation } from 'react-i18next';
 import { Avatar, Box, Text } from '@mantine/core';
 import { CalendarDaysIcon } from '@heroicons/react/24/solid';
 import { NodeHandles } from '../../common/NodeHandles';
+import { NewBadge } from '../../common/NewBadge';
 import type { V1Event } from '@omnsight/clients/dist/omndapi/omndapi.js';
 import type { EntityType } from '../../../store/graphData';
 
 export const EventNode: React.FC<NodeProps<EntityType>> = memo(({ data, selected }) => {
   const { t } = useTranslation();
-  const event = data as V1Event;
+  const event = data as V1Event & { hideHandles?: boolean };
+  const isNew = event.id?.startsWith('new');
 
   return (
-    <Box style={{ position: 'relative' }}>
-      <NodeHandles />
+    <Box style={{ position: 'relative', opacity: event.hideHandles ? 0.5 : 1 }}>
+      {!event.hideHandles && <NodeHandles />}
+      {isNew && <NewBadge size="0.4rem" right={-20} top={-10} />}
       <Avatar
         color="blue"
         radius="xl"

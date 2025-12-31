@@ -38,7 +38,7 @@ export const EditableText: React.FC<Props> = ({
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <TextInput
           autoFocus
-          value={value}
+          value={value || ''}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={`${t('placeholder.enter')}${placeholder}...`}

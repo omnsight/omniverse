@@ -6,6 +6,7 @@ import { ErrorPage } from './pages/ErrorPage';
 import { AppTopbar } from './components/common/Topbar';
 import { AppSidebar } from './components/common/Sidebar';
 import { SparkGraph } from './pages/SparkGraph';
+import { NarrativeBoard } from './pages/NarrativeBoard';
 
 function App() {
   const [opened] = useDisclosure();
@@ -32,6 +33,7 @@ function App() {
             <Route path="/" element={<Navigate to="/geovision" replace />} />
             <Route path="/geovision" element={<Geovision />} />
             <Route path="/sparkgraph" element={<SparkGraph />} />
+            <Route path="/narrative" element={<NarrativeBoard />} />
             <Route path="/error" element={<ErrorPage />} />
           </Routes>
         </AppShell.Main>

@@ -1,5 +1,7 @@
 {
   "event": {
+    "type": "事件",
+    "new": "新事件",
     "title": "事件标题",
     "Window": {
       "untitledEvent": "未命名事件",
@@ -9,18 +11,23 @@
     }
   },
   "organization": {
+    "type": "组织",
     "name": "组织名称"
   },
   "person": {
+    "type": "人员",
     "name": "人员姓名"
   },
   "source": {
+    "type": "来源",
     "title": "来源标题"
   },
   "website": {
+    "type": "网站",
     "name": "网站名称"
   },
   "relation": {
-    "name": "关系名称"
+    "name": "关系名称",
+    "nameRequired": "关系名称不能为空"
   }
 }

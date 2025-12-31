@@ -4,7 +4,6 @@ import type { V1Person, V1Relation } from '@omnsight/clients/dist/omndapi/omndap
 import { PersonCard } from './Card';
 import { RelationTooltip } from '../relation/ToolTip';
 import '../EntityStyles.css';
-import { useTranslation } from 'react-i18next';
 
 interface Props {
   data: V1Person;

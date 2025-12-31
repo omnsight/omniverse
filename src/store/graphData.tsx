@@ -44,7 +44,7 @@ export const EdgeTypes = {
 interface GraphDataState {
   nodes: Node<EntityType>[];
   edges: Edge<V1Relation>[];
-  version: number;
+  mutated: boolean;
   actions: {
     changeNodes: (changes: NodeChange[]) => void;
     changeEdges: (changes: EdgeChange[]) => void;
@@ -55,7 +55,7 @@ export const useGraphData = create<GraphDataState>((set) => {
   return {
     nodes: [],
     edges: [],
-    version: 0,
+    mutated: false,
     actions: {
       changeNodes: (changes: NodeChange[]) => {
         set((state) => ({ nodes: applyNodeChanges(changes, state.nodes) }));
@@ -177,7 +177,7 @@ useLocalDataState.subscribe(async (state) => {
     useGraphData.setState((state) => ({
       nodes: finalNodes,
       edges: finalEdges,
-      version: hasStructuralChanges ? state.version + 1 : state.version,
+      mutated: hasStructuralChanges,
     }));
   } catch (error) {
     console.error('Error syncing graph data:', error);
@@ -187,6 +187,7 @@ useLocalDataState.subscribe(async (state) => {
 // Subscription to useSelection
 useSelection.subscribe((state) => {
   const { selectedIds } = state;
+  console.log(selectedIds);
   useGraphData.setState((graphState) => ({
     nodes: graphState.nodes.map((n) => ({
       ...n,

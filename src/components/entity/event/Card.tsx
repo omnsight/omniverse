@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { CalendarDaysIcon, MapPinIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { Group, Stack, rem, ActionIcon } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
@@ -15,8 +15,7 @@ import { EditableTextarea } from '../common/EditableTextarea';
 import { EditableTags } from '../common/EditableTags';
 import { useEntityAuth } from '../common/useEntityAuth';
 import { useDataApi } from '../../../api/dataApi';
-import { useLocalDataState } from '../../../store/localData';
-import { getChangedFields } from '../common/utils';
+import { useEntityUpdatesActions, usePendingUpdates } from '../../../store/entityUpdates';
 
 // Register locales
 countries.registerLocale(enLocale);
@@ -34,8 +33,10 @@ export const EventCard: React.FC<Props> = ({ event, width, withTitle, readonly }
   const auth = useEntityAuth(event);
   const canEdit = auth.canEdit && !readonly;
   const api = useDataApi();
-  const { addEntities } = useLocalDataState((state) => state.actions);
-  const [pendingUpdates, setPendingUpdates] = useState<Partial<V1Event>>({});
+
+  const entityId = event.id || '';
+  const pendingUpdates = usePendingUpdates<V1Event>(entityId);
+  const { setPendingUpdate, saveUpdates: saveUpdatesAction } = useEntityUpdatesActions();
 
   // Generate country list based on current language
   const countryOptions = useMemo(() => {
@@ -53,16 +54,9 @@ export const EventCard: React.FC<Props> = ({ event, width, withTitle, readonly }
   }, [i18n.language]);
 
   const saveUpdates = async () => {
-    if (Object.keys(pendingUpdates).length === 0) return;
+    if (!entityId) return;
     try {
-      const res = await api.v1.entityServiceUpdateEntity('event', event.key!, {
-        event: pendingUpdates,
-      });
-
-      if (res.data.entity) {
-        addEntities([res.data.entity]);
-        setPendingUpdates({});
-      }
+      await saveUpdatesAction(entityId, event, 'event', api);
     } catch (error) {
       console.error('Failed to update event:', error);
       notifications.show({
@@ -73,25 +67,16 @@ export const EventCard: React.FC<Props> = ({ event, width, withTitle, readonly }
     }
   };
 
-  const handleLocalUpdate = (updates: Partial<V1Event>) => {
-    setPendingUpdates((prev) => {
-      const candidate = { ...prev, ...updates };
-      return getChangedFields(candidate, event);
-    });
-  };
-
   const handleLocationUpdate = (field: string, value: string) => {
-    setPendingUpdates((prev) => {
-      const currentLocation = prev.location || event.location || {};
-      const newLocation = { ...currentLocation, [field]: value };
-      const candidate = { ...prev, location: newLocation };
-      return getChangedFields(candidate, event);
-    });
+    if (!entityId) return;
+    const currentLocation = pendingUpdates.location || event.location || {};
+    const newLocation = { ...currentLocation, [field]: value };
+    setPendingUpdate(entityId, { location: newLocation }, event);
   };
 
   return (
     <Stack gap="xs" mb="xl" style={{ width, position: 'relative' }}>
-      {!readonly && (
+      {canEdit && (
         <ActionIcon
           onClick={saveUpdates}
           size="md"
@@ -116,7 +101,7 @@ export const EventCard: React.FC<Props> = ({ event, width, withTitle, readonly }
       {withTitle && (
         <EditableTitle
           value={pendingUpdates.title || event.title || ''}
-          onChange={(val) => handleLocalUpdate({ title: val })}
+          onChange={(val) => entityId && setPendingUpdate(entityId, { title: val }, event)}
           canEdit={canEdit}
           placeholder={t('entity.event.title')}
           order={4}
@@ -128,9 +113,14 @@ export const EventCard: React.FC<Props> = ({ event, width, withTitle, readonly }
         <EditableDate
           value={parseInt(pendingUpdates.happenedAt || event.happenedAt || '0') * 1000}
           onChange={(date) =>
-            handleLocalUpdate({
-              happenedAt: (date.getTime() / 1000).toString(),
-            })
+            entityId &&
+            setPendingUpdate(
+              entityId,
+              {
+                happenedAt: (date.getTime() / 1000).toString(),
+              },
+              event,
+            )
           }
           canEdit={canEdit}
           placeholder={t('placeholder.date')}
@@ -172,14 +162,14 @@ export const EventCard: React.FC<Props> = ({ event, width, withTitle, readonly }
 
       <EditableTextarea
         value={pendingUpdates.description || event.description || ''}
-        onChange={(val) => handleLocalUpdate({ description: val })}
+        onChange={(val) => entityId && setPendingUpdate(entityId, { description: val }, event)}
         canEdit={canEdit}
         placeholder={t('placeholder.description')}
       />
 
       <EditableTags
         value={pendingUpdates.tags || event.tags || []}
-        onChange={(tags) => handleLocalUpdate({ tags })}
+        onChange={(tags) => entityId && setPendingUpdate(entityId, { tags }, event)}
         canEdit={canEdit}
         placeholder={t('placeholder.tags')}
       />

@@ -4,5 +4,9 @@
   "updateSuccess": "Update successful",
   "error": "Error",
   "updateError": "Update failed",
-  "notFound": "Not Found"
+  "notFound": "Not Found",
+  "duplicateRelation": "Relation already exists",
+  "noWritePermission": "You must be a pro or admin user to perform this action",
+  "restore": "Restore",
+  "delete": "Delete"
 }

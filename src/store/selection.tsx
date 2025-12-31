@@ -5,6 +5,7 @@ interface SelectionState {
   selectedIds: string[];
   actions: {
     select: (ids: string[]) => void;
+    set: (ids: string[]) => void;
     clear: () => void;
   };
 }
@@ -41,6 +42,12 @@ export const useSelection = create<SelectionState>((set) => ({
         });
 
         return { selectedIds: Array.from(newSelectedIds) };
+      }),
+    set: (ids: string[]) =>
+      set(() => {
+        const localData = useLocalDataState.getState();
+        const validIds = ids.filter((id) => checkExists(localData, id));
+        return { selectedIds: validIds };
       }),
     clear: () => set({ selectedIds: [] }),
   },

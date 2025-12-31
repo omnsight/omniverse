@@ -25,10 +25,11 @@ interface LocalDataState {
     setRelations: (relations: V1Relation[]) => void;
     addRelations: (relations: V1Relation[]) => void;
     removeRelations: (relationIds: string[]) => void;
+    hasRelation: (from: string, to: string) => boolean;
   };
 }
 
-export const useLocalDataState = create<LocalDataState>((set) => ({
+export const useLocalDataState = create<LocalDataState>((set, get) => ({
   events: new Map(),
   persons: new Map(),
   organizations: new Map(),
@@ -123,6 +124,10 @@ export const useLocalDataState = create<LocalDataState>((set) => ({
         relationIds.forEach((id) => relationsMap.delete(id));
         return { relations: relationsMap };
       }),
+    hasRelation: (from: string, to: string) => {
+      const { relations } = get();
+      return Array.from(relations.values()).some((r) => r.from === from && r.to === to);
+    },
   },
 }));
 

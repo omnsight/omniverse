@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css';
-import React, { useState } from 'react';
+import React from 'react';
 import { MapContainer, TileLayer, Polyline } from 'react-leaflet';
 import { Box, useMantineColorScheme } from '@mantine/core';
 import type { V1Event } from '@omnsight/clients/dist/omndapi/omndapi.js';
@@ -7,20 +7,23 @@ import { useFilteredEventsAndRelations } from '../../store/localData';
 import { MapFlyer } from './MapFly';
 import { MapConstraint } from './MapConstraint';
 import { getMinZoomForScreen } from './mapUtils';
-import { MapTools, type ToolMode } from './MapTools';
+import { MapTools } from './MapTools';
 import { EventMarker } from '../entity/event/Marker';
 import { EventWindow } from '../entity/event/Window';
+import { useSelectionActions } from '../../store/selection';
+import { ViewMetadataPanel } from '../common/ViewMetadataPanel';
+import { useMapToolState } from '../../store/mapToolState';
 
 interface Props {
   selectedEvent?: V1Event | undefined;
-  setSelectedEvent: (event?: V1Event | undefined) => void;
 }
 
-export const GeoMap: React.FC<Props> = ({ selectedEvent, setSelectedEvent }) => {
+export const GeoMap: React.FC<Props> = ({ selectedEvent }) => {
   const { colorScheme } = useMantineColorScheme();
   const { events, relations } = useFilteredEventsAndRelations();
+  const { select, clear } = useSelectionActions();
 
-  const [toolMode, setToolMode] = useState<ToolMode>('normal');
+  const toolMode = useMapToolState((state) => state.mode);
 
   const getCoords = (e?: V1Event): [number, number] | undefined => {
     if (!e || !e.location || !e.location.latitude || !e.location.longitude) return undefined;
@@ -59,15 +62,7 @@ export const GeoMap: React.FC<Props> = ({ selectedEvent, setSelectedEvent }) => 
         />
 
         {/* Map Tools (Ruler, Mode Switcher) */}
-        <MapTools
-          mode={toolMode}
-          onChangeMode={(newMode) => {
-            setToolMode(newMode);
-            if (newMode === 'ruler') {
-              setSelectedEvent(undefined);
-            }
-          }}
-        />
+        <MapTools />
 
         {/* Events */}
         {events.map((event, idx) => {
@@ -79,8 +74,9 @@ export const GeoMap: React.FC<Props> = ({ selectedEvent, setSelectedEvent }) => 
               event={event}
               position={coords}
               onClick={() => {
-                if (toolMode === 'normal') {
-                  setSelectedEvent(event);
+                if (toolMode === 'normal' && event.id) {
+                  clear();
+                  select([event.id]);
                 }
               }}
             />
@@ -121,12 +117,21 @@ export const GeoMap: React.FC<Props> = ({ selectedEvent, setSelectedEvent }) => 
       </MapContainer>
 
       {selectedEvent && (
-        <EventWindow
-          isOpen={!!selectedEvent}
-          onClose={() => setSelectedEvent(undefined)}
-          event={selectedEvent}
-        />
+        <EventWindow isOpen={!!selectedEvent} onClose={() => clear()} event={selectedEvent} />
       )}
+
+      {/* View Metadata Panel (Center Left) */}
+      <Box
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: 10,
+          transform: 'translateY(-50%)',
+          zIndex: 1000,
+        }}
+      >
+        <ViewMetadataPanel viewType="geovision" />
+      </Box>
     </Box>
   );
 };

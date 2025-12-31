@@ -12,6 +12,7 @@ import { RelationCard } from './Card';
 import { getSmartEdgeParams } from '../../graph/utils';
 import type { V1Relation } from '@omnsight/clients/dist/omndapi/omndapi';
 import { useTranslation } from 'react-i18next';
+import { NewBadge } from '../../common/NewBadge';
 
 export const RelationEdge: React.FC<EdgeProps<V1Relation>> = memo(
   ({
@@ -89,6 +90,7 @@ export const RelationEdge: React.FC<EdgeProps<V1Relation>> = memo(
             }}
             className="nodrag nopan"
           >
+            {data?.id?.startsWith('new') && <NewBadge size="0.4rem" top={-8} right={-8} />}
             <HoverCard width={250} shadow="md" withArrow openDelay={200} closeDelay={0}>
               <HoverCard.Target>
                 <Badge

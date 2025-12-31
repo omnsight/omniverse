@@ -23,6 +23,7 @@ import {
   SunIcon,
   MoonIcon,
   ComputerDesktopIcon,
+  BookOpenIcon,
 } from '@heroicons/react/24/solid';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +32,7 @@ import { useAuth } from '../../provider/AuthContext';
 export const AppSidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated, user, login, logout, hasRole } = useAuth();
+  const { isAuthenticated, user, login, logout } = useAuth();
   const { t, i18n } = useTranslation();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
 
@@ -72,16 +73,22 @@ export const AppSidebar: React.FC = () => {
           color="blue"
           onClick={() => navigate('/geovision')}
         />
-        {hasRole('admin') && (
-          <NavLink
-            label={t('components.Sidebar.sparkgraph')}
-            leftSection={<SparklesIcon style={{ width: rem(20) }} />}
-            active={isActive('/sparkgraph')}
-            variant="light"
-            color="blue"
-            onClick={() => navigate('/sparkgraph')}
-          />
-        )}
+        <NavLink
+          label={t('components.Sidebar.sparkgraph')}
+          leftSection={<SparklesIcon style={{ width: rem(20) }} />}
+          active={isActive('/sparkgraph')}
+          variant="light"
+          color="blue"
+          onClick={() => navigate('/sparkgraph')}
+        />
+        <NavLink
+          label={t('components.Sidebar.narrative')}
+          leftSection={<BookOpenIcon style={{ width: rem(20) }} />}
+          active={isActive('/narrative')}
+          variant="light"
+          color="blue"
+          onClick={() => navigate('/narrative')}
+        />
       </AppShell.Section>
 
       {/* --- Bottom User Menu --- */}

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Group, Text, Stack, ActionIcon } from '@mantine/core';
 import { ArrowTopRightOnSquareIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { notifications } from '@mantine/notifications';
@@ -9,9 +8,8 @@ import { EditableNumber } from '../common/EditableNumber';
 import { EditableTags } from '../common/EditableTags';
 import { useEntityAuth } from '../common/useEntityAuth';
 import { useDataApi } from '../../../api/dataApi';
-import { useLocalDataState } from '../../../store/localData';
 import { EditableTitle } from '../common/EditableTitle';
-import { getChangedFields } from '../common/utils';
+import { useEntityUpdatesActions, usePendingUpdates } from '../../../store/entityUpdates';
 
 interface Props {
   data: V1Source;
@@ -23,27 +21,15 @@ export const SourceCard: React.FC<Props> = ({ data, readonly }) => {
   const auth = useEntityAuth(data);
   const canEdit = auth.canEdit && !readonly;
   const api = useDataApi();
-  const { addEntities } = useLocalDataState((state) => state.actions);
-  const [pendingUpdates, setPendingUpdates] = useState<Partial<V1Source>>({});
 
-  const handleLocalUpdate = (updates: Partial<V1Source>) => {
-    setPendingUpdates((prev) => {
-      const candidate = { ...prev, ...updates };
-      return getChangedFields(candidate, data);
-    });
-  };
+  const entityId = data.id || '';
+  const pendingUpdates = usePendingUpdates<V1Source>(entityId);
+  const { setPendingUpdate, saveUpdates: saveUpdatesAction } = useEntityUpdatesActions();
 
   const saveUpdates = async () => {
-    if (Object.keys(pendingUpdates).length === 0) return;
+    if (!entityId) return;
     try {
-      const res = await api.v1.entityServiceUpdateEntity('source', data.key!, {
-        source: pendingUpdates,
-      });
-
-      if (res.data.entity) {
-        addEntities([res.data.entity]);
-        setPendingUpdates({});
-      }
+      await saveUpdatesAction(entityId, data, 'source', api);
     } catch (error) {
       console.error('Failed to update source:', error);
       notifications.show({
@@ -56,7 +42,7 @@ export const SourceCard: React.FC<Props> = ({ data, readonly }) => {
 
   return (
     <Stack gap="xs" style={{ position: 'relative' }}>
-      {!readonly && (
+      {canEdit && (
         <ActionIcon
           onClick={saveUpdates}
           size="md"
@@ -81,10 +67,11 @@ export const SourceCard: React.FC<Props> = ({ data, readonly }) => {
       <Group gap="xs">
         <EditableTitle
           value={pendingUpdates.name || data.name || data.url}
-          onChange={(val) => handleLocalUpdate({ name: val })}
+          onChange={(val) => entityId && setPendingUpdate(entityId, { name: val }, data)}
           canEdit={canEdit}
           placeholder={t('entity.source.title')}
           order={4}
+          style={{ flex: 'initial' }}
         />
         {data.url && (
           <ActionIcon component="a" href={data.url} target="_blank" variant="subtle" size="sm">
@@ -97,7 +84,7 @@ export const SourceCard: React.FC<Props> = ({ data, readonly }) => {
         <Text>{t('placeholder.url')}:</Text>
         <EditableText
           value={pendingUpdates.url || data.url}
-          onChange={(val) => handleLocalUpdate({ url: val })}
+          onChange={(val) => entityId && setPendingUpdate(entityId, { url: val }, data)}
           canEdit={canEdit}
           placeholder={t('placeholder.url')}
         />
@@ -107,7 +94,9 @@ export const SourceCard: React.FC<Props> = ({ data, readonly }) => {
         <Text>{t('placeholder.reliability')}:</Text>
         <EditableNumber
           value={pendingUpdates.reliability || data.reliability || 0}
-          onChange={(val) => handleLocalUpdate({ reliability: Number(val) })}
+          onChange={(val) =>
+            entityId && setPendingUpdate(entityId, { reliability: Number(val) }, data)
+          }
           canEdit={canEdit}
           placeholder={t('placeholder.reliability')}
         />
@@ -115,7 +104,7 @@ export const SourceCard: React.FC<Props> = ({ data, readonly }) => {
 
       <EditableTags
         value={pendingUpdates.tags || data.tags || []}
-        onChange={(val) => handleLocalUpdate({ tags: val })}
+        onChange={(val) => entityId && setPendingUpdate(entityId, { tags: val }, data)}
         canEdit={canEdit}
         placeholder={t('placeholder.tags')}
       />

@@ -38,7 +38,7 @@ export const EditableTextarea: React.FC<EditableTextareaProps> = ({
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <Textarea
           autoFocus
-          value={value}
+          value={value || ''}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={`${t('placeholder.enter')}${placeholder}...`}

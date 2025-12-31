@@ -4,20 +4,8 @@ import { Paper, ActionIcon, Stack, Text, Tooltip as MantineTooltip } from '@mant
 import { CursorArrowRaysIcon, MapIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
 import L from 'leaflet';
-
-// --- TYPES ---
-export interface RulerPoint {
-  lat: number;
-  lng: number;
-  distanceFromStart: number; // in meters
-}
-
-export type ToolMode = 'normal' | 'ruler';
-
-interface MapToolsProps {
-  mode: ToolMode;
-  onChangeMode: (mode: ToolMode) => void;
-}
+import { useMapToolState, useMapToolActions } from '../../store/mapToolState';
+import { useSelectionActions } from '../../store/selection';
 
 // --- HELPERS ---
 const formatDistance = (meters: number) => {
@@ -85,23 +73,20 @@ const MapControl: React.FC<{ children: React.ReactNode; style: React.CSSProperti
 };
 
 // --- COMPONENT ---
-export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
+export const MapTools: React.FC = () => {
   const { t } = useTranslation();
-  const [rulerPoints, setRulerPoints] = useState<RulerPoint[]>([]);
+  const mode = useMapToolState((state) => state.mode);
+  const rulerPoints = useMapToolState((state) => state.rulerPoints);
+  const { setMode, addRulerPoint, removeLastRulerPoint, clearRulerPoints } = useMapToolActions();
+  const { clear: clearSelection } = useSelectionActions();
   const [cursorPos, setCursorPos] = useState<{ lat: number; lng: number } | null>(null);
 
   // Clear ruler when switching modes
   useEffect(() => {
     if (mode === 'normal') {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setRulerPoints([]);
+      clearRulerPoints();
     }
-  }, [mode]);
-
-  // Remove last point helper
-  const removeLastPoint = () => {
-    setRulerPoints((prev) => prev.slice(0, -1));
-  };
+  }, [mode, clearRulerPoints]);
 
   // Map Events Hook
   useMapEvents({
@@ -115,7 +100,7 @@ export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
           const to = L.latLng(lat, lng);
           dist = lastPoint.distanceFromStart + from.distanceTo(to);
         }
-        setRulerPoints((prev) => [...prev, { lat, lng, distanceFromStart: dist }]);
+        addRulerPoint({ lat, lng, distanceFromStart: dist });
       }
     },
     mousemove(e) {
@@ -123,7 +108,7 @@ export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
     },
     contextmenu() {
       if (mode === 'ruler' && rulerPoints.length > 0) {
-        removeLastPoint();
+        removeLastRulerPoint();
       }
     },
   });
@@ -173,7 +158,7 @@ export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
               eventHandlers={{
                 click: (e) => {
                   L.DomEvent.stopPropagation(e); // Prevent map click
-                  removeLastPoint();
+                  removeLastRulerPoint();
                 },
               }}
             />
@@ -213,7 +198,7 @@ export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
                 variant={mode === 'normal' ? 'filled' : 'subtle'}
                 color="blue"
                 size="md"
-                onClick={() => onChangeMode('normal')}
+                onClick={() => setMode('normal')}
               >
                 <CursorArrowRaysIcon style={{ width: '70%', height: '70%' }} />
               </ActionIcon>
@@ -225,9 +210,10 @@ export const MapTools: React.FC<MapToolsProps> = ({ mode, onChangeMode }) => {
                 size="md"
                 onClick={() => {
                   if (mode === 'ruler') {
-                    setRulerPoints([]);
+                    clearRulerPoints();
                   }
-                  onChangeMode('ruler');
+                  clearSelection();
+                  setMode('ruler');
                 }}
               >
                 <MapIcon style={{ width: '70%', height: '70%' }} />

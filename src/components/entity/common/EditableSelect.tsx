@@ -55,7 +55,7 @@ export const EditableSelect: React.FC<EditableSelectProps> = ({
         <Select
           autoFocus
           defaultDropdownOpened
-          value={value}
+          value={value || null}
           onChange={(val) => val && onChange(val)}
           onKeyDown={handleKeyDown}
           data={data}

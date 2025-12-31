@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Stack, Group, Text, ActionIcon } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { CheckIcon } from '@heroicons/react/24/outline';
@@ -7,9 +7,9 @@ import type { V1Relation } from '@omnsight/clients/dist/omndapi/omndapi.js';
 import { EditableNumber } from '../common/EditableNumber';
 import { useEntityAuth } from '../common/useEntityAuth';
 import { useDataApi } from '../../../api/dataApi';
-import { useLocalDataActions } from '../../../store/localData';
 import { EditableTitle } from '../common/EditableTitle';
-import { getChangedFields } from '../common/utils';
+import { EditableText } from '../common/EditableText';
+import { useEntityUpdatesActions, usePendingUpdates } from '../../../store/entityUpdates';
 
 interface Props {
   data: V1Relation;
@@ -21,30 +21,25 @@ export const RelationCard: React.FC<Props> = ({ data, readonly = false }) => {
   const auth = useEntityAuth(data);
   const canEdit = auth.canEdit && !readonly;
   const api = useDataApi();
-  const { addRelations } = useLocalDataActions();
-  const [pendingUpdates, setPendingUpdates] = useState<Partial<V1Relation>>({});
 
-  const handleLocalUpdate = (updates: Partial<V1Relation>) => {
-    setPendingUpdates((prev) => {
-      const candidate = { ...prev, ...updates };
-      return getChangedFields(candidate, data);
-    });
-  };
+  const entityId = data.id || '';
+  const pendingUpdates = usePendingUpdates<V1Relation>(entityId);
+  const { setPendingUpdate, saveUpdates: saveUpdatesAction } = useEntityUpdatesActions();
 
   const saveUpdates = async () => {
-    if (Object.keys(pendingUpdates).length === 0) return;
-    const [collection, key] = data.id!.split('/');
-    try {
-      const res = await api.v1.relationshipServiceUpdateRelationship(
-        collection,
-        key,
-        pendingUpdates as V1Relation,
-      );
+    if (!entityId || Object.keys(pendingUpdates).length === 0) return;
 
-      if (res.data.relationship) {
-        addRelations([res.data.relationship]);
-        setPendingUpdates({});
-      }
+    if (!pendingUpdates.name) {
+      notifications.show({
+        title: t('common.error'),
+        message: t('entity.relation.nameRequired'),
+        color: 'red',
+      });
+      return;
+    }
+
+    try {
+      await saveUpdatesAction(entityId, data, 'relation', api);
     } catch (error) {
       console.error('Failed to update relation:', error);
       notifications.show({
@@ -57,7 +52,7 @@ export const RelationCard: React.FC<Props> = ({ data, readonly = false }) => {
 
   return (
     <Stack gap="xs" style={{ position: 'relative' }}>
-      {!readonly && (
+      {canEdit && (
         <ActionIcon
           onClick={saveUpdates}
           size="md"
@@ -81,17 +76,29 @@ export const RelationCard: React.FC<Props> = ({ data, readonly = false }) => {
       )}
       <EditableTitle
         value={pendingUpdates.label || data.label || ''}
-        onChange={(val) => handleLocalUpdate({ label: val })}
+        onChange={(val) => entityId && setPendingUpdate(entityId, { label: val }, data)}
         canEdit={canEdit}
         placeholder={t('entity.relation.name')}
         order={4}
       />
 
       <Group gap={4}>
+        <Text size="sm">{t('entity.relation.name')}:</Text>
+        <EditableText
+          value={pendingUpdates.name || data.name}
+          onChange={(val) => entityId && setPendingUpdate(entityId, { name: val }, data)}
+          canEdit={canEdit}
+          placeholder={t('entity.relation.name')}
+        />
+      </Group>
+
+      <Group gap={4}>
         <Text size="sm">{t('placeholder.confidence')}:</Text>
         <EditableNumber
           value={pendingUpdates.confidence ?? data.confidence ?? 0}
-          onChange={(val) => handleLocalUpdate({ confidence: Number(val) })}
+          onChange={(val) =>
+            entityId && setPendingUpdate(entityId, { confidence: Number(val) }, data)
+          }
           canEdit={canEdit}
           placeholder={t('placeholder.confidence')}
         />

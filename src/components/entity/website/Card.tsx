@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Stack, Group, Text, ActionIcon } from '@mantine/core';
 import { CheckIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import { notifications } from '@mantine/notifications';
@@ -10,9 +10,8 @@ import { EditableTextarea } from '../common/EditableTextarea';
 import { EditableTags } from '../common/EditableTags';
 import { useEntityAuth } from '../common/useEntityAuth';
 import { useDataApi } from '../../../api/dataApi';
-import { useLocalDataState } from '../../../store/localData';
 import { EditableTitle } from '../common/EditableTitle';
-import { getChangedFields } from '../common/utils';
+import { useEntityUpdatesActions, usePendingUpdates } from '../../../store/entityUpdates';
 
 interface Props {
   data: V1Website;
@@ -24,27 +23,15 @@ export const WebsiteCard: React.FC<Props> = ({ data, readonly }) => {
   const auth = useEntityAuth(data);
   const canEdit = auth.canEdit && !readonly;
   const api = useDataApi();
-  const { addEntities } = useLocalDataState((state) => state.actions);
-  const [pendingUpdates, setPendingUpdates] = useState<Partial<V1Website>>({});
 
-  const handleLocalUpdate = (updates: Partial<V1Website>) => {
-    setPendingUpdates((prev) => {
-      const candidate = { ...prev, ...updates };
-      return getChangedFields(candidate, data);
-    });
-  };
+  const entityId = data.id || '';
+  const pendingUpdates = usePendingUpdates<V1Website>(entityId);
+  const { setPendingUpdate, saveUpdates: saveUpdatesAction } = useEntityUpdatesActions();
 
   const saveUpdates = async () => {
-    if (Object.keys(pendingUpdates).length === 0) return;
+    if (!entityId) return;
     try {
-      const res = await api.v1.entityServiceUpdateEntity('website', data.key!, {
-        website: pendingUpdates,
-      });
-
-      if (res.data.entity) {
-        addEntities([res.data.entity]);
-        setPendingUpdates({});
-      }
+      await saveUpdatesAction(entityId, data, 'website', api);
     } catch (error) {
       console.error('Failed to update website:', error);
       notifications.show({
@@ -57,7 +44,7 @@ export const WebsiteCard: React.FC<Props> = ({ data, readonly }) => {
 
   return (
     <Stack gap="xs" style={{ position: 'relative' }}>
-      {!readonly && (
+      {canEdit && (
         <ActionIcon
           onClick={saveUpdates}
           size="md"
@@ -82,10 +69,11 @@ export const WebsiteCard: React.FC<Props> = ({ data, readonly }) => {
       <Group gap="xs">
         <EditableTitle
           value={pendingUpdates.title || data.title}
-          onChange={(val) => handleLocalUpdate({ title: val })}
+          onChange={(val) => entityId && setPendingUpdate(entityId, { title: val }, data)}
           canEdit={canEdit}
           placeholder={t('entity.website.name')}
           order={4}
+          style={{ flex: 'initial' }}
         />
         {data.url && (
           <ActionIcon component="a" href={data.url} target="_blank" variant="subtle" size="sm">
@@ -98,7 +86,7 @@ export const WebsiteCard: React.FC<Props> = ({ data, readonly }) => {
         <Text>{t('placeholder.url')}:</Text>
         <EditableText
           value={pendingUpdates.url ?? data.url}
-          onChange={(val) => handleLocalUpdate({ url: val })}
+          onChange={(val) => entityId && setPendingUpdate(entityId, { url: val }, data)}
           canEdit={canEdit}
           placeholder={t('placeholder.url')}
         />
@@ -106,7 +94,7 @@ export const WebsiteCard: React.FC<Props> = ({ data, readonly }) => {
 
       <EditableTextarea
         value={pendingUpdates.description || data.description}
-        onChange={(val) => handleLocalUpdate({ description: val })}
+        onChange={(val) => entityId && setPendingUpdate(entityId, { description: val }, data)}
         canEdit={canEdit}
         placeholder={t('placeholder.description')}
       />
@@ -118,9 +106,14 @@ export const WebsiteCard: React.FC<Props> = ({ data, readonly }) => {
         <EditableDate
           value={parseInt(pendingUpdates.foundedAt || data.foundedAt || '0') * 1000}
           onChange={(date) =>
-            handleLocalUpdate({
-              foundedAt: (new Date(date).getTime() / 1000).toString(),
-            })
+            entityId &&
+            setPendingUpdate(
+              entityId,
+              {
+                foundedAt: (new Date(date).getTime() / 1000).toString(),
+              },
+              data,
+            )
           }
           canEdit={canEdit}
           placeholder={t('placeholder.foundedDate')}
@@ -134,9 +127,14 @@ export const WebsiteCard: React.FC<Props> = ({ data, readonly }) => {
         <EditableDate
           value={parseInt(pendingUpdates.discoveredAt || data.discoveredAt || '0') * 1000}
           onChange={(date) =>
-            handleLocalUpdate({
-              discoveredAt: (new Date(date).getTime() / 1000).toString(),
-            })
+            entityId &&
+            setPendingUpdate(
+              entityId,
+              {
+                discoveredAt: (new Date(date).getTime() / 1000).toString(),
+              },
+              data,
+            )
           }
           canEdit={canEdit}
           placeholder={t('placeholder.discoveredDate')}
@@ -145,7 +143,7 @@ export const WebsiteCard: React.FC<Props> = ({ data, readonly }) => {
 
       <EditableTags
         value={pendingUpdates.tags || data.tags || []}
-        onChange={(tags) => handleLocalUpdate({ tags })}
+        onChange={(tags) => entityId && setPendingUpdate(entityId, { tags }, data)}
         canEdit={canEdit}
         placeholder={t('placeholder.tags')}
       />

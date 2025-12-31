@@ -1,0 +1,14 @@
+.ProseMirror {
+  outline: none;
+}
+
+.ProseMirror-focused {
+  outline: none;
+}
+
+/* For good measure, target the class directly on focus */
+.ProseMirror:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}

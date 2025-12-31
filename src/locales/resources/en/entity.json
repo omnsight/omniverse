@@ -1,5 +1,6 @@
 {
   "event": {
+    "type": "Event",
     "title": "Event Title",
     "Window": {
       "untitledEvent": "Untitled Event",
@@ -9,18 +10,23 @@
     }
   },
   "organization": {
+    "type": "Organization",
     "name": "Organization Name"
   },
   "person": {
+    "type": "Person",
     "name": "Person Name"
   },
   "source": {
+    "type": "Source",
     "title": "Source Title"
   },
   "website": {
+    "type": "Website",
     "name": "Website Name"
   },
   "relation": {
-    "name": "Relation Name"
+    "name": "Relation Name",
+    "nameRequired": "Relation name is required"
   }
 }

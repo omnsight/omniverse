@@ -6,6 +6,9 @@
     "warning": "警告",
     "badSelection": "请选择2到9个同类型实体进行对比。"
   },
+  "GraphContextMenu": {
+    "create": "创建新实体"
+  },
   "MapTools": {
     "start": "起点",
     "normalMode": "普通模式",
@@ -16,6 +19,7 @@
     "intelligencePlatform": "情报平台",
     "geovision": "地理视图",
     "sparkgraph": "星火图谱",
+    "narrative": "叙事板",
     "dataPlane": "数据平面",
     "theme": "主题",
     "lightMode": "亮色模式",
@@ -45,5 +49,39 @@
     "yesterday": "昨天",
     "lastWeek": "上周",
     "lastMonth": "上月"
+  },
+  "viewMetadata": {
+    "title": "保存的视图",
+    "snapshot": "快照",
+    "noViews": "暂无保存的视图",
+    "duplicateView": "快照已存在"
+  },
+  "editor": {
+    "title": "新文档",
+    "placeholder": "在此开始编写...",
+    "noActiveView": "未选择活动视图。请选择一个视图以插入。",
+    "viewType": {
+      "geovision": "地理视图",
+      "sparkgraph": "星火图谱"
+    },
+    "insertViewTooltip": "将当前视图作为标记插入",
+    "insertViewButton": "插入视图",
+    "presentationMode": "演示模式",
+    "tools": {
+      "bold": "粗体",
+      "italic": "斜体",
+      "strike": "删除线",
+      "highlight": "高亮",
+      "h1": "标题 1",
+      "h2": "标题 2",
+      "h3": "标题 3",
+      "bulletList": "无序列表",
+      "orderedList": "有序列表",
+      "codeBlock": "代码块",
+      "blockquote": "引用",
+      "horizontalRule": "水平分割线",
+      "undo": "撤销",
+      "redo": "重做"
+    }
   }
 }
