@@ -3,10 +3,11 @@ import { useDisclosure } from '@mantine/hooks';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Geovision } from './pages/Geovision';
 import { ErrorPage } from './pages/ErrorPage';
-import { AppTopbar } from './components/common/Topbar';
-import { AppSidebar } from './components/common/Sidebar';
+import { AppTopbar } from './pages/layouts/Topbar';
+import { AppSidebar } from './pages/layouts/Sidebar';
 import { SparkGraph } from './pages/SparkGraph';
 import { NarrativeBoard } from './pages/NarrativeBoard';
+import { OpenAPI as QueryApi } from 'omni-osint-query-client';
 
 function App() {
   const [opened] = useDisclosure();

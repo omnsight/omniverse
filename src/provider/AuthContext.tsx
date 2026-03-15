@@ -1,5 +1,11 @@
 import { createContext, useContext } from 'react';
 
+interface EntityWithAuth {
+  owner?: string;
+  write?: string[];
+  read?: string[];
+}
+
 // --- Type Definitions ---
 // This is the "Generic" User type your app will use everywhere.
 export interface AuthUser {
@@ -32,4 +38,27 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within an AppAuthProvider');
   }
   return context;
+};
+
+export const useEntityAuth = (entity?: EntityWithAuth) => {
+  const { user } = useAuth();
+
+  if (!user || !entity) {
+    return { canEdit: false };
+  }
+
+  // Check Owner (user.id matches entity.owner)
+  if (entity.owner && entity.owner === user.id) {
+    return { canEdit: true };
+  }
+
+  // Check Write Roles (intersection of user.roles and entity.write)
+  if (entity.write && Array.isArray(entity.write)) {
+    const hasWriteRole = entity.write.some((role) => user.roles.includes(role));
+    if (hasWriteRole) {
+      return { canEdit: true };
+    }
+  }
+
+  return { canEdit: false };
 };

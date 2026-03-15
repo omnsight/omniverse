@@ -4,8 +4,7 @@ import { Paper, ActionIcon, Stack, Text, Tooltip as MantineTooltip } from '@mant
 import { CursorArrowRaysIcon, MapIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
 import L from 'leaflet';
-import { useMapToolState, useMapToolActions } from '../../store/mapToolState';
-import { useSelectionActions } from '../../store/selection';
+import { useMapToolState, useMapToolActions } from './mapToolState';
 
 // --- HELPERS ---
 const formatDistance = (meters: number) => {
@@ -78,7 +77,6 @@ export const MapTools: React.FC = () => {
   const mode = useMapToolState((state) => state.mode);
   const rulerPoints = useMapToolState((state) => state.rulerPoints);
   const { setMode, addRulerPoint, removeLastRulerPoint, clearRulerPoints } = useMapToolActions();
-  const { clear: clearSelection } = useSelectionActions();
   const [cursorPos, setCursorPos] = useState<{ lat: number; lng: number } | null>(null);
 
   // Clear ruler when switching modes
@@ -212,7 +210,6 @@ export const MapTools: React.FC = () => {
                   if (mode === 'ruler') {
                     clearRulerPoints();
                   }
-                  clearSelection();
                   setMode('ruler');
                 }}
               >
