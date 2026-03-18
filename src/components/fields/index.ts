@@ -1,3 +1,4 @@
+export * from './EditableAttributes';
 export * from './EditableDate';
 export * from './EditableNumber';
 export * from './EditableSelect';

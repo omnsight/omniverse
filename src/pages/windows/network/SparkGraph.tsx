@@ -1,15 +1,30 @@
 import { useEffect, useMemo, useState } from 'react';
 import { type Node, type Edge, applyNodeChanges, MarkerType } from 'reactflow';
 import { getStressLayout } from '../../../components/graph/layout';
-import { useEntityDataStore } from './entityData';
-import { useSelectedEntities } from '../data/entitySelection';
-import { ActionGraph } from './ActionedGraph';
+import { useEntityDataActions, useEntityDataStore } from './entityData';
+import { useEntitySelectionActions, useSelectedEntities } from '../data/entitySelection';
+import { EntityGraph } from '../../../components/graph/Graph';
+import { useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../../provider/AuthContext';
+import { EntityCreationModal, type Entity } from '../../../components/forms/entityForm';
+import { DeleteService } from 'omni-osint-crud-client';
+import { Box } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 
 export const SparkGraph: React.FC = () => {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+  const { user, hasRole } = useAuth();
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
-  const { events, organizations, persons, sources, websites, relations } = useEntityDataStore();
+  const { queries, events, organizations, persons, sources, websites, relations } =
+    useEntityDataStore();
+  const { addEntities } = useEntityDataActions();
   const selections = useSelectedEntities();
+  const { setSelections } = useEntitySelectionActions();
+  const [entityToCreate, setEntityToCreate] = useState<Entity | undefined>(undefined);
+  const hasWritePermission = user ? hasRole('admin') || hasRole('pro') : false;
 
   const initialNodes: Node[] = useMemo(() => {
     const allNodes: Node[] = [];
@@ -78,13 +93,45 @@ export const SparkGraph: React.FC = () => {
     });
   }, [initialNodes, initialEdges]);
 
+  const handleRemove = async (ids: string[], isEdge: boolean) => {
+    try {
+      if (isEdge) {
+        await Promise.all(ids.map((id) => DeleteService.deleteRelation(id)));
+      } else {
+        await Promise.all(ids.map((id) => DeleteService.deleteEntity(id)));
+      }
+      queries.forEach((q) => {
+        queryClient.invalidateQueries({ queryKey: q });
+      });
+    } catch (error) {
+      notifications.show({
+        message: t('network.spark.deleteError'),
+        color: 'red',
+      });
+    }
+  };
+
   return (
-    <ActionGraph
-      allowWrite={true}
-      nodes={nodes}
-      edges={edges}
-      setNodes={setNodes}
-      setEdges={setEdges}
-    />
+    <Box pos="relative" h="100%" w="100%">
+      <EntityGraph
+        nodes={nodes}
+        edges={edges}
+        setNodes={setNodes}
+        setEdges={setEdges}
+        onSelection={(ids) => setSelections(ids)}
+        onCreate={setEntityToCreate}
+        onRemove={handleRemove}
+        allowOperations={['move', 'connect', 'remove', 'create']}
+        hasWritePermission={hasWritePermission}
+      >
+        {entityToCreate && (
+          <EntityCreationModal
+            entity={entityToCreate}
+            setEntity={setEntityToCreate}
+            onCreated={(entities) => addEntities(entities, undefined)}
+          />
+        )}
+      </EntityGraph>
+    </Box>
   );
 };

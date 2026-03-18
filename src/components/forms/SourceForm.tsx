@@ -1,8 +1,25 @@
-import { Group, Text, Stack, ActionIcon } from '@mantine/core';
+import {
+  Group,
+  Text,
+  Stack,
+  ActionIcon,
+  Divider,
+  UnstyledButton,
+  Collapse,
+  Title,
+} from '@mantine/core';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 import { type Source, type SourceMainData } from 'omni-osint-crud-client';
-import { EditableNumber, EditableTags, EditableTitle, EditableText } from '../fields';
+import {
+  EditableNumber,
+  EditableTags,
+  EditableTitle,
+  EditableText,
+  EditableAttributes,
+} from '../fields';
+import { useState } from 'react';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 interface Props {
   source: Source;
@@ -12,6 +29,7 @@ interface Props {
 
 export const SourceForm: React.FC<Props> = ({ source, onUpdate, onClick }) => {
   const { t } = useTranslation();
+  const [attributesOpen, setAttributesOpen] = useState(false);
 
   return (
     <Stack
@@ -61,6 +79,29 @@ export const SourceForm: React.FC<Props> = ({ source, onUpdate, onClick }) => {
         canEdit={!!onUpdate}
         placeholder={t('placeholder.tags')}
       />
+
+      <Divider my="sm" />
+
+      <UnstyledButton onClick={() => setAttributesOpen((o) => !o)}>
+        <Group justify="space-between">
+          <Title order={5}>{t('attributes')}</Title>
+          <ChevronDownIcon
+            style={{
+              width: 16,
+              transform: attributesOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+              transition: 'transform 200ms ease',
+            }}
+          />
+        </Group>
+      </UnstyledButton>
+
+      <Collapse in={attributesOpen}>
+        <EditableAttributes
+          value={source.attributes || {}}
+          onChange={(val: Record<string, any>) => onUpdate?.({ attributes: val })}
+          canEdit={!!onUpdate}
+        />
+      </Collapse>
     </Stack>
   );
 };

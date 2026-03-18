@@ -10,8 +10,8 @@ import { jwtDecode } from 'jwt-decode';
 import { AuthContext, type AuthContextType, type AuthUser } from './AuthContext';
 
 // --- 1. Environment Configuration ---
-const CLIENT_ID = import.meta.env.VITE_KEYCLOAK_CLIENT_ID;
-const AUTHORITY = `${import.meta.env.VITE_KEYCLOAK_API_URL}/realms/${import.meta.env.VITE_REALM}`;
+const CLIENT_ID = import.meta.env.VITE_OIDC_CLIENT_ID;
+const AUTHORITY = import.meta.env.VITE_OIDC_AUTHORITY;
 
 const parseRoles = (user: User | null): string[] => {
   if (!user || !user.access_token) return [];

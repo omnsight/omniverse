@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   ScrollArea,
@@ -8,10 +8,10 @@ import {
   Stack,
   Group,
   LoadingOverlay,
-  Switch,
   Button,
+  ActionIcon,
 } from '@mantine/core';
-import { useSelectedEntities } from './entitySelection';
+import { useEntitySelectionActions, useSelectedEntities } from './entitySelection';
 import { useEntityDataActions } from '../network/entityData';
 import { QueryService } from 'omni-osint-query-client';
 import {
@@ -22,18 +22,23 @@ import {
   SourceAvatarRow,
   EventAvatar,
 } from '../../../components/avatars';
-import { EntityFormRenderer } from '../../../components/forms/EntityFormRenderer';
-import { UpdateService } from 'omni-osint-crud-client';
+import { EntityFormRenderer, getEntityTitle } from '../../../components/forms/entityForm';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { useEntityAuth, useAuth } from '../../../provider/AuthContext';
+import { useInsightStore } from '../insight/insightData';
+import { notifications } from '@mantine/notifications';
+import { LinkIcon } from '@heroicons/react/24/solid';
+import { useWindowStoreActions } from '../../../stores/windowStateStore';
 
 export const EntityWindow: React.FC = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, hasRole } = useAuth();
   const selections = useSelectedEntities();
+  const { setSelections } = useEntitySelectionActions();
   const { addEntities } = useEntityDataActions();
-  const [isEditing, setIsEditing] = React.useState(false);
+  const { selected } = useInsightStore();
+  const { register, setDragging } = useWindowStoreActions();
 
   const lastSelection = selections[selections.length - 1];
   const { data: neighbors, isLoading } = useQuery({
@@ -43,47 +48,67 @@ export const EntityWindow: React.FC = () => {
   });
 
   const auth = useEntityAuth(lastSelection?.data);
+  const hasWritePermission = user ? (hasRole('admin') || hasRole('pro')) && auth.canEdit : false;
 
-  const handleUpdate = (data: any) => {
-    if (!lastSelection?.data._id) return;
-    switch (lastSelection.type) {
-      case 'Event':
-        UpdateService.updateEvent(lastSelection.data._id, data);
-        break;
-      case 'Organization':
-        UpdateService.updateOrganization(lastSelection.data._id, data);
-        break;
-      case 'Person':
-        UpdateService.updatePerson(lastSelection.data._id, data);
-        break;
-      case 'Relation':
-        UpdateService.updateRelation(lastSelection.data._id, data);
-        break;
-      case 'Source':
-        UpdateService.updateSource(lastSelection.data._id, data);
-        break;
-      case 'Website':
-        UpdateService.updateWebsite(lastSelection.data._id, data);
-        break;
+  useEffect(() => {
+    register('entity-window', (savedState) => {
+      setSelections(savedState.entities);
+    });
+  }, []);
+
+  const handleDragStart = (e: React.DragEvent) => {
+    if (!lastSelection.data._id) {
+      notifications.show({
+        title: t('data.entity.single.warning'),
+        message: t('data.entity.single.noEntitySelected'),
+        color: 'yellow',
+      });
+    } else if (!selected) {
+      notifications.show({
+        title: t('data.entity.single.warning'),
+        message: t('data.entity.single.noInghtSelected'),
+        color: 'yellow',
+      });
+    } else {
+      const payload = {
+        type: 'entity-window',
+        label: getEntityTitle(lastSelection),
+        state: { entities: [lastSelection.data._id] },
+      };
+      setDragging(payload);
+      e.dataTransfer.setData('application/x-tiptap-node', JSON.stringify(payload));
+      e.dataTransfer.effectAllowed = 'copy';
     }
   };
 
   if (!lastSelection) {
     return (
-      <Box style={{ height: '100%', width: '100%', position: 'relative' }}>
+      <Box pos="relative" h="100%" w="100%">
         <Text>{t('data.entity.single.noEntitySelected')}</Text>
       </Box>
     );
   }
 
   return (
-    <Box style={{ height: '100%', width: '100%', position: 'relative' }}>
+    <Box pos="relative" h="100%" w="100%">
+      <Group justify="flex-start" mb="sm">
+        <ActionIcon
+          draggable
+          onDragStart={handleDragStart}
+          onDragEnd={() => setDragging(undefined)}
+        >
+          <LinkIcon width={16} />
+        </ActionIcon>
+      </Group>
       <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
-      <EntityFormRenderer entity={lastSelection} onUpdate={isEditing ? handleUpdate : undefined} />
+      <EntityFormRenderer
+        entity={lastSelection}
+        onUpdated={hasWritePermission ? (entities) => addEntities(entities, undefined) : undefined}
+      />
 
       <Divider my="sm" />
 
-      {/* A. SCROLLABLE BODY */}
+      {/* SCROLLABLE BODY */}
       <ScrollArea h="100%" type="scroll" offsetScrollbars>
         <Box p="lg" pb={100}>
           <SimpleGrid cols={2} spacing="xl">
@@ -147,7 +172,7 @@ export const EntityWindow: React.FC = () => {
         </Box>
       </ScrollArea>
 
-      {/* B. STICKY BOTTOM LEFT: PERSONS */}
+      {/* STICKY BOTTOM LEFT: PERSONS */}
       <Box style={{ position: 'absolute', bottom: 15, left: 15, zIndex: 10 }}>
         <AvatarSpan>
           {neighbors?.persons?.map((person: any) => (
@@ -160,20 +185,11 @@ export const EntityWindow: React.FC = () => {
         </AvatarSpan>
       </Box>
 
-      {/* C. STICKY BOTTOM Right: Edit toggle */}
+      {/* STICKY BOTTOM Right: Edit toggle */}
       <Box style={{ position: 'absolute', bottom: 15, right: 15, zIndex: 10 }}>
-        <Group>
-          <Group align="center">
-            <Text fw={500}>{lastSelection.type}</Text>
-            {auth.canEdit && (
-              <Switch
-                checked={isEditing}
-                onChange={(event) => setIsEditing(event.currentTarget.checked)}
-              />
-            )}
-          </Group>
-          {user?.roles?.includes('pro') && (
-            <Group>
+        <Stack align="flex-end" gap="xs">
+          {hasWritePermission && (
+            <Group gap="sm">
               <Button
                 onClick={() => {
                   if (neighbors) {
@@ -195,7 +211,7 @@ export const EntityWindow: React.FC = () => {
               </Button>
             </Group>
           )}
-        </Group>
+        </Stack>
       </Box>
     </Box>
   );

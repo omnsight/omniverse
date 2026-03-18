@@ -1,26 +1,25 @@
 import 'leaflet/dist/leaflet.css';
 import React from 'react';
-import { MapContainer, TileLayer, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import { Box, useMantineColorScheme } from '@mantine/core';
-import type { Event } from 'omni-osint-crud-client';
-import { useFilteredEventsAndRelations } from './localData';
+import type { Event, Relation } from 'omni-osint-crud-client';
 import { MapFlyer } from './MapFly';
 import { MapConstraint } from './MapConstraint';
 import { getMinZoomForScreen } from './mapUtils';
 import { MapTools } from './MapTools';
 import { EventMarker } from './marker/EventMarker';
-import { EventWindow } from '../models/event/Window';
-import { useSelectionActions } from '../../store/selection';
 import { useMapToolState } from './mapToolState';
+import { RelationPolyline } from './edges/RelationPolyline';
 
 interface Props {
-  selectedEvent?: Event | undefined;
+  events: Event[];
+  relations: Relation[];
+  selected?: Event;
+  setSelected: (id: string, multiSelect: boolean) => void;
 }
 
-export const GeoMap: React.FC<Props> = ({ selectedEvent }) => {
+export const GeoMap: React.FC<Props> = ({ events, relations, selected, setSelected }) => {
   const { colorScheme } = useMantineColorScheme();
-  const { events, relations } = useFilteredEventsAndRelations();
-  const { select, clear } = useSelectionActions();
 
   const toolMode = useMapToolState((state) => state.mode);
 
@@ -30,7 +29,7 @@ export const GeoMap: React.FC<Props> = ({ selectedEvent }) => {
   };
 
   return (
-    <Box style={{ height: '100%', width: '100%', position: 'relative' }}>
+    <Box pos="relative" h="100%" w="100%">
       <MapContainer
         center={[20, 0]}
         zoom={2}
@@ -69,13 +68,12 @@ export const GeoMap: React.FC<Props> = ({ selectedEvent }) => {
           if (!coords) return null;
           return (
             <EventMarker
-              key={event.id || event.key || idx}
+              key={event._id || event._key || idx}
               event={event}
               position={coords}
-              onClick={() => {
-                if (toolMode === 'normal' && event.id) {
-                  clear();
-                  select([event.id]);
+              onClick={(e) => {
+                if (toolMode === 'normal' && event._id) {
+                  setSelected(event._id, e.originalEvent.shiftKey);
                 }
               }}
             />
@@ -83,41 +81,16 @@ export const GeoMap: React.FC<Props> = ({ selectedEvent }) => {
         })}
 
         {/* Relations */}
-        {relations.map((rel, idx) => {
-          const sourceEvent = events.find((e) => e.id === rel.from);
-          const targetEvent = events.find((e) => e.id === rel.to);
-
-          if (sourceEvent && targetEvent) {
-            const sourceCoords = getCoords(sourceEvent);
-            const targetCoords = getCoords(targetEvent);
-            if (sourceCoords && targetCoords) {
-              return (
-                <Polyline
-                  key={idx}
-                  positions={[sourceCoords, targetCoords]}
-                  color="blue"
-                  weight={2}
-                  opacity={0.6}
-                  dashArray="5, 10"
-                />
-              );
-            }
-          }
-          return null;
-        })}
+        {relations.map((rel, idx) => (
+          <RelationPolyline key={rel._id || idx} events={events} relation={rel} />
+        ))}
 
         {/* Auto-center map when event is selected */}
-        {selectedEvent && getCoords(selectedEvent) && (
-          <MapFlyer center={getCoords(selectedEvent!)} />
-        )}
+        {selected && getCoords(selected) && <MapFlyer center={getCoords(selected)} />}
 
         {/* Vertical constraint */}
         <MapConstraint />
       </MapContainer>
-
-      {selectedEvent && (
-        <EventWindow isOpen={!!selectedEvent} onClose={() => clear()} event={selectedEvent} />
-      )}
     </Box>
   );
 };

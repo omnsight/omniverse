@@ -1,0 +1,173 @@
+{
+  "common": {
+    "save": "保存",
+    "success": "成功",
+    "updateSuccess": "更新成功",
+    "error": "错误",
+    "updateError": "更新失败",
+    "notFound": "未找到",
+    "duplicateRelation": "关系已存在",
+    "noWritePermission": "您必须是 pro 或 admin 用户才能执行此操作",
+    "restore": "恢复",
+    "delete": "删除"
+  },
+  "components": {
+    "GraphTools": {
+      "viewMode": "视图模式",
+      "graph": "图谱",
+      "compare": "对比",
+      "warning": "警告",
+      "badSelection": "请选择2到9个同类型实体进行对比。"
+    },
+    "GraphContextMenu": {
+      "create": "创建新实体"
+    },
+    "MapTools": {
+      "start": "起点",
+      "normalMode": "普通模式",
+      "rulerMode": "测距模式"
+    },
+    "Sidebar": {
+      "omniverse": "Nexus Interlligence Platform",
+      "intelligencePlatform": "情报平台",
+      "geovision": "地理视图",
+      "sparkgraph": "星火图谱",
+      "narrative": "叙事板",
+      "dataPlane": "数据平面",
+      "theme": "主题",
+      "lightMode": "亮色模式",
+      "darkMode": "暗色模式",
+      "system": "跟随系统",
+      "language": "语言",
+      "english": "英语",
+      "chinese": "中文",
+      "selectLanguage": "选择语言",
+      "auth": {
+        "application": "应用",
+        "profile": "个人资料",
+        "signOut": "登出",
+        "login": "登录",
+        "accessAccount": "访问账户"
+      }
+    },
+    "Topbar": {
+      "error": "错误",
+      "loadError": "加载实体失败",
+      "selectCountry": "选择国家",
+      "selectDateRange": "选择日期范围",
+      "dateLimitExceeded": "超出日期限制",
+      "dateLimitMessage": "最大日期范围为一个月。结束日期已自动调整。",
+      "presets": "预设",
+      "today": "今天",
+      "yesterday": "昨天",
+      "lastWeek": "上周",
+      "lastMonth": "上月"
+    },
+    "viewMetadata": {
+      "title": "保存的视图",
+      "snapshot": "快照",
+      "noViews": "暂无保存的视图",
+      "duplicateView": "快照已存在"
+    },
+    "editor": {
+      "title": "新文档",
+      "placeholder": "在此开始编写...",
+      "noActiveView": "未选择活动视图。请选择一个视图以插入。",
+      "viewType": {
+        "geovision": "地理视图",
+        "sparkgraph": "星火图谱"
+      },
+      "insertViewTooltip": "将当前视图作为标记插入",
+      "insertViewButton": "插入视图",
+      "presentationMode": "演示模式",
+      "tools": {
+        "bold": "粗体",
+        "italic": "斜体",
+        "strike": "删除线",
+        "highlight": "高亮",
+        "h1": "标题 1",
+        "h2": "标题 2",
+        "h3": "标题 3",
+        "bulletList": "无序列表",
+        "orderedList": "有序列表",
+        "codeBlock": "代码块",
+        "blockquote": "引用",
+        "horizontalRule": "水平分割线",
+        "undo": "撤销",
+        "redo": "重做"
+      }
+    }
+  },
+  "entity": {
+    "event": {
+      "type": "事件",
+      "new": "新事件",
+      "title": "事件标题",
+      "Window": {
+        "untitledEvent": "未命名事件",
+        "relatedOrganizations": "相关组织",
+        "relatedWebsites": "相关网站",
+        "relatedSources": "相关来源"
+      }
+    },
+    "organization": {
+      "type": "组织",
+      "name": "组织名称"
+    },
+    "person": {
+      "type": "人员",
+      "name": "人员姓名"
+    },
+    "source": {
+      "type": "来源",
+      "title": "来源标题"
+    },
+    "website": {
+      "type": "网站",
+      "name": "网站名称"
+    },
+    "relation": {
+      "name": "关系名称",
+      "nameRequired": "关系名称不能为空"
+    }
+  },
+  "pages": {
+    "ErrorPage": {
+      "defaultTitle": "出错了",
+      "defaultDescription": "遇到意外错误，请稍后再试。",
+      "redirecting": "{{count}} 秒后跳转...",
+      "goHome": "返回首页"
+    },
+    "Geovision": {
+      "error": "错误",
+      "loadError": "加载相关数据失败。"
+    },
+    "SparkGraph": {
+      "loadError": "加载图表错误",
+      "fetchRelatedDataError": "获取相关数据失败。"
+    }
+  },
+  "placeholder": {
+    "unknown": "未知",
+    "enter": "输入",
+    "country": "国家",
+    "confidence": "置信度",
+    "relation": "关系",
+    "url": "链接",
+    "description": "描述",
+    "tags": "标签",
+    "reliability": "可靠性",
+    "createdDate": "创建日期",
+    "updatedDate": "更新日期",
+    "role": "角色",
+    "nationality": "国籍",
+    "birthDate": "出生日期",
+    "type": "类型",
+    "foundedDate": "成立日期",
+    "discoveredDate": "发现日期",
+    "date": "日期",
+    "address": "地址",
+    "locality": "城市",
+    "administrativeArea": "行政区"
+  }
+}

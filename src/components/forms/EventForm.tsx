@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
-import { CalendarDaysIcon, MapPinIcon } from '@heroicons/react/24/outline';
-import { Group, Stack, rem } from '@mantine/core';
+import { useMemo, useState } from 'react';
+import { CalendarDaysIcon, ChevronDownIcon, MapPinIcon } from '@heroicons/react/24/outline';
+import { Collapse, Divider, Group, Stack, Title, UnstyledButton, rem } from '@mantine/core';
 import { type Event, type EventMainData } from 'omni-osint-crud-client';
 import { useTranslation } from 'react-i18next';
 import countries from 'i18n-iso-countries';
@@ -13,6 +13,7 @@ import {
   EditableText,
   EditableSelect,
   EditableTextarea,
+  EditableAttributes,
 } from '../fields';
 
 // Register locales
@@ -29,6 +30,7 @@ interface Props {
 
 export const EventForm: React.FC<Props> = ({ event, width, withTitle, onUpdate, onClick }) => {
   const { t, i18n } = useTranslation();
+  const [attributesOpen, setAttributesOpen] = useState(false);
 
   // Generate country list based on current language
   const countryOptions = useMemo(() => {
@@ -139,6 +141,29 @@ export const EventForm: React.FC<Props> = ({ event, width, withTitle, onUpdate, 
         canEdit={!!onUpdate}
         placeholder={t('placeholder.tags')}
       />
+
+      <Divider my="sm" />
+
+      <UnstyledButton onClick={() => setAttributesOpen((o) => !o)}>
+        <Group justify="space-between">
+          <Title order={5}>{t('monitoring.source.attributes')}</Title>
+          <ChevronDownIcon
+            style={{
+              width: 16,
+              transform: attributesOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+              transition: 'transform 200ms ease',
+            }}
+          />
+        </Group>
+      </UnstyledButton>
+
+      <Collapse in={attributesOpen}>
+        <EditableAttributes
+          value={event.attributes || {}}
+          onChange={(val: Record<string, any>) => onUpdate?.({ attributes: val })}
+          canEdit={!!onUpdate}
+        />
+      </Collapse>
     </Stack>
   );
 };

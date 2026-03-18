@@ -1,7 +1,15 @@
-import { Stack, Text, Group } from '@mantine/core';
+import { Stack, Text, Group, Divider, UnstyledButton, Collapse, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { type Person, type PersonMainData } from 'omni-osint-crud-client';
-import { EditableDate, EditableTags, EditableTitle, EditableText } from '../fields';
+import {
+  EditableDate,
+  EditableTags,
+  EditableTitle,
+  EditableText,
+  EditableAttributes,
+} from '../fields';
+import { useState } from 'react';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 interface Props {
   person: Person;
@@ -11,6 +19,7 @@ interface Props {
 
 export const PersonForm: React.FC<Props> = ({ person, onUpdate, onClick }) => {
   const { t } = useTranslation();
+  const [attributesOpen, setAttributesOpen] = useState(false);
 
   return (
     <Stack
@@ -68,6 +77,29 @@ export const PersonForm: React.FC<Props> = ({ person, onUpdate, onClick }) => {
         canEdit={!!onUpdate}
         placeholder={t('placeholder.tags')}
       />
+
+      <Divider my="sm" />
+
+      <UnstyledButton onClick={() => setAttributesOpen((o) => !o)}>
+        <Group justify="space-between">
+          <Title order={5}>{t('attributes')}</Title>
+          <ChevronDownIcon
+            style={{
+              width: 16,
+              transform: attributesOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+              transition: 'transform 200ms ease',
+            }}
+          />
+        </Group>
+      </UnstyledButton>
+
+      <Collapse in={attributesOpen}>
+        <EditableAttributes
+          value={person.attributes || {}}
+          onChange={(val: Record<string, any>) => onUpdate?.({ attributes: val })}
+          canEdit={!!onUpdate}
+        />
+      </Collapse>
     </Stack>
   );
 };

@@ -1,8 +1,9 @@
-import React from 'react';
-import { Stack, Group, Text } from '@mantine/core';
+import React, { useState } from 'react';
+import { Stack, Group, Text, Divider, UnstyledButton, Collapse, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { type Relation, type RelationMainData } from 'omni-osint-crud-client';
-import { EditableNumber, EditableTitle, EditableText } from '../fields';
+import { EditableNumber, EditableTitle, EditableText, EditableAttributes } from '../fields';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 interface Props {
   relation: Relation;
@@ -12,6 +13,7 @@ interface Props {
 
 export const RelationForm: React.FC<Props> = ({ relation, onUpdate, onClick }) => {
   const { t } = useTranslation();
+  const [attributesOpen, setAttributesOpen] = useState(false);
 
   return (
     <Stack
@@ -46,6 +48,29 @@ export const RelationForm: React.FC<Props> = ({ relation, onUpdate, onClick }) =
           placeholder={t('placeholder.confidence')}
         />
       </Group>
+
+      <Divider my="sm" />
+
+      <UnstyledButton onClick={() => setAttributesOpen((o) => !o)}>
+        <Group justify="space-between">
+          <Title order={5}>{t('attributes')}</Title>
+          <ChevronDownIcon
+            style={{
+              width: 16,
+              transform: attributesOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+              transition: 'transform 200ms ease',
+            }}
+          />
+        </Group>
+      </UnstyledButton>
+
+      <Collapse in={attributesOpen}>
+        <EditableAttributes
+          value={relation.attributes || {}}
+          onChange={(val: Record<string, any>) => onUpdate?.({ attributes: val })}
+          canEdit={!!onUpdate}
+        />
+      </Collapse>
     </Stack>
   );
 };

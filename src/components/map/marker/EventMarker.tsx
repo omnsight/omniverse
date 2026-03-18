@@ -16,21 +16,20 @@ const DefaultIcon = L.icon({
 interface Props {
   event: Event;
   position: [number, number];
-  usePending: boolean;
-  onClick?: () => void;
+  onClick?: (e: L.LeafletMouseEvent) => void;
 }
 
-export const EventMarker: React.FC<Props> = ({ event, position, usePending, onClick }) => {
+export const EventMarker: React.FC<Props> = ({ event, position, onClick }) => {
   return (
     <Marker
       position={position}
       icon={DefaultIcon}
       eventHandlers={{
-        click: () => onClick?.(),
+        click: (e) => onClick?.(e),
       }}
     >
       <LeafletTooltip>
-        <EventForm event={event} usePending={usePending} width={300} readonly={true} />
+        <EventForm event={event} width={300} />
       </LeafletTooltip>
     </Marker>
   );

@@ -10,11 +10,11 @@ import {
   Switch,
   Group,
 } from '@mantine/core';
-import { getEntityTitle } from '../../../components/models/entity';
+import { getEntityTitle } from '../../../components/forms/entityForm/entity';
 import { useSelectedEntities } from '../data/entitySelection';
 import { useTranslation } from 'react-i18next';
-import { EntityFormRenderer } from '../../../components/forms/EntityFormRenderer';
-import type { Entity } from '../../../components/models/entity';
+import { EntityFormRenderer } from '../../../components/forms/entityForm/FormRenderer';
+import type { Entity } from '../../../components/forms/entityForm/entity';
 
 const renderAttributes = (
   attributes: Record<string, any>,
@@ -53,13 +53,10 @@ export const ComparisonView: React.FC = () => {
   if (selections.length < 2) {
     return (
       <Box
-        style={{
-          height: '100%',
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+        pos="relative"
+        h="100%"
+        w="100%"
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
         <Text>{t('data.entity.comparison.selectAtLeastTwo')}</Text>
       </Box>
@@ -72,13 +69,10 @@ export const ComparisonView: React.FC = () => {
   if (!allSameType) {
     return (
       <Box
-        style={{
-          height: '100%',
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+        pos="relative"
+        h="100%"
+        w="100%"
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
         <Text>{t('data.entity.comparison.selectSameType')}</Text>
       </Box>
@@ -88,8 +82,8 @@ export const ComparisonView: React.FC = () => {
   const baseEntity = selections[0];
 
   return (
-    <Box style={{ height: '100%', width: '100%', position: 'relative', padding: '1rem' }}>
-      <ScrollArea h="calc(100% - 40px)" type="scroll" offsetScrollbars>
+    <Box pos="relative" h="100%" w="100%">
+      <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars>
         <SimpleGrid cols={selections.length} spacing="lg">
           {selections.map((entity: Entity) => (
             <Paper withBorder p="md" key={entity.data._id}>

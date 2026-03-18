@@ -1,22 +1,17 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { AppShell, Group, Select, Popover, Button, Stack, rem, Text } from '@mantine/core';
-import { DatePicker } from '@mantine/dates';
+import React, { useState, useEffect } from 'react';
+import { AppShell, Group, Popover, Button, rem } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { CalendarDaysIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
-import countries from 'i18n-iso-countries';
-import enLocale from 'i18n-iso-countries/langs/en.json';
-import zhLocale from 'i18n-iso-countries/langs/zh.json';
 import { useQuery } from '@tanstack/react-query';
 import { QueryService } from 'omni-osint-query-client';
 import { useEntityDataActions } from '../windows/network/entityData';
-
-// Register locales
-countries.registerLocale(enLocale);
-countries.registerLocale(zhLocale);
+import { CountrySelect } from './CountrySelect';
+import { RangeDatePicker } from './RangeDatePicker';
+import { UserMenu } from './UserMenu';
 
 export const AppTopbar: React.FC = () => {
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
   const { setEntities } = useEntityDataActions();
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [dateRange, setDateRange] = useState<[Date | undefined, Date | undefined]>(() => {
@@ -28,22 +23,7 @@ export const AppTopbar: React.FC = () => {
   });
   const [popoverOpened, setPopoverOpened] = useState(false);
 
-  // Generate country list based on current language
-  const countryOptions = useMemo(() => {
-    // Map i18next language code to i18n-iso-countries language code
-    // 'zh' in i18next -> 'zh' in i18n-iso-countries
-    const lang = i18n.language.startsWith('zh') ? 'zh' : 'en';
-    const countryObj = countries.getNames(lang, { select: 'official' });
-
-    return Object.entries(countryObj)
-      .map(([code, name]) => ({
-        value: code,
-        label: name,
-      }))
-      .sort((a, b) => a.label.localeCompare(b.label));
-  }, [i18n.language]);
-
-  const { data, error: searchError } = useQuery({
+  const { data, isError, error } = useQuery({
     queryKey: ['global-search-entities', dateRange, country || ''],
     queryFn: async () => {
       const res = await QueryService.queryEvents({
@@ -72,68 +52,18 @@ export const AppTopbar: React.FC = () => {
   }, [data, setEntities]);
 
   useEffect(() => {
-    if (searchError) {
+    if (isError) {
       notifications.show({
-        title: t('components.Topbar.error'),
-        message: t('components.Topbar.loadError'),
+        title: t('common.error'),
+        message: t('layout.Topbar.loadError'),
         color: 'red',
       });
-      console.error('Failed to fetch entities', searchError);
+      console.error('Failed to query entities', error);
     }
-  }, [searchError, t]);
-
-  const handleDateChange = (val: [string | null, string | null]) => {
-    if (val[0] && val[1]) {
-      const start = new Date(val[0]);
-      const end = new Date(val[1]);
-      end.setHours(23, 59, 59, 999);
-
-      const maxEndDate = new Date(start);
-      maxEndDate.setMonth(maxEndDate.getMonth() + 1);
-
-      if (end > maxEndDate) {
-        notifications.show({
-          title: t('components.Topbar.dateLimitExceeded'),
-          message: t('components.Topbar.dateLimitMessage'),
-          color: 'orange',
-        });
-        setDateRange([start, maxEndDate]);
-      } else {
-        setDateRange([start, end]);
-      }
-    } else {
-      setDateRange([undefined, undefined]);
-    }
-  };
-
-  const applyPreset = (type: 'today' | 'yesterday' | 'lastWeek' | 'lastMonth') => {
-    const end = new Date();
-    const start = new Date();
-
-    start.setHours(0, 0, 0, 0);
-    end.setHours(23, 59, 59, 999);
-
-    switch (type) {
-      case 'today':
-        // start and end are already today
-        break;
-      case 'yesterday':
-        start.setDate(start.getDate() - 1);
-        end.setDate(end.getDate() - 1);
-        break;
-      case 'lastWeek':
-        start.setDate(start.getDate() - 7);
-        break;
-      case 'lastMonth':
-        start.setMonth(start.getMonth() - 1);
-        break;
-    }
-    setDateRange([start, end]);
-    // Optionally close popover or keep it open
-  };
+  }, [isError, error, t]);
 
   const formatDateRange = (range: [Date | undefined, Date | undefined]) => {
-    if (!range[0]) return t('components.Topbar.selectDateRange');
+    if (!range[0]) return t('layout.Topbar.selectDateRange');
     const startStr = range[0].toLocaleDateString();
     const endStr = range[1] ? range[1].toLocaleDateString() : '...';
     return `${startStr} - ${endStr}`;
@@ -141,17 +71,9 @@ export const AppTopbar: React.FC = () => {
 
   return (
     <AppShell.Header>
-      <Group h="100%" px="md" justify="space-between">
+      <AppShell.Section grow>
         <Group>
-          <Select
-            placeholder={t('components.Topbar.selectCountry')}
-            data={countryOptions}
-            value={country}
-            onChange={(val) => val && setCountry(val)}
-            searchable
-            clearable
-            style={{ width: 200 }}
-          />
+          <CountrySelect country={country} setCountry={setCountry} />
 
           <Popover
             opened={popoverOpened}
@@ -170,41 +92,14 @@ export const AppTopbar: React.FC = () => {
               </Button>
             </Popover.Target>
             <Popover.Dropdown>
-              <Group align="flex-start">
-                <Stack gap="xs">
-                  <Text size="sm" fw={500} mb={5}>
-                    {t('components.Topbar.presets')}
-                  </Text>
-                  <Button variant="light" size="xs" onClick={() => applyPreset('today')}>
-                    {t('components.Topbar.today')}
-                  </Button>
-                  <Button variant="light" size="xs" onClick={() => applyPreset('yesterday')}>
-                    {t('components.Topbar.yesterday')}
-                  </Button>
-                  <Button variant="light" size="xs" onClick={() => applyPreset('lastWeek')}>
-                    {t('components.Topbar.lastWeek')}
-                  </Button>
-                  <Button variant="light" size="xs" onClick={() => applyPreset('lastMonth')}>
-                    {t('components.Topbar.lastMonth')}
-                  </Button>
-                </Stack>
-                <Stack gap="xs">
-                  <Text size="sm" fw={500} mb={5}>
-                    {t('components.Topbar.selectDateRange')}
-                  </Text>
-                  <DatePicker
-                    type="range"
-                    locale={i18n.language}
-                    value={dateRange[0] && dateRange[1] && [dateRange[0], dateRange[1]]}
-                    onChange={handleDateChange}
-                    numberOfColumns={2}
-                  />
-                </Stack>
-              </Group>
+              <RangeDatePicker dateRange={dateRange} setDateRange={setDateRange} />
             </Popover.Dropdown>
           </Popover>
         </Group>
-      </Group>
+      </AppShell.Section>
+      <AppShell.Section>
+        <UserMenu />
+      </AppShell.Section>
     </AppShell.Header>
   );
 };

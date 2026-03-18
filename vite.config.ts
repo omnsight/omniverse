@@ -7,4 +7,26 @@ export default defineConfig({
   optimizeDeps: {
     include: ['elkjs/lib/elk.bundled.js'],
   },
+  server: {
+    proxy: {
+      '/query': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/query/, ''),
+      },
+      '/crud': {
+        target: 'http://localhost:8001',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/crud/, ''),
+      },
+      '/monitoring': {
+        target: 'http://localhost:8002',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/monitoring/, ''),
+      },
+    },
+  },
 });

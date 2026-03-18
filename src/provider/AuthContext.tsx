@@ -1,7 +1,10 @@
 import { createContext, useContext } from 'react';
 
-interface EntityWithAuth {
+interface DataWithOwner {
   owner?: string;
+}
+
+interface EntityWithAuth extends DataWithOwner {
   write?: string[];
   read?: string[];
 }
@@ -61,4 +64,14 @@ export const useEntityAuth = (entity?: EntityWithAuth) => {
   }
 
   return { canEdit: false };
+};
+
+export const useDataOwner = (data?: DataWithOwner) => {
+  const { user } = useAuth();
+
+  if (!user || !data) {
+    return false;
+  }
+
+  return data.owner === user.id;
 };

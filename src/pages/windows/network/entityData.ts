@@ -31,8 +31,8 @@ interface EntityDataState {
   relations: Relation[];
 
   actions: {
-    setEntities: (entities: Entities, query: any[]) => void;
-    addEntities: (entities: Entities, query: any[]) => void;
+    setEntities: (entities: Entities, query?: any[]) => void;
+    addEntities: (entities: Entities, query?: any[]) => void;
   };
 }
 
@@ -46,9 +46,9 @@ export const useEntityDataStore = create<EntityDataState>((set) => ({
   relations: [],
 
   actions: {
-    setEntities: (entities: Entities, query: any[]) =>
+    setEntities: (entities: Entities, query?: any[]) =>
       set(() => ({
-        queries: [query],
+        queries: query ? [query] : [],
         events: entities.events || [],
         organizations: entities.organizations || [],
         persons: entities.people || [],
@@ -56,7 +56,7 @@ export const useEntityDataStore = create<EntityDataState>((set) => ({
         websites: entities.websites || [],
         relations: entities.relations || [],
       })),
-    addEntities: (entities: Entities, query: any[]) =>
+    addEntities: (entities: Entities, query?: any[]) =>
       set((state) => {
         const upsert = (existing: IdedEntity[], incoming: IdedEntity[] | undefined) => {
           if (!incoming || incoming.length === 0) {
@@ -68,7 +68,7 @@ export const useEntityDataStore = create<EntityDataState>((set) => ({
         };
 
         return {
-          queries: [...state.queries, query],
+          queries: query ? [...state.queries, query] : state.queries,
           events: upsert(state.events, entities.events),
           organizations: upsert(state.organizations, entities.organizations),
           persons: upsert(state.persons, entities.people),

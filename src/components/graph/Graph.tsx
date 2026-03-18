@@ -1,5 +1,12 @@
 import 'reactflow/dist/style.css';
-import ReactFlow, { Controls, Background, useReactFlow, ReactFlowProvider } from 'reactflow';
+import ReactFlow, {
+  Controls,
+  Background,
+  useReactFlow,
+  ReactFlowProvider,
+  applyNodeChanges,
+  applyEdgeChanges,
+} from 'reactflow';
 import { Box } from '@mantine/core';
 import { useCallback, useEffect, useState, type PropsWithChildren } from 'react';
 import {
@@ -10,7 +17,7 @@ import {
   type Edge,
   useOnSelectionChange,
 } from 'reactflow';
-import type { Entity } from '../models/entity';
+import type { Entity } from '../forms/entityForm/entity';
 import { GraphContextMenu } from './ContextMenu';
 import { PersonNode } from './nodes/PersonNode';
 import { OrganizationNode } from './nodes/OrganizationNode';
@@ -18,6 +25,10 @@ import { EventNode } from './nodes/EventNode';
 import { WebsiteNode } from './nodes/WebsiteNode';
 import { SourceNode } from './nodes/SourceNode';
 import { RelationEdge } from './edges/RelationEdge';
+import { notifications } from '@mantine/notifications';
+import { useTranslation } from 'react-i18next';
+
+type OperationType = 'move' | 'connect' | 'remove' | 'create';
 
 const NodeTypes = {
   person: PersonNode,
@@ -34,25 +45,28 @@ const EdgeTypes = {
 interface EntityGraphProps extends PropsWithChildren {
   nodes: Node[];
   edges: Edge[];
-  onNodesChange?: (changes: NodeChange[]) => void;
-  onEdgesChange?: (changes: EdgeChange[]) => void;
+  setNodes: (nodes: Node[]) => void;
+  setEdges: (edges: Edge[]) => void;
   onSelection?: (ids: string[]) => void;
-  onConnect?: (connection: Connection) => void;
   onCreate?: (entity: Entity) => void;
+  onRemove?: (ids: string[], isEdge: boolean) => void;
+  allowOperations: OperationType[];
   hasWritePermission?: boolean;
 }
 
 const EntityGraphContent: React.FC<EntityGraphProps> = ({
   nodes,
   edges,
-  onNodesChange,
-  onEdgesChange,
+  setNodes,
+  setEdges,
   onSelection,
-  onConnect,
   onCreate,
+  onRemove,
+  allowOperations,
   hasWritePermission = false,
   children,
 }) => {
+  const { t } = useTranslation();
   const { fitView } = useReactFlow();
   const [menuPosition, setMenuPosition] = useState<{ x: number; y: number } | null>(null);
 
@@ -65,12 +79,6 @@ const EntityGraphContent: React.FC<EntityGraphProps> = ({
     });
   }, []);
 
-  const handleCreate = (entity: Entity) => {
-    if (onCreate) {
-      onCreate(entity);
-    }
-  };
-
   useOnSelectionChange({
     onChange: ({ nodes: selectedNodes, edges: selectedEdges }) => {
       const allSelectedIds = [...selectedNodes.map((n) => n.id), ...selectedEdges.map((e) => e.id)];
@@ -82,16 +90,92 @@ const EntityGraphContent: React.FC<EntityGraphProps> = ({
     fitView();
   }, [nodes, edges, fitView]);
 
+  const handleNodeChanges = (changes: NodeChange[]) => {
+    const otherChanges = changes.filter(
+      (c) => c.type !== 'select' && c.type !== 'remove' && c.type !== 'add',
+    );
+    if (allowOperations.includes('move')) {
+      setNodes(applyNodeChanges(otherChanges, nodes));
+    }
+
+    const removeChanges = changes.filter((c) => c.type === 'remove');
+    if (allowOperations.includes('remove') && removeChanges.length > 0) {
+      if (!hasWritePermission) {
+        notifications.show({
+          message: t('components.graph.remove.noPermission'),
+          color: 'red',
+        });
+      } else {
+        onRemove?.(
+          removeChanges.map((rc) => rc.id),
+          false,
+        );
+      }
+    }
+  };
+
+  const handleEdgeChanges = (changes: EdgeChange[]) => {
+    const otherChanges = changes.filter(
+      (c) => c.type !== 'select' && c.type !== 'remove' && c.type !== 'add',
+    );
+    if (allowOperations.includes('move')) {
+      setEdges(applyEdgeChanges(otherChanges, edges));
+    }
+
+    const removeChanges = changes.filter((c) => c.type === 'remove');
+    if (allowOperations.includes('remove') && removeChanges.length > 0) {
+      if (!hasWritePermission) {
+        notifications.show({
+          message: t('components.graph.remove.noPermission'),
+          color: 'red',
+        });
+      } else {
+        onRemove?.(
+          removeChanges.map((rc) => rc.id),
+          true,
+        );
+      }
+    }
+  };
+
+  const handleConnection = (connection: Connection) => {
+    if (!hasWritePermission) {
+      notifications.show({
+        message: t('components.graph.connect.noPermission'),
+        color: 'red',
+      });
+    } else {
+      onCreate?.({
+        type: 'Relation',
+        data: {
+          _from: connection.source,
+          _to: connection.target,
+        },
+      });
+    }
+  };
+
+  const handleCreate = (entity: Entity) => {
+    if (!hasWritePermission) {
+      notifications.show({
+        message: t('components.graph.connect.noPermission'),
+        color: 'red',
+      });
+    } else {
+      onCreate?.(entity);
+    }
+  };
+
   return (
-    <Box style={{ height: '100%', width: '100%', position: 'relative' }}>
+    <Box pos="relative" h="100%" w="100%">
       <ReactFlow
         nodes={nodes}
         edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
         nodeTypes={NodeTypes}
         edgeTypes={EdgeTypes}
+        onNodesChange={handleNodeChanges}
+        onEdgesChange={handleEdgeChanges}
+        onConnect={allowOperations.includes('connect') ? handleConnection : undefined}
         onPaneContextMenu={onPaneContextMenu}
         fitView
       >
@@ -103,7 +187,7 @@ const EntityGraphContent: React.FC<EntityGraphProps> = ({
           x={menuPosition.x}
           y={menuPosition.y}
           onClose={() => setMenuPosition(null)}
-          onCreate={handleCreate}
+          onCreate={allowOperations.includes('create') ? handleCreate : undefined}
           hasWritePermission={hasWritePermission}
         />
       )}

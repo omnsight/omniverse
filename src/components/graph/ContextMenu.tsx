@@ -8,13 +8,13 @@ import {
   GlobeAltIcon,
   DocumentTextIcon,
 } from '@heroicons/react/24/solid';
-import type { Entity } from '../models/entity';
+import type { Entity } from '../forms/entityForm/entity';
 
 interface GraphContextMenuProps {
   x: number;
   y: number;
   onClose: () => void;
-  onCreate: (entity: Entity) => void;
+  onCreate?: (entity: Entity) => void;
   hasWritePermission: boolean;
 }
 
@@ -50,19 +50,18 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
         </Menu.Target>
 
         <Menu.Dropdown>
-          {hasWritePermission && (
-            <Menu.Label>{t('components.GraphContextMenu.create', 'Create New Entity')}</Menu.Label>
-          )}
+          {hasWritePermission && <Menu.Label>{t('components.graph.create')}</Menu.Label>}
 
           {hasWritePermission && (
             <Menu.Item
               leftSection={<UserIcon style={{ width: rem(16), height: rem(16) }} />}
               onClick={() => {
-                onCreate({ type: 'Person', data: {} });
+                onCreate?.({ type: 'Person', data: {} });
                 onClose();
               }}
+              disabled={!onCreate}
             >
-              {t('entity.person.type', 'Person')}
+              {t('entity.person.type')}
             </Menu.Item>
           )}
 
@@ -70,11 +69,12 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
             <Menu.Item
               leftSection={<BuildingOfficeIcon style={{ width: rem(16), height: rem(16) }} />}
               onClick={() => {
-                onCreate({ type: 'Organization', data: {} });
+                onCreate?.({ type: 'Organization', data: {} });
                 onClose();
               }}
+              disabled={!onCreate}
             >
-              {t('entity.organization.type', 'Organization')}
+              {t('entity.organization.type')}
             </Menu.Item>
           )}
 
@@ -82,11 +82,12 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
             <Menu.Item
               leftSection={<CalendarDaysIcon style={{ width: rem(16), height: rem(16) }} />}
               onClick={() => {
-                onCreate({ type: 'Event', data: {} });
+                onCreate?.({ type: 'Event', data: {} });
                 onClose();
               }}
+              disabled={!onCreate}
             >
-              {t('entity.event.type', 'Event')}
+              {t('entity.event.type')}
             </Menu.Item>
           )}
 
@@ -94,11 +95,12 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
             <Menu.Item
               leftSection={<GlobeAltIcon style={{ width: rem(16), height: rem(16) }} />}
               onClick={() => {
-                onCreate({ type: 'Website', data: {} });
+                onCreate?.({ type: 'Website', data: {} });
                 onClose();
               }}
+              disabled={!onCreate}
             >
-              {t('entity.website.type', 'Website')}
+              {t('entity.website.type')}
             </Menu.Item>
           )}
 
@@ -106,11 +108,12 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
             <Menu.Item
               leftSection={<DocumentTextIcon style={{ width: rem(16), height: rem(16) }} />}
               onClick={() => {
-                onCreate({ type: 'Source', data: {} });
+                onCreate?.({ type: 'Source', data: {} });
                 onClose();
               }}
+              disabled={!onCreate}
             >
-              {t('entity.source.type', 'Source')}
+              {t('entity.source.type')}
             </Menu.Item>
           )}
         </Menu.Dropdown>
