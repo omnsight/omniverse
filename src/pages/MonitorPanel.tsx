@@ -4,8 +4,6 @@ import { WindowManager } from './windows/WindowManager';
 import { EntityListWindow } from './windows/data/EntityListWindow';
 import { EntityWindow } from './windows/data/EntityWindow';
 import { SparkGraph } from './windows/network/SparkGraph';
-import { TimelineGraph } from './windows/network/TimelineGraph';
-import { ComparisonView } from './windows/network/ComparsionView';
 import { MonitorListWindow } from './windows/monitor/MonitorListWindow';
 import { MonitorWindow } from './windows/monitor/MonitorWindow';
 import { CustomSeparator } from './layouts/CustomSeparator';

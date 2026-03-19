@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Box, ScrollArea, SimpleGrid, Text } from '@mantine/core';
-import { ReadService } from 'omni-osint-crud-client';
+import { ReadService, CreateService } from 'omni-osint-crud-client';
 import { useInsightStore } from './insightData';
 import { InsightForm } from '../../../components/forms';
 import { useQuery } from '@tanstack/react-query';
@@ -15,7 +15,7 @@ export const InsightListWindow: React.FC = () => {
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['insights'],
-    queryFn: () => ReadService.queryViews(''),
+    queryFn: () => ReadService.queryViews(),
   });
 
   useEffect(() => {
@@ -30,8 +30,8 @@ export const InsightListWindow: React.FC = () => {
   }, [isError, error]);
 
   useEffect(() => {
-    if (data) {
-      setInsights(data);
+    if (data && data.views) {
+      setInsights(data.views);
     }
   }, [data, setInsights]);
 

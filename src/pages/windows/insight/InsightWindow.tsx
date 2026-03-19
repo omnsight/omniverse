@@ -7,9 +7,11 @@ import { useQuery } from '@tanstack/react-query';
 import { ReadService } from 'omni-osint-crud-client';
 import { notifications } from '@mantine/notifications';
 import { transformEntities } from '../../../components/forms/entityForm/entity';
+import { useAuth } from '../../../provider/AuthContext';
 
 export const InsightWindow: React.FC = () => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const { selected } = useInsightStore();
 
   const { data, isError, isLoading } = useQuery({
@@ -43,7 +45,11 @@ export const InsightWindow: React.FC = () => {
 
   return (
     <Box pos="relative" h="100%" w="100%">
-      <InsightEditor insight={selected} entities={entities} />
+      <InsightEditor
+        insight={selected}
+        entities={entities}
+        readonly={user?.id === selected?.owner}
+      />
     </Box>
   );
 };

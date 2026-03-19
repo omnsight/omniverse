@@ -1,12 +1,19 @@
-import { AppShell, Group, Text, NavLink, rem, Stack, ScrollArea, Divider } from '@mantine/core';
-import { GlobeAltIcon, SparklesIcon, BookOpenIcon } from '@heroicons/react/24/solid';
+import { AppShell, Group, Text, NavLink, rem, Stack, Divider } from '@mantine/core';
+import {
+  GlobeAltIcon,
+  LightBulbIcon,
+  ChartPieIcon,
+  UserCircleIcon,
+} from '@heroicons/react/24/solid';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../provider/AuthContext';
 
 export const AppSidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
+  const { hasRole } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -34,29 +41,31 @@ export const AppSidebar: React.FC = () => {
       {/* --- Main Navigation --- */}
       <AppShell.Section grow>
         <NavLink
-          label={t('layout.Sidebar.geovision')}
-          leftSection={<GlobeAltIcon style={{ width: rem(20) }} />}
-          active={isActive('/geovision')}
+          label={t('layout.Sidebar.intelligence')}
+          leftSection={<LightBulbIcon style={{ width: rem(20) }} />}
+          active={isActive('/intelligence')}
           variant="light"
           color="blue"
-          onClick={() => navigate('/geovision')}
+          onClick={() => navigate('/intelligence')}
         />
         <NavLink
-          label={t('layout.Sidebar.sparkgraph')}
-          leftSection={<SparklesIcon style={{ width: rem(20) }} />}
-          active={isActive('/sparkgraph')}
+          label={t('layout.Sidebar.monitor')}
+          leftSection={<ChartPieIcon style={{ width: rem(20) }} />}
+          active={isActive('/monitor')}
           variant="light"
           color="blue"
-          onClick={() => navigate('/sparkgraph')}
+          onClick={() => navigate('/monitor')}
         />
-        <NavLink
-          label={t('layout.Sidebar.narrative')}
-          leftSection={<BookOpenIcon style={{ width: rem(20) }} />}
-          active={isActive('/narrative')}
-          variant="light"
-          color="blue"
-          onClick={() => navigate('/narrative')}
-        />
+        {hasRole('admin') && (
+          <NavLink
+            label={t('layout.Sidebar.admin')}
+            leftSection={<UserCircleIcon style={{ width: rem(20) }} />}
+            active={isActive('/admin')}
+            variant="light"
+            color="blue"
+            onClick={() => navigate('/admin')}
+          />
+        )}
       </AppShell.Section>
     </AppShell.Navbar>
   );

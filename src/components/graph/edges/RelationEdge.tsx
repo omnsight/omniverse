@@ -7,12 +7,10 @@ import {
   useStore,
   type ReactFlowState,
 } from 'reactflow';
-import { HoverCard, Badge, Text } from '@mantine/core';
-import { RelationCard } from './Card';
+import { Badge } from '@mantine/core';
 import type { Relation } from 'omni-osint-crud-client';
 import { useTranslation } from 'react-i18next';
-import { NewBadge } from '../../common/NewBadge';
-import { getSmartEdgeParams } from '../../window/graph/utils';
+import { getSmartEdgeParams } from './utils';
 
 export const RelationEdge: React.FC<EdgeProps<Relation>> = memo(
   ({
@@ -90,26 +88,13 @@ export const RelationEdge: React.FC<EdgeProps<Relation>> = memo(
             }}
             className="nodrag nopan"
           >
-            {data?._id?.startsWith('new') && <NewBadge size="0.4rem" top={-8} right={-8} />}
-            <HoverCard width={250} shadow="md" withArrow openDelay={200} closeDelay={0}>
-              <HoverCard.Target>
-                <Badge
-                  variant="filled"
-                  color={badgeColor}
-                  style={{ cursor: 'pointer', fontSize: 5, height: 8, padding: '0 4px' }}
-                >
-                  {data?.label || t('placeholder.unknown') + t('entity.relation.name')}
-                </Badge>
-              </HoverCard.Target>
-              <HoverCard.Dropdown>
-                {data ? (
-                  <RelationCard relation={data} usePending={false} readonly={true} />
-                ) : (
-                  <Text size="sm">{t('placeholder.unknown') + t('entity.relation.name')}</Text>
-                )}
-              </HoverCard.Dropdown>
-            </HoverCard>
-            0
+            <Badge
+              variant="filled"
+              color={badgeColor}
+              style={{ cursor: 'pointer', fontSize: 5, height: 8, padding: '0 4px' }}
+            >
+              {data?.label || t('placeholder.unknown') + t('entity.relation.name')}
+            </Badge>
           </div>
         </EdgeLabelRenderer>
       </>

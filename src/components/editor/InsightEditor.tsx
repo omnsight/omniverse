@@ -1,5 +1,5 @@
 import './EditorStyle.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
@@ -31,9 +31,10 @@ import { WindowDndExtension } from './extensions/WindowDndExtension';
 interface Props {
   insight: OsintView;
   entities: Entity[];
+  readonly: boolean;
 }
 
-export const Editor: React.FC<Props> = ({ insight, entities }) => {
+export const Editor: React.FC<Props> = ({ insight, entities, readonly }) => {
   const { t } = useTranslation();
   const [opened, setOpened] = useState(true);
 
@@ -46,6 +47,10 @@ export const Editor: React.FC<Props> = ({ insight, entities }) => {
     },
     content: insight.analysis,
   });
+
+  useEffect(() => {
+    editor.setEditable(!readonly);
+  }, [editor, readonly]);
 
   return (
     <Paper h="100%" w="100%" shadow="sm" radius="md" withBorder>
