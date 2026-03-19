@@ -61,7 +61,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('entity.person.type')}
+              {t('components.entity.person.type')}
             </Menu.Item>
           )}
 
@@ -74,7 +74,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('entity.organization.type')}
+              {t('components.entity.organization.type')}
             </Menu.Item>
           )}
 
@@ -87,7 +87,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('entity.event.type')}
+              {t('components.entity.event.type')}
             </Menu.Item>
           )}
 
@@ -100,7 +100,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('entity.website.type')}
+              {t('components.entity.website.type')}
             </Menu.Item>
           )}
 
@@ -113,7 +113,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('entity.source.type')}
+              {t('components.entity.source.type')}
             </Menu.Item>
           )}
         </Menu.Dropdown>

@@ -32,7 +32,7 @@ export const OrganizationForm: React.FC<Props> = ({ organization, onUpdate, onCl
         value={organization.name || ''}
         onChange={(val) => onUpdate?.({ name: val })}
         canEdit={!!onUpdate}
-        placeholder={t('entity.organization.name')}
+        placeholder={t('components.entity.organization.name')}
         order={4}
       />
 
@@ -91,7 +91,7 @@ export const OrganizationForm: React.FC<Props> = ({ organization, onUpdate, onCl
 
       <UnstyledButton onClick={() => setAttributesOpen((o) => !o)}>
         <Group justify="space-between">
-          <Title order={5}>{t('attributes')}</Title>
+          <Title order={5}>{t('placeholder.attributes')}</Title>
           <ChevronDownIcon
             style={{
               width: 16,

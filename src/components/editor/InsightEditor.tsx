@@ -98,7 +98,7 @@ export const Editor: React.FC<Props> = ({ insight, entities, readonly }) => {
               <Group justify="space-between" mb="sm" wrap="nowrap">
                 {opened && (
                   <Text fw={700} size="xs" truncate>
-                    {t('editor.sidebarTitle')}
+                    {t('components.editor.sidebarTitle')}
                   </Text>
                 )}
 

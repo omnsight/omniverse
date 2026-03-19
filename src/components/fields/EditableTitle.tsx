@@ -8,6 +8,7 @@ export interface EditableTitleProps {
   value?: string;
   onChange: (value: string) => void;
   placeholder: string;
+  useInput?: boolean;
   canEdit?: boolean;
   order?: TitleOrder;
   style?: React.CSSProperties;
@@ -17,6 +18,7 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
   value,
   onChange,
   placeholder,
+  useInput = false,
   canEdit = false,
   order = 4,
   style,
@@ -38,14 +40,14 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
     }
   };
 
-  if (isEditing) {
+  if (useInput || isEditing) {
     return (
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <TextInput
           autoFocus
           value={value || ''}
-          onChange={(e) => e.target.value.trim() && onChange(e.target.value)}
-          onKeyDown={handleKeyDown}
+          onChange={(e) => onChange(e.target.value)}
+          onKeyDown={useInput ? undefined : handleKeyDown}
           placeholder={`${t('placeholder.enter')}${placeholder}...`}
         />
       </div>
@@ -54,7 +56,7 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
 
   return (
     <Title
-      onDoubleClick={handleDoubleClick}
+      onDoubleClick={useInput ? undefined : handleDoubleClick}
       order={order}
       style={{
         cursor: canEdit ? 'text' : 'default',

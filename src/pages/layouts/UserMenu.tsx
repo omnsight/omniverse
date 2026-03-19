@@ -22,36 +22,27 @@ export const UserMenu: React.FC = () => {
 
   if (!isAuthenticated) {
     return (
-      <NavLink
-        component="button"
-        label={t('layout.UserMenu.login')}
-        description={t('layout.UserMenu.accessAccount')}
-        onClick={login}
-        leftSection={
-          <Avatar radius="xl" size="sm" color="gray">
+      <Menu width={200}>
+        <Menu.Target>
+          <Avatar component="button" radius="xl" color="gray">
             ?
           </Avatar>
-        }
-        rightSection={<ArrowUpCircleIcon style={{ width: rem(14) }} />}
-        style={{ borderRadius: rem(8) }}
-      />
+        </Menu.Target>
+        <Menu.Dropdown>
+          <Menu.Item leftSection={<ArrowUpCircleIcon style={{ width: rem(14) }} />} onClick={login}>
+            {t('layout.UserMenu.login')}
+          </Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
     );
   }
 
   return (
     <Menu width={200}>
       <Menu.Target>
-        <NavLink
-          component="button"
-          label={user?.username}
-          description={user?.email}
-          leftSection={
-            <Avatar src={null} radius="xl" size="sm" color="blue">
-              {(user?.username || '?').charAt(0).toUpperCase()}
-            </Avatar>
-          }
-          rightSection={<ChevronUpIcon style={{ width: rem(8) }} />}
-        />
+        <Avatar component="button" src={null} radius="xl" color="blue">
+          {(user?.username || '?').charAt(0).toUpperCase()}
+        </Avatar>
       </Menu.Target>
 
       <Menu.Dropdown>

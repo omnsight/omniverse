@@ -39,7 +39,7 @@ export const SourceNode: React.FC<NodeProps<Source>> = memo(({ data, selected })
           pointerEvents: 'none',
         }}
       >
-        {source?.name || t('placeholder.unknown') + t('entity.source.name')}
+        {source?.name || t('placeholder.unknown') + t('components.entity.source.name')}
       </Text>
     </Box>
   );

@@ -1,39 +1,16 @@
 {
-  "common": {
-    "save": "Save",
-    "success": "Success",
-    "updateSuccess": "Update successful",
-    "error": "Error",
-    "updateError": "Update failed",
-    "notFound": "Not Found",
-    "duplicateRelation": "Relation already exists",
-    "noWritePermission": "You must be a pro or admin user to perform this action",
-    "restore": "Restore",
-    "delete": "Delete"
+  "page": {
+    "error": {
+      "title": "Error",
+      "description": "An unexpected error has occurred.",
+      "return": "Return to Home"
+    }
   },
-  "components": {
-    "GraphTools": {
-      "viewMode": "View Mode",
-      "graph": "Graph",
-      "compare": "Compare",
-      "warning": "Warning",
-      "badSelection": "Please select between 2 and 9 entities of the same type to compare."
-    },
-    "GraphContextMenu": {
-      "create": "Create New Entity"
-    },
-    "MapTools": {
-      "start": "Start",
-      "normalMode": "Normal Mode",
-      "rulerMode": "Ruler Mode"
-    },
-    "Sidebar": {
-      "omniverse": "Nexus Interlligence Platform",
-      "intelligencePlatform": "Intelligence Platform",
-      "geovision": "Geovision",
-      "sparkgraph": "Spark Graph",
-      "narrative": "Narrative Board",
-      "dataPlane": "Data Plane",
+  "layout": {
+    "UserMenu": {
+      "login": "Login",
+      "application": "Application",
+      "profile": "Profile",
       "theme": "Theme",
       "lightMode": "Light Mode",
       "darkMode": "Dark Mode",
@@ -43,131 +20,228 @@
       "chinese": "Chinese",
       "selectLanguage": "Select Language",
       "auth": {
-        "application": "Application",
-        "profile": "Profile",
-        "signOut": "Sign Out",
-        "login": "Login",
-        "accessAccount": "Access Account"
+        "signOut": "Sign Out"
       }
     },
     "Topbar": {
-      "error": "Error",
-      "loadError": "Failed to load entities",
-      "selectCountry": "Select Country",
-      "selectDateRange": "Select Date Range",
-      "dateLimitExceeded": "Date Limit Exceeded",
-      "dateLimitMessage": "The maximum date range is one month. The end date has been adjusted.",
+      "queryEntitiesError": "Error querying entities",
+      "selectDateRange": "Select Date Range"
+    },
+    "Sidebar": {
+      "logo": "Nexus",
+      "subtitle": "Intelligence Platform",
+      "intelligence": "Intelligence",
+      "monitor": "Monitor",
+      "admin": "Admin"
+    },
+    "DatePicker": {
+      "dateLimitExceeded": "Date limit exceeded",
+      "dateLimitMessage": "The maximum date range has been exceeded.",
       "presets": "Presets",
       "today": "Today",
       "yesterday": "Yesterday",
       "lastWeek": "Last Week",
-      "lastMonth": "Last Month"
+      "lastMonth": "Last Month",
+      "selectDateRange": "Select Date Range"
     },
-    "viewMetadata": {
-      "title": "Saved Views",
-      "snapshot": "Snapshot",
-      "noViews": "No saved views",
-      "duplicateView": "View already exists",
-      "viewName": "View {{count}}"
+    "CountrySelect": {
+      "select": "Select a country"
+    }
+  },
+  "common": {
+    "error": "Error",
+    "delete": "Delete",
+    "add": "Add",
+    "notFound": "Not Found",
+    "loading": "Loading...",
+    "success": "Success"
+  },
+  "components": {
+    "graph": {
+      "remove": {
+        "noPermission": "You do not have permission to perform this action."
+      },
+      "connect": {
+        "noPermission": "You do not have permission to perform this action."
+      },
+      "create": "Create"
+    },
+    "entity": {
+      "person": {
+        "type": "Person",
+        "name": "Name"
+      },
+      "organization": {
+        "type": "Organization",
+        "name": "Name"
+      },
+      "event": {
+        "type": "Event",
+        "title": "Title"
+      },
+      "website": {
+        "type": "Website",
+        "title": "Title",
+        "name": "Name"
+      },
+      "source": {
+        "type": "Source",
+        "title": "Title",
+        "name": "Name"
+      },
+      "relation": {
+        "label": "Relation",
+        "name": "Name"
+      }
+    },
+    "MapTools": {
+      "start": "Start",
+      "normalMode": "Normal Mode",
+      "rulerMode": "Ruler Mode"
     },
     "editor": {
-      "title": "New Doc",
-      "placeholder": "Start writing here...",
-      "noActiveView": "No active view selected. Please select a view to insert.",
-      "viewType": {
-        "geovision": "Geovision",
-        "sparkgraph": "Spark Graph"
-      },
-      "insertViewTooltip": "Insert current view as marker",
-      "insertViewButton": "Insert View",
-      "presentationMode": "Presentation Mode",
+      "sidebarTitle": "Editor",
       "tools": {
+        "undo": "Undo",
+        "redo": "Redo",
         "bold": "Bold",
         "italic": "Italic",
         "strike": "Strikethrough",
         "highlight": "Highlight",
-        "h1": "Heading 1",
-        "h2": "Heading 2",
-        "h3": "Heading 3",
-        "bulletList": "Bullet List",
-        "orderedList": "Ordered List",
         "codeBlock": "Code Block",
         "blockquote": "Blockquote",
+        "bulletList": "Bullet List",
+        "orderedList": "Ordered List",
         "horizontalRule": "Horizontal Rule",
-        "undo": "Undo",
-        "redo": "Redo"
-      }
-    }
-  },
-  "entity": {
-    "event": {
-      "type": "Event",
-      "title": "Event Title",
-      "Window": {
-        "untitledEvent": "Untitled Event",
-        "relatedOrganizations": "Related Organizations",
-        "relatedWebsites": "Related Websites",
-        "relatedSources": "Related Sources"
+        "h1": "Heading 1",
+        "h2": "Heading 2",
+        "h3": "Heading 3"
       }
     },
-    "organization": {
-      "type": "Organization",
-      "name": "Organization Name"
+    "monitoring": {
+      "source": {
+        "name": "Source Name"
+      }
     },
-    "person": {
-      "type": "Person",
-      "name": "Person Name"
-    },
-    "source": {
-      "type": "Source",
-      "title": "Source Title"
-    },
-    "website": {
-      "type": "Website",
-      "name": "Website Name"
-    },
-    "relation": {
-      "name": "Relation Name",
-      "nameRequired": "Relation name is required"
-    }
-  },
-  "pages": {
-    "ErrorPage": {
-      "defaultTitle": "Something went wrong",
-      "defaultDescription": "We encountered an unexpected error. Please try again later.",
-      "redirecting": "Redirecting in {{count}} seconds...",
-      "goHome": "Go Home"
-    },
-    "Geovision": {
-      "error": "Error",
-      "loadError": "Failed to load related data."
-    },
-    "SparkGraph": {
-      "loadError": "Error Loading Graph",
-      "fetchRelatedDataError": "Failed to fetch related data."
+    "attributes": {
+      "key": "Key",
+      "value": "Value",
+      "newKey": "New Key",
+      "newValue": "New Value"
     }
   },
   "placeholder": {
-    "unknown": "Unknown",
-    "enter": "Enter",
-    "country": "Country",
-    "confidence": "Confidence",
-    "relation": "Relation",
     "url": "URL",
     "description": "Description",
+    "foundedDate": "Founded Date",
+    "discoveredDate": "Discovered Date",
     "tags": "Tags",
+    "attributes": "Attributes",
     "reliability": "Reliability",
-    "createdDate": "Created Date",
-    "updatedDate": "Updated Date",
+    "name": "Name",
+    "confidence": "Confidence",
     "role": "Role",
     "nationality": "Nationality",
     "birthDate": "Birth Date",
     "type": "Type",
-    "foundedDate": "Founded Date",
-    "discoveredDate": "Discovered Date",
+    "source": {
+      "type": "Source Type"
+    },
+    "lastReviewed": "Last Reviewed",
     "date": "Date",
     "address": "Address",
     "locality": "Locality",
-    "administrativeArea": "Administrative Area"
+    "administrativeArea": "Administrative Area",
+    "country": "Country",
+    "enter": "Enter",
+    "unknown": "Unknown",
+    "relation": "Relation",
+    "createdDate": "Created Date",
+    "updatedDate": "Updated Date"
+  },
+  "entity": {
+    "event": {
+      "title": "Event Title"
+    },
+    "update": {
+      "success": "Update successful",
+      "error": "Update failed"
+    },
+    "create": {
+      "error": "Creation failed",
+      "title": "Create New",
+      "submit": "Submit"
+    }
+  },
+  "network": {
+    "spark": {
+      "deleteError": "Error deleting spark"
+    },
+    "comparison": {
+      "selectAtLeastTwo": "Select at least two items to compare.",
+      "selectSameType": "Select items of the same type to compare.",
+      "showAttributes": "Show Attributes",
+      "showMainData": "Show Main Data"
+    }
+  },
+  "monitoring": {
+    "single": {
+      "noSourceSelected": "No source selected."
+    },
+    "list": {
+      "getSourcesError": "Error retrieving sources.",
+      "noSources": "No sources found."
+    },
+    "create": {
+      "error": "Creation failed.",
+      "title": "Create New",
+      "submit": "Submit"
+    }
+  },
+  "data": {
+    "entity": {
+      "single": {
+        "warning": "Warning",
+        "noEntitySelected": "No entity selected.",
+        "noInghtSelected": "No insight selected.",
+        "relatedOrganizations": "Related Organizations",
+        "relatedWebsites": "Related Websites",
+        "relatedEvents": "Related Events",
+        "relatedSources": "Related Sources",
+        "addNeighbors": "Add Neighbors"
+      },
+      "list": {
+        "noEvents": "No events found."
+      }
+    }
+  },
+  "insight": {
+    "single": {
+      "queryError": "Error querying insight.",
+      "empty": "No insight found."
+    },
+    "list": {
+      "queryError": "Error querying insights.",
+      "empty": "No insights found.",
+      "create": {
+        "new": "New Insight"
+      }
+    },
+    "create": {
+      "error": "Failed to create insight.",
+      "title": "Create New Insight",
+      "submit": "Submit"
+    }
+  },
+  "context": {
+    "recommendation": {
+      "queryError": "Error querying recommendations.",
+      "noEvents": "No recommended events found."
+    }
+  },
+  "editor": {
+    "windowAnchor": {
+      "restore": "Restore"
+    }
   }
 }

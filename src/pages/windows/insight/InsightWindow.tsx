@@ -24,7 +24,7 @@ export const InsightWindow: React.FC = () => {
     if (isError) {
       notifications.show({
         title: t('common.error'),
-        message: t('insight.single.loadError'),
+        message: t('insight.single.queryError'),
         color: 'red',
       });
     }
@@ -38,7 +38,7 @@ export const InsightWindow: React.FC = () => {
   if (!selected) {
     return (
       <Box pos="relative" h="100%" w="100%">
-        {!isLoading ? <Text>{t('loading')}</Text> : <Text>{t('insight.single.empty')}</Text>}
+        {!isLoading ? <Text>{t('common.loading')}</Text> : <Text>{t('insight.single.empty')}</Text>}
       </Box>
     );
   }

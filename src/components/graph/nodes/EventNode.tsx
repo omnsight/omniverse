@@ -39,7 +39,7 @@ export const EventNode: React.FC<NodeProps<Event>> = memo(({ data, selected }) =
           pointerEvents: 'none',
         }}
       >
-        {event?.title || t('placeholder.unknown') + t('entity.event.title')}
+        {event?.title || t('placeholder.unknown') + t('components.entity.event.title')}
       </Text>
     </Box>
   );

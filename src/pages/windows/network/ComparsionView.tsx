@@ -58,7 +58,7 @@ export const ComparisonView: React.FC = () => {
         w="100%"
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
-        <Text>{t('data.entity.comparison.selectAtLeastTwo')}</Text>
+        <Text>{t('network.comparison.selectAtLeastTwo')}</Text>
       </Box>
     );
   }
@@ -74,7 +74,7 @@ export const ComparisonView: React.FC = () => {
         w="100%"
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
-        <Text>{t('data.entity.comparison.selectSameType')}</Text>
+        <Text>{t('network.comparison.selectSameType')}</Text>
       </Box>
     );
   }
@@ -106,8 +106,8 @@ export const ComparisonView: React.FC = () => {
           onChange={(event) => setShowAttributes(event.currentTarget.checked)}
           label={
             showAttributes
-              ? t('data.entity.comparison.showAttributes')
-              : t('data.entity.comparison.showMainData')
+              ? t('network.comparison.showAttributes')
+              : t('network.comparison.showMainData')
           }
         />
       </Box>

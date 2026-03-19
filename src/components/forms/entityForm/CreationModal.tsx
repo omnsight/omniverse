@@ -54,11 +54,7 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
           entities.websites = [website];
           break;
       }
-      notifications.show({
-        title: t('common.success'),
-        message: t('entity.create.success'),
-        color: 'green',
-      });
+      console.log('Created entities', entities);
       onCreated(entities);
     } catch (error) {
       notifications.show({

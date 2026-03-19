@@ -61,13 +61,13 @@ export const EntityWindow: React.FC = () => {
       notifications.show({
         title: t('data.entity.single.warning'),
         message: t('data.entity.single.noEntitySelected'),
-        color: 'yellow',
+        color: 'orange',
       });
     } else if (!selected) {
       notifications.show({
         title: t('data.entity.single.warning'),
         message: t('data.entity.single.noInghtSelected'),
-        color: 'yellow',
+        color: 'orange',
       });
     } else {
       const payload = {

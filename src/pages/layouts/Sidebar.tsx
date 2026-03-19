@@ -1,10 +1,5 @@
 import { AppShell, Group, Text, NavLink, rem, Stack, Divider } from '@mantine/core';
-import {
-  GlobeAltIcon,
-  LightBulbIcon,
-  ChartPieIcon,
-  UserCircleIcon,
-} from '@heroicons/react/24/solid';
+import { GlobeAltIcon, LightBulbIcon, EyeIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../provider/AuthContext';
@@ -28,10 +23,10 @@ export const AppSidebar: React.FC = () => {
           <GlobeAltIcon style={{ width: rem(34), flexShrink: 0 }} className="text-blue-600" />
           <Stack gap={0}>
             <Text fw={700} size="md" lh={1}>
-              {t('layout.Sidebar.omniverse')}
+              {t('layout.Sidebar.logo')}
             </Text>
             <Text size={rem(10)} c="dimmed" lh={1.2}>
-              {t('layout.Sidebar.intelligencePlatform')}
+              {t('layout.Sidebar.subtitle')}
             </Text>
           </Stack>
         </Group>
@@ -50,7 +45,7 @@ export const AppSidebar: React.FC = () => {
         />
         <NavLink
           label={t('layout.Sidebar.monitor')}
-          leftSection={<ChartPieIcon style={{ width: rem(20) }} />}
+          leftSection={<EyeIcon style={{ width: rem(20) }} />}
           active={isActive('/monitor')}
           variant="light"
           color="blue"

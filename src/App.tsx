@@ -49,12 +49,17 @@ function App() {
           collapsed: { mobile: !opened },
         }}
         padding="0"
+        style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}
       >
         <AppTopbar />
         <AppSidebar />
 
         <AppShell.Main
-          style={{ height: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 60 }}
+          style={{
+            height: 'calc(100vh - 60px)',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
         >
           <Routes>
             <Route path="/" element={<Navigate to="/geovision" replace />} />

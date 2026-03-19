@@ -62,8 +62,8 @@ export const EditableAttributes: React.FC<Props> = ({ value, onChange, canEdit }
       <Table>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>{t('attributes.key')}</Table.Th>
-            <Table.Th>{t('attributes.value')}</Table.Th>
+            <Table.Th>{t('components.attributes.key')}</Table.Th>
+            <Table.Th>{t('components.attributes.value')}</Table.Th>
             {canEdit && <Table.Th />}
           </Table.Tr>
         </Table.Thead>
@@ -75,7 +75,7 @@ export const EditableAttributes: React.FC<Props> = ({ value, onChange, canEdit }
               {canEdit && (
                 <Table.Td>
                   <Button size="xs" color="red" onClick={() => handleDelete(key)}>
-                    {t('delete')}
+                    {t('common.delete')}
                   </Button>
                 </Table.Td>
               )}
@@ -86,7 +86,7 @@ export const EditableAttributes: React.FC<Props> = ({ value, onChange, canEdit }
       {canEdit && (
         <Group mt="md">
           <TextInput
-            placeholder={t('attributes.newKey')}
+            placeholder={t('components.attributes.newKey')}
             value={newKey}
             onChange={(e) => setNewKey(e.currentTarget.value)}
           />
@@ -97,26 +97,26 @@ export const EditableAttributes: React.FC<Props> = ({ value, onChange, canEdit }
           />
           {newType === 'text' && (
             <TextInput
-              placeholder={t('attributes.newValue')}
+              placeholder={t('components.attributes.newValue')}
               value={newValue}
               onChange={(e) => setNewValue(e.currentTarget.value)}
             />
           )}
           {newType === 'number' && (
             <NumberInput
-              placeholder={t('attributes.newValue')}
+              placeholder={t('components.attributes.newValue')}
               value={newValue}
               onChange={setNewValue}
             />
           )}
           {newType === 'date' && (
             <DateInput
-              placeholder={t('attributes.newValue')}
+              placeholder={t('components.attributes.newValue')}
               value={newValue}
               onChange={setNewValue}
             />
           )}
-          <Button onClick={handleAdd}>{t('add')}</Button>
+          <Button onClick={handleAdd}>{t('common.add')}</Button>
         </Group>
       )}
     </div>

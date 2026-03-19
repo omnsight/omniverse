@@ -55,7 +55,7 @@ export const AppTopbar: React.FC = () => {
     if (isError) {
       notifications.show({
         title: t('common.error'),
-        message: t('layout.Topbar.loadError'),
+        message: t('layout.Topbar.queryEntitiesError'),
         color: 'red',
       });
       console.error('Failed to query entities', error);
@@ -70,8 +70,8 @@ export const AppTopbar: React.FC = () => {
   };
 
   return (
-    <AppShell.Header>
-      <AppShell.Section grow>
+    <AppShell.Header p="xs">
+      <Group justify="space-between">
         <Group>
           <CountrySelect country={country} setCountry={setCountry} />
 
@@ -96,10 +96,9 @@ export const AppTopbar: React.FC = () => {
             </Popover.Dropdown>
           </Popover>
         </Group>
-      </AppShell.Section>
-      <AppShell.Section>
+
         <UserMenu />
-      </AppShell.Section>
+      </Group>
     </AppShell.Header>
   );
 };

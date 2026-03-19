@@ -42,7 +42,7 @@ export const SourceForm: React.FC<Props> = ({ source, onUpdate, onClick }) => {
           value={source.name || source.url || ''}
           onChange={(val) => onUpdate?.({ name: val })}
           canEdit={!!onUpdate}
-          placeholder={t('entity.source.title')}
+          placeholder={t('components.entity.source.title')}
           order={4}
           style={{ flex: 'initial' }}
         />
@@ -84,7 +84,7 @@ export const SourceForm: React.FC<Props> = ({ source, onUpdate, onClick }) => {
 
       <UnstyledButton onClick={() => setAttributesOpen((o) => !o)}>
         <Group justify="space-between">
-          <Title order={5}>{t('attributes')}</Title>
+          <Title order={5}>{t('placeholder.attributes')}</Title>
           <ChevronDownIcon
             style={{
               width: 16,

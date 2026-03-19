@@ -9,9 +9,9 @@ export const CustomSeparator: React.FC<Props> = ({ orientation }) => {
   return (
     <Separator
       style={{
-        backgroundColor: 'transparent',
-        width: orientation === 'horizontal' ? '8px' : '100%',
-        height: orientation === 'vertical' ? '8px' : '100%',
+        backgroundColor: 'var(--mantine-color-gray-2)',
+        width: orientation === 'horizontal' ? '6px' : '100%',
+        height: orientation === 'vertical' ? '6px' : '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

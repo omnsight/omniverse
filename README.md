@@ -1,4 +1,4 @@
-# Omniverse
+# Nexuse Intelligence Platform
 
 ### 🚀 Features
 

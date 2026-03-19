@@ -146,7 +146,7 @@ export const EventForm: React.FC<Props> = ({ event, width, withTitle, onUpdate, 
 
       <UnstyledButton onClick={() => setAttributesOpen((o) => !o)}>
         <Group justify="space-between">
-          <Title order={5}>{t('monitoring.source.attributes')}</Title>
+          <Title order={5}>{t('placeholder.attributes')}</Title>
           <ChevronDownIcon
             style={{
               width: 16,

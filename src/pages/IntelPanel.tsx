@@ -15,12 +15,12 @@ import { GlobalEventTimelineGraph } from './windows/context/GlobalEventTimelineW
 
 export const IntelDashboard: React.FC = () => {
   return (
-    <Box h="100vh" w="100vw" p="xs" bg="gray.1">
+    <Box h="100%" w="100%" bg="gray.1">
       <Group orientation="horizontal">
         <Panel defaultSize={20} minSize={10}>
           <Group orientation="vertical">
             {/* Context Window */}
-            <Panel minSize={15}>
+            <Panel minSize={10}>
               <WindowManager
                 windows={[
                   { name: 'GlobalEventRecommendation', component: GlobalEventRecommendationWindow },
@@ -30,7 +30,7 @@ export const IntelDashboard: React.FC = () => {
             </Panel>
             <CustomSeparator orientation="vertical" />
             {/* Insight Analysis Window */}
-            <Panel minSize={15}>
+            <Panel minSize={10}>
               <WindowManager
                 windows={[
                   { name: 'InsightList', component: InsightListWindow },
@@ -58,7 +58,7 @@ export const IntelDashboard: React.FC = () => {
         <Panel defaultSize={20} minSize={10}>
           <Group orientation="vertical">
             {/* Network Window */}
-            <Panel minSize={15}>
+            <Panel minSize={10}>
               <WindowManager
                 windows={[
                   { name: 'Spark', component: SparkGraph },
@@ -69,7 +69,7 @@ export const IntelDashboard: React.FC = () => {
             </Panel>
             <CustomSeparator orientation="vertical" />
             {/* Raw Data Window */}
-            <Panel minSize={15}>
+            <Panel minSize={10}>
               <WindowManager
                 windows={[
                   { name: 'EntityList', component: EntityListWindow },

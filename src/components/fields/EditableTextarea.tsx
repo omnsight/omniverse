@@ -7,6 +7,7 @@ export interface EditableTextareaProps {
   value?: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  useInput?: boolean;
   canEdit?: boolean;
 }
 
@@ -14,6 +15,7 @@ export const EditableTextarea: React.FC<EditableTextareaProps> = ({
   value,
   onChange,
   placeholder,
+  useInput = false,
   canEdit = false,
 }) => {
   const { t } = useTranslation();
@@ -33,14 +35,14 @@ export const EditableTextarea: React.FC<EditableTextareaProps> = ({
     }
   };
 
-  if (isEditing) {
+  if (useInput || isEditing) {
     return (
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <Textarea
           autoFocus
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
-          onKeyDown={handleKeyDown}
+          onKeyDown={useInput ? undefined : handleKeyDown}
           placeholder={`${t('placeholder.enter')}${placeholder}...`}
           autosize
           minRows={2}
@@ -51,7 +53,7 @@ export const EditableTextarea: React.FC<EditableTextareaProps> = ({
 
   return (
     <Text
-      onDoubleClick={handleDoubleClick}
+      onDoubleClick={useInput ? undefined : handleDoubleClick}
       size="sm"
       mt="sm"
       style={{

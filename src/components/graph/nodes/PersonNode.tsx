@@ -39,7 +39,7 @@ export const PersonNode: React.FC<NodeProps<Person>> = memo(({ data, selected })
           pointerEvents: 'none',
         }}
       >
-        {person?.name || t('placeholder.unknown') + t('entity.person.name')}
+        {person?.name || t('placeholder.unknown') + t('components.entity.person.name')}
       </Text>
     </Box>
   );

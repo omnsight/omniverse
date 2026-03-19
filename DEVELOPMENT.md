@@ -14,6 +14,12 @@ Clean up:
 npm run clean
 ```
 
+Generate translations:
+
+```bash
+npm run check-translations
+```
+
 ## 🚀 Run Service Locally & Debug
 
 Run the application:

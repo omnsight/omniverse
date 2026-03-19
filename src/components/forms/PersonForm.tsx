@@ -31,7 +31,7 @@ export const PersonForm: React.FC<Props> = ({ person, onUpdate, onClick }) => {
         value={person.name || ''}
         onChange={(val) => onUpdate?.({ name: val })}
         canEdit={!!onUpdate}
-        placeholder={t('entity.person.name')}
+        placeholder={t('components.entity.person.name')}
         order={4}
       />
 
@@ -82,7 +82,7 @@ export const PersonForm: React.FC<Props> = ({ person, onUpdate, onClick }) => {
 
       <UnstyledButton onClick={() => setAttributesOpen((o) => !o)}>
         <Group justify="space-between">
-          <Title order={5}>{t('attributes')}</Title>
+          <Title order={5}>{t('placeholder.attributes')}</Title>
           <ChevronDownIcon
             style={{
               width: 16,

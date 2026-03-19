@@ -29,7 +29,7 @@ export const MonitoringSourceForm: React.FC<Props> = ({ source, onUpdate }) => {
           value={source.name || ''}
           onChange={(val) => onUpdate?.({ name: val })}
           canEdit={!!onUpdate}
-          placeholder={t('monitoring.source.name')}
+          placeholder={t('components.monitoring.source.name')}
           order={4}
         />
 
@@ -37,45 +37,45 @@ export const MonitoringSourceForm: React.FC<Props> = ({ source, onUpdate }) => {
           value={source.description || ''}
           onChange={(val) => onUpdate?.({ description: val })}
           canEdit={!!onUpdate}
-          placeholder={t('monitoring.source.description')}
+          placeholder={t('placeholder.description')}
         />
 
         <Group>
-          <Text>{t('monitoring.source.type')}:</Text>
+          <Text>{t('placeholder.source.type')}:</Text>
           <EditableSelect
             value={source.type || ''}
             onChange={(val) => onUpdate?.({ type: val as any })}
             canEdit={!!onUpdate}
             data={['website', 'twitter', 'telegram']}
-            placeholder={t('monitoring.source.type')}
+            placeholder={t('placeholder.source.type')}
           />
         </Group>
         <Group>
-          <Text>{t('monitoring.source.url')}:</Text>
+          <Text>{t('placeholder.url')}:</Text>
           <EditableText
             value={source.url || ''}
             onChange={(val) => onUpdate?.({ url: val })}
             canEdit={!!onUpdate}
-            placeholder={t('monitoring.source.url')}
+            placeholder={t('placeholder.url')}
           />
         </Group>
 
         <Group>
-          <Text>{t('monitoring.source.reliability')}:</Text>
+          <Text>{t('placeholder.reliability')}:</Text>
           <EditableNumber
             value={source.reliability || 0}
             onChange={(val) => onUpdate?.({ reliability: Number(val) })}
             canEdit={!!onUpdate}
-            placeholder={t('monitoring.source.reliability')}
+            placeholder={t('placeholder.reliability')}
           />
         </Group>
         <Group>
-          <Text>{t('monitoring.source.lastReviewed')}:</Text>
+          <Text>{t('placeholder.lastReviewed')}:</Text>
           <EditableDate
             value={(source.last_reviewed || 0) * 1000}
             onChange={(date) => onUpdate?.({ last_reviewed: date.getTime() / 1000 })}
             canEdit={!!onUpdate}
-            placeholder={t('monitoring.source.lastReviewed')}
+            placeholder={t('placeholder.lastReviewed')}
           />
         </Group>
 
@@ -83,7 +83,7 @@ export const MonitoringSourceForm: React.FC<Props> = ({ source, onUpdate }) => {
 
         <UnstyledButton onClick={() => setAttributesOpen((o) => !o)}>
           <Group justify="space-between">
-            <Title order={5}>{t('monitoring.source.attributes')}</Title>
+            <Title order={5}>{t('placeholder.attributes')}</Title>
             <ChevronDownIcon
               style={{
                 width: 16,

@@ -32,20 +32,16 @@ export const GlobalEventRecommendationWindow: React.FC = () => {
       console.error('Error querying recommendation data', error);
       notifications.show({
         title: t('common.error'),
-        message: t('context.recommendation.loadError'),
+        message: t('context.recommendation.queryError'),
         color: 'red',
       });
     }
   }, [isError, error, t]);
 
-  if (!data || !data.events || data.events.length === 0) {
+  if (isLoading) {
     return (
       <Box pos="relative" h="100%" w="100%">
-        {!isLoading ? (
-          <Text>{t('loading')}</Text>
-        ) : (
-          <Text>{t('context.recommendation.noEvents')}</Text>
-        )}
+        <Text>{t('common.loading')}</Text>
       </Box>
     );
   }
@@ -55,7 +51,7 @@ export const GlobalEventRecommendationWindow: React.FC = () => {
       <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars>
         <Box p="lg">
           <SimpleGrid cols={3} spacing="xl">
-            {data.events.map((entity) => (
+            {data?.events?.map((entity) => (
               <Box key={entity._id}>
                 <EventForm event={entity} />
               </Box>

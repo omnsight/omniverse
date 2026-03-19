@@ -25,17 +25,17 @@ export const RelationForm: React.FC<Props> = ({ relation, onUpdate, onClick }) =
         value={relation.label || ''}
         onChange={(val) => onUpdate?.({ label: val })}
         canEdit={!!onUpdate}
-        placeholder={t('entity.relation.name')}
+        placeholder={t('components.entity.relation.label')}
         order={4}
       />
 
       <Group gap={4}>
-        <Text size="sm">{t('entity.relation.name')}:</Text>
+        <Text size="sm">{t('placeholder.name')}:</Text>
         <EditableText
           value={relation.name || ''}
           onChange={(val) => onUpdate?.({ name: val })}
           canEdit={!!onUpdate}
-          placeholder={t('entity.relation.name')}
+          placeholder={t('placeholder.name')}
         />
       </Group>
 
@@ -53,7 +53,7 @@ export const RelationForm: React.FC<Props> = ({ relation, onUpdate, onClick }) =
 
       <UnstyledButton onClick={() => setAttributesOpen((o) => !o)}>
         <Group justify="space-between">
-          <Title order={5}>{t('attributes')}</Title>
+          <Title order={5}>{t('placeholder.attributes')}</Title>
           <ChevronDownIcon
             style={{
               width: 16,

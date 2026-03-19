@@ -37,7 +37,7 @@ export const GlobalEventTimelineGraph: React.FC = () => {
       console.error('Error querying recommendation data', error);
       notifications.show({
         title: t('common.error'),
-        message: t('context.recommendation.loadError'),
+        message: t('context.recommendation.queryError'),
         color: 'red',
       });
     }
@@ -56,7 +56,7 @@ export const GlobalEventTimelineGraph: React.FC = () => {
     return (
       <Box pos="relative" h="100%" w="100%">
         {!isLoading ? (
-          <Text>{t('loading')}</Text>
+          <Text>{t('common.loading')}</Text>
         ) : (
           <Text>{t('context.recommendation.noEvents')}</Text>
         )}

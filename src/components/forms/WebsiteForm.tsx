@@ -43,7 +43,7 @@ export const WebsiteForm: React.FC<Props> = ({ website, onUpdate, onClick }) => 
           value={website.title || ''}
           onChange={(val) => onUpdate?.({ title: val })}
           canEdit={!!onUpdate}
-          placeholder={t('entity.website.name')}
+          placeholder={t('components.entity.website.title')}
           order={4}
           style={{ flex: 'initial' }}
         />
@@ -114,7 +114,7 @@ export const WebsiteForm: React.FC<Props> = ({ website, onUpdate, onClick }) => 
 
       <UnstyledButton onClick={() => setAttributesOpen((o) => !o)}>
         <Group justify="space-between">
-          <Title order={5}>{t('attributes')}</Title>
+          <Title order={5}>{t('placeholder.attributes')}</Title>
           <ChevronDownIcon
             style={{
               width: 16,

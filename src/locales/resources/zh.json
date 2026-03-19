@@ -1,173 +1,252 @@
 {
+  "page": {
+    "error": {
+      "title": "错误",
+      "description": "发生了意外错误。",
+      "return": "返回首页"
+    }
+  },
+  "layout": {
+    "UserMenu": {
+      "login": "登录",
+      "application": "应用",
+      "profile": "个人资料",
+      "theme": "主题",
+      "lightMode": "亮色模式",
+      "darkMode": "暗色模式",
+      "system": "系统",
+      "language": "语言",
+      "english": "英语",
+      "chinese": "中文",
+      "selectLanguage": "选择语言",
+      "auth": {
+        "signOut": "登出"
+      }
+    },
+    "Topbar": {
+      "queryEntitiesError": "查询出错",
+      "selectDateRange": "选择日期范围"
+    },
+    "Sidebar": {
+      "logo": "Nexus",
+      "subtitle": "情报可视化平台",
+      "intelligence": "信息可视化",
+      "monitor": "信源监控",
+      "admin": "管理员面板"
+    },
+    "DatePicker": {
+      "dateLimitExceeded": "超出日期限制",
+      "dateLimitMessage": "已超出最大日期范围。",
+      "presets": "预设",
+      "today": "今天",
+      "yesterday": "昨天",
+      "lastWeek": "上周",
+      "lastMonth": "上个月",
+      "selectDateRange": "选择日期范围"
+    },
+    "CountrySelect": {
+      "select": "选择一个国家"
+    }
+  },
   "common": {
-    "save": "保存",
-    "success": "成功",
-    "updateSuccess": "更新成功",
     "error": "错误",
-    "updateError": "更新失败",
+    "create": "创建",
+    "add": "添加",
+    "delete": "删除",
+    "cancel": "取消",
     "notFound": "未找到",
-    "duplicateRelation": "关系已存在",
-    "noWritePermission": "您必须是 pro 或 admin 用户才能执行此操作",
-    "restore": "恢复",
-    "delete": "删除"
+    "loading": "加载中...",
+    "success": "成功"
   },
   "components": {
-    "GraphTools": {
-      "viewMode": "视图模式",
-      "graph": "图谱",
-      "compare": "对比",
-      "warning": "警告",
-      "badSelection": "请选择2到9个同类型实体进行对比。"
+    "graph": {
+      "remove": {
+        "noPermission": "您没有权限执行此操作。"
+      },
+      "connect": {
+        "noPermission": "您没有权限执行此操作。"
+      },
+      "create": "创建"
     },
-    "GraphContextMenu": {
-      "create": "创建新实体"
+    "insightForm": {
+      "title": "分析标题",
+      "description": "分析描述"
+    },
+    "entity": {
+      "person": {
+        "type": "个人",
+        "name": "个人姓名"
+      },
+      "organization": {
+        "type": "组织类型",
+        "name": "组织名称"
+      },
+      "event": {
+        "type": "事件类型",
+        "title": "事件标题"
+      },
+      "website": {
+        "type": "网站",
+        "title": "标题",
+        "name": "网站名称"
+      },
+      "source": {
+        "type": "信源类型",
+        "title": "标题",
+        "name": "信源名称"
+      },
+      "relation": {
+        "label": "关系标签",
+        "name": "关系名称"
+      }
     },
     "MapTools": {
       "start": "起点",
       "normalMode": "普通模式",
       "rulerMode": "测距模式"
     },
-    "Sidebar": {
-      "omniverse": "Nexus Interlligence Platform",
-      "intelligencePlatform": "情报平台",
-      "geovision": "地理视图",
-      "sparkgraph": "星火图谱",
-      "narrative": "叙事板",
-      "dataPlane": "数据平面",
-      "theme": "主题",
-      "lightMode": "亮色模式",
-      "darkMode": "暗色模式",
-      "system": "跟随系统",
-      "language": "语言",
-      "english": "英语",
-      "chinese": "中文",
-      "selectLanguage": "选择语言",
-      "auth": {
-        "application": "应用",
-        "profile": "个人资料",
-        "signOut": "登出",
-        "login": "登录",
-        "accessAccount": "访问账户"
-      }
-    },
-    "Topbar": {
-      "error": "错误",
-      "loadError": "加载实体失败",
-      "selectCountry": "选择国家",
-      "selectDateRange": "选择日期范围",
-      "dateLimitExceeded": "超出日期限制",
-      "dateLimitMessage": "最大日期范围为一个月。结束日期已自动调整。",
-      "presets": "预设",
-      "today": "今天",
-      "yesterday": "昨天",
-      "lastWeek": "上周",
-      "lastMonth": "上月"
-    },
-    "viewMetadata": {
-      "title": "保存的视图",
-      "snapshot": "快照",
-      "noViews": "暂无保存的视图",
-      "duplicateView": "快照已存在"
-    },
     "editor": {
-      "title": "新文档",
-      "placeholder": "在此开始编写...",
-      "noActiveView": "未选择活动视图。请选择一个视图以插入。",
-      "viewType": {
-        "geovision": "地理视图",
-        "sparkgraph": "星火图谱"
-      },
-      "insertViewTooltip": "将当前视图作为标记插入",
-      "insertViewButton": "插入视图",
-      "presentationMode": "演示模式",
+      "sidebarTitle": "编辑器",
       "tools": {
+        "undo": "撤销",
+        "redo": "重做",
         "bold": "粗体",
         "italic": "斜体",
         "strike": "删除线",
         "highlight": "高亮",
-        "h1": "标题 1",
-        "h2": "标题 2",
-        "h3": "标题 3",
-        "bulletList": "无序列表",
-        "orderedList": "有序列表",
         "codeBlock": "代码块",
         "blockquote": "引用",
+        "bulletList": "无序列表",
+        "orderedList": "有序列表",
         "horizontalRule": "水平分割线",
-        "undo": "撤销",
-        "redo": "重做"
-      }
-    }
-  },
-  "entity": {
-    "event": {
-      "type": "事件",
-      "new": "新事件",
-      "title": "事件标题",
-      "Window": {
-        "untitledEvent": "未命名事件",
-        "relatedOrganizations": "相关组织",
-        "relatedWebsites": "相关网站",
-        "relatedSources": "相关来源"
+        "h1": "标题 1",
+        "h2": "标题 2",
+        "h3": "标题 3"
       }
     },
-    "organization": {
-      "type": "组织",
-      "name": "组织名称"
+    "monitoring": {
+      "source": {
+        "name": "来源名称"
+      }
     },
-    "person": {
-      "type": "人员",
-      "name": "人员姓名"
-    },
-    "source": {
-      "type": "来源",
-      "title": "来源标题"
-    },
-    "website": {
-      "type": "网站",
-      "name": "网站名称"
-    },
-    "relation": {
-      "name": "关系名称",
-      "nameRequired": "关系名称不能为空"
-    }
-  },
-  "pages": {
-    "ErrorPage": {
-      "defaultTitle": "出错了",
-      "defaultDescription": "遇到意外错误，请稍后再试。",
-      "redirecting": "{{count}} 秒后跳转...",
-      "goHome": "返回首页"
-    },
-    "Geovision": {
-      "error": "错误",
-      "loadError": "加载相关数据失败。"
-    },
-    "SparkGraph": {
-      "loadError": "加载图表错误",
-      "fetchRelatedDataError": "获取相关数据失败。"
+    "attributes": {
+      "key": "键",
+      "value": "值",
+      "newKey": "新键",
+      "newValue": "新值"
     }
   },
   "placeholder": {
-    "unknown": "未知",
-    "enter": "输入",
-    "country": "国家",
-    "confidence": "置信度",
-    "relation": "关系",
     "url": "链接",
     "description": "描述",
+    "foundedDate": "成立日期",
+    "discoveredDate": "发现日期",
     "tags": "标签",
+    "attributes": "属性",
     "reliability": "可靠性",
-    "createdDate": "创建日期",
-    "updatedDate": "更新日期",
+    "title": "标题",
+    "name": "名称",
+    "confidence": "置信度",
     "role": "角色",
     "nationality": "国籍",
     "birthDate": "出生日期",
     "type": "类型",
-    "foundedDate": "成立日期",
-    "discoveredDate": "发现日期",
+    "source": {
+      "type": "来源类型"
+    },
+    "lastReviewed": "最后审查",
     "date": "日期",
     "address": "地址",
     "locality": "城市",
-    "administrativeArea": "行政区"
+    "administrativeArea": "行政区域",
+    "country": "国家",
+    "enter": "输入",
+    "unknown": "未知",
+    "relation": "关系",
+    "createdDate": "创建日期",
+    "updatedDate": "更新日期"
+  },
+  "entity": {
+    "event": {
+      "title": "事件标题"
+    },
+    "update": {
+      "success": "更新成功",
+      "error": "更新失败"
+    },
+    "create": {
+      "error": "创建失败",
+      "title": "创建新的",
+      "submit": "提交"
+    }
+  },
+  "network": {
+    "spark": {
+      "deleteError": "删除实体时出错"
+    },
+    "comparison": {
+      "selectAtLeastTwo": "请至少选择两项进行比较。",
+      "selectSameType": "请选择相同类型的项目进行比较。",
+      "showAttributes": "显示属性",
+      "showMainData": "显示主要数据"
+    }
+  },
+  "monitoring": {
+    "single": {
+      "noSourceSelected": "未选择来源。"
+    },
+    "list": {
+      "getSourcesError": "检索来源时出错。",
+      "noSources": "未找到来源。"
+    },
+    "create": {
+      "error": "创建失败。",
+      "title": "创建新的",
+      "submit": "提交"
+    }
+  },
+  "data": {
+    "entity": {
+      "single": {
+        "warning": "警告",
+        "noEntitySelected": "未选择实体。",
+        "noInghtSelected": "未选择见解。",
+        "relatedOrganizations": "相关组织",
+        "relatedWebsites": "相关网站",
+        "relatedEvents": "相关事件",
+        "relatedSources": "相关来源",
+        "addNeighbors": "加载相关实体"
+      },
+      "list": {
+        "noEvents": "未找到事件。"
+      }
+    }
+  },
+  "insight": {
+    "single": {
+      "queryError": "查询分析洞见时出错。"
+    },
+    "list": {
+      "title": "分析洞见列表",
+      "queryError": "查询分析洞见时出错。",
+      "create": {
+        "new": "创建新分析洞见"
+      }
+    },
+    "create": {
+      "error": "创建分析洞见出错",
+      "title": "创建新分析洞见",
+      "submit": "提交"
+    }
+  },
+  "context": {
+    "recommendation": {
+      "queryError": "查询推荐时出错。"
+    }
+  },
+  "editor": {
+    "windowAnchor": {
+      "restore": "恢复视图"
+    }
   }
 }
