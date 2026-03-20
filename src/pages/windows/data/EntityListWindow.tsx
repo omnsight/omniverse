@@ -65,7 +65,7 @@ export const EntityListWindowContent: React.FC = () => {
             </SimpleGrid>
             {eventToCreate ? (
               <InputWindow
-                title={t('insight.create.title')}
+                title={t('createEventTitle')}
                 cancel={t('common.cancel')}
                 submit={t('common.create')}
                 onClose={() => setEventToCreate(undefined)}
@@ -74,12 +74,8 @@ export const EntityListWindowContent: React.FC = () => {
                 <EventForm event={eventToCreate} onUpdate={updateEvent} />
               </InputWindow>
             ) : (
-              <Button
-                fullWidth
-                leftSection={<PlusIcon style={{ width: 20, height: 20 }} />}
-                onClick={() => setEventToCreate({})}
-              >
-                {t('insight.list.create.new')}
+              <Button fullWidth onClick={() => setEventToCreate({})}>
+                <PlusIcon style={{ width: 20, height: 20 }} />
               </Button>
             )}
           </Stack>

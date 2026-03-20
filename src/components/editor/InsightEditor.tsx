@@ -1,42 +1,110 @@
 import './EditorStyle.css';
-import React, { useEffect, useState } from 'react';
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Highlight from '@tiptap/extension-highlight';
+import {
+  CheckCircleIcon,
+  ChevronDownIcon,
+  InboxIcon,
+  Squares2X2Icon,
+} from '@heroicons/react/16/solid';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { notifications } from '@mantine/notifications';
 import {
   ActionIcon,
   Box,
+  Card,
+  Center,
   Divider,
   Group,
   Paper,
   ScrollArea,
   Stack,
   Tooltip,
+  Transition,
   Typography,
   Text,
 } from '@mantine/core';
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Highlight from '@tiptap/extension-highlight';
+import { WindowAnchor } from './extensions/WindowAnchor';
+import { WindowDndExtension } from './extensions/WindowDndExtension';
+import { EntityFormRenderer } from '../forms/entityForm';
 import { useTranslation } from 'react-i18next';
 import { TextSpecialToolbar } from './tools/TextSpecialTools';
 import { UnredoToolbar } from './tools/UnredoTools';
 import { HeadingToolbar } from './tools/HeadingTools';
 import { TextToolbar } from './tools/TextTools';
-import { type OsintView } from 'omni-osint-crud-client';
 import { ListToolbar } from './tools/ListTools';
-import { ArrowPathIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
-import { getEntityTitle } from '../forms/entityForm/entity';
+import { useCrudClient } from '../../api/useCrudyClient';
+import type { OsintView } from 'omni-osint-crud-client/types';
+import { updateView } from 'omni-osint-crud-client/sdk';
 import type { Entity } from '../forms/entityForm/entity';
-import { WindowAnchor } from './extensions/WindowAnchor';
-import { WindowDndExtension } from './extensions/WindowDndExtension';
+import { useInsightStore } from '../../pages/windows/insight/insightData';
 
-interface Props {
+interface CarouselProps {
+  entities: Entity[];
+}
+
+const EntityCarousel: React.FC<CarouselProps> = ({ entities }) => {
+  const { t } = useTranslation();
+
+  return (
+    <ScrollArea h="100%" offsetScrollbars>
+      <Box
+        display="flex"
+        p="md"
+        style={{
+          gap: 'var(--mantine-spacing-md)',
+          alignItems: 'center',
+          minHeight: '100%',
+        }}
+      >
+        {entities.length > 0 ? (
+          entities.map((entity) => (
+            <Card
+              key={entity.data._id}
+              shadow="sm"
+              padding="xs"
+              radius="md"
+              h="80%"
+              withBorder
+              style={{
+                aspectRatio: '0.5',
+                flexShrink: 0,
+              }}
+            >
+              <EntityFormRenderer entity={entity} />
+            </Card>
+          ))
+        ) : (
+          <Center h="80%" w="100%">
+            <Box style={{ textAlign: 'center', opacity: 0.4 }}>
+              <InboxIcon style={{ width: 40, margin: '0 auto' }} />
+              <Text size="sm" fw={500}>
+                {t('insight.editor.noRelatedEntities')}
+              </Text>
+            </Box>
+          </Center>
+        )}
+      </Box>
+    </ScrollArea>
+  );
+};
+
+interface EditorProps {
   insight: OsintView;
   entities: Entity[];
   readonly: boolean;
 }
 
-export const Editor: React.FC<Props> = ({ insight, entities, readonly }) => {
+export const InsightEditor: React.FC<EditorProps> = ({ insight, entities, readonly }) => {
   const { t } = useTranslation();
-  const [opened, setOpened] = useState(true);
+  const { crudClient } = useCrudClient();
+  const [opened, setOpened] = useState(false);
+  const { insights, setInsights } = useInsightStore();
+  const [content, setContent] = useState(insight.analysis);
+  const isDirty = useMemo(() => {
+    return JSON.stringify(content) !== JSON.stringify(insight.analysis);
+  }, [content, insight.analysis]);
 
   const editor = useEditor({
     extensions: [StarterKit, Highlight, WindowAnchor, WindowDndExtension],
@@ -45,15 +113,64 @@ export const Editor: React.FC<Props> = ({ insight, entities, readonly }) => {
         style: 'outline: none',
       },
     },
-    content: insight.analysis,
+    content: {
+      type: 'doc',
+      content: content && content.length > 0 ? content : [{ type: 'paragraph' }],
+    },
+    onUpdate: ({ editor }) => {
+      const json = editor.getJSON();
+      setContent(json.content);
+    },
   });
 
+  const updateInsight = useCallback(async () => {
+    if (!insight._id || !isDirty) return;
+
+    console.debug('Updating insight', insight._id, isDirty, content, insight.analysis);
+    const { data, error, status } = await updateView({
+      body: { analysis: content },
+      path: {
+        id: insight._id,
+      },
+      client: crudClient,
+    });
+
+    if (error) {
+      console.error(`Error [${status}] updating insight`, error);
+      notifications.show({
+        title: t('common.error'),
+        message: t('insight.update.error'),
+        color: 'red',
+      });
+    } else {
+      setInsights(insights.map((i) => (i._id === data._id ? data : i)));
+      console.log('Updated insight', data);
+    }
+  }, [isDirty, content, crudClient, insight._id, insights, setInsights, t]);
+
   useEffect(() => {
-    editor.setEditable(!readonly);
+    editor?.setEditable(!readonly);
   }, [editor, readonly]);
 
+  // auto-save
+  useEffect(() => {
+    if (readonly) return;
+    const timer = setTimeout(() => {
+      updateInsight();
+    }, 10 * 1000);
+    return () => clearTimeout(timer);
+  }, [content, readonly, updateInsight]);
+
   return (
-    <Paper h="100%" w="100%" shadow="sm" radius="md" withBorder>
+    <Paper
+      h="100%"
+      w="100%"
+      shadow="sm"
+      radius="md"
+      display="flex"
+      withBorder
+      style={{ flexDirection: 'column' }}
+    >
       <Stack gap={0} style={{ borderBottom: '1px solid var(--mantine-color-default-border)' }}>
         <Group p="xs" gap="xs">
           <UnredoToolbar editor={editor} />
@@ -61,6 +178,19 @@ export const Editor: React.FC<Props> = ({ insight, entities, readonly }) => {
           <HeadingToolbar editor={editor} />
           <Divider orientation="vertical" />
           <TextToolbar editor={editor} />
+          <Divider orientation="vertical" />
+          <Tooltip label={t('common.save')} withArrow>
+            <ActionIcon onClick={updateInsight} disabled={!isDirty} variant="subtle">
+              <CheckCircleIcon
+                style={{
+                  width: '16px',
+                  color: 'green',
+                  opacity: isDirty ? 1 : 0.4,
+                  transition: 'opacity 200ms ease, color 200ms ease',
+                }}
+              />
+            </ActionIcon>
+          </Tooltip>
         </Group>
         <Group
           p="xs"
@@ -72,76 +202,55 @@ export const Editor: React.FC<Props> = ({ insight, entities, readonly }) => {
           <ListToolbar editor={editor} />
         </Group>
       </Stack>
-      <ScrollArea h="100%" type="auto">
-        <Group align="flex-start" wrap="nowrap" gap={0}>
-          {/* Editor Window */}
-          <Box p="1rem" style={{ flex: 1, minHeight: '100%', cursor: 'text' }}>
-            <Typography>
-              <EditorContent editor={editor} style={{ height: '100%' }} />
-            </Typography>
-          </Box>
-
-          {/* Sticky Side Window */}
-          <Box
-            style={{
-              position: 'sticky',
-              top: 0,
-              height: 'fit-content',
-              borderLeft: opened ? '1px solid var(--mantine-color-default-border)' : 'none',
-              width: opened ? '150px' : '40px', // Shrinks but keeps toggle visible
-              transition: 'width 200ms ease',
-              overflow: 'hidden',
-              backgroundColor: 'var(--mantine-color-body)',
-            }}
-          >
-            <Box p="xs" w="100%">
-              <Group justify="space-between" mb="sm" wrap="nowrap">
-                {opened && (
-                  <Tooltip label={t('components.editor.sidebarTitle')} withArrow>
-                    <Text fw={700} size="xs" truncate>
-                      {t('components.editor.sidebarTitle')}
-                    </Text>
-                  </Tooltip>
-                )}
-
-                <Group gap={4} wrap="nowrap">
-                  {opened && (
-                    <Tooltip label={t('components.editor.toggleSidebar')} withArrow>
-                      <ActionIcon variant="subtle" color="gray" size="sm">
-                        <ArrowPathIcon style={{ width: '14px' }} />
-                      </ActionIcon>
-                    </Tooltip>
-                  )}
-
-                  {/* Toggle Button */}
-                  <ActionIcon variant="light" size="sm" onClick={() => setOpened(!opened)}>
-                    {opened ? (
-                      <ChevronRightIcon style={{ width: '14px' }} />
-                    ) : (
-                      <ChevronLeftIcon style={{ width: '14px' }} />
-                    )}
-                  </ActionIcon>
-                </Group>
-              </Group>
-
-              {opened && (
-                <Stack gap="xs">
-                  {entities.slice(0, 5).map((entity, i) => (
-                    <Text key={i} size="xs" c="dimmed" lineClamp={1}>
-                      {getEntityTitle(entity)}
-                    </Text>
-                  ))}
-                  {entities.length > 5 && (
-                    <Text size="xs" c="dimmed">
-                      ...
-                    </Text>
-                  )}
-                </Stack>
-              )}
+      <Box
+        p="1rem"
+        h="100%"
+        pos="relative"
+        display="flex"
+        style={{ flexDirection: 'column', overflow: 'hidden' }}
+      >
+        <Box style={{ flex: 1, minHeight: 0 }}>
+          <Typography h="100%">
+            <ScrollArea h="100%" type="auto">
+              <EditorContent editor={editor} />
+            </ScrollArea>
+          </Typography>
+        </Box>
+        <Transition mounted={opened} transition="slide-up" duration={400} timingFunction="ease">
+          {(styles) => (
+            <Box
+              h="150px"
+              style={{
+                ...styles,
+                borderTop: '1px solid var(--mantine-color-default-border)',
+                boxShadow: 'var(--mantine-shadow-xl)',
+                flexShrink: 0,
+              }}
+            >
+              <EntityCarousel entities={entities} />
             </Box>
-          </Box>
-        </Group>
-      </ScrollArea>
+          )}
+        </Transition>
+        <ActionIcon
+          radius="xl"
+          onClick={() => setOpened(!opened)}
+          style={{
+            position: 'absolute',
+            bottom: opened ? '160px' : '1rem', // Adjust offset based on carousel height
+            right: '1rem',
+            zIndex: 11,
+            transition: 'bottom 0.3s ease',
+          }}
+        >
+          {opened ? (
+            <ChevronDownIcon style={{ width: '16px' }} />
+          ) : (
+            <Tooltip label={t('openGallery')} withArrow>
+              <Squares2X2Icon style={{ width: '16px' }} />
+            </Tooltip>
+          )}
+        </ActionIcon>
+      </Box>
     </Paper>
   );
 };

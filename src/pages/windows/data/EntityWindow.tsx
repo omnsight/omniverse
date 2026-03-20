@@ -31,8 +31,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useEntityAuth, useAuth } from '../../../provider/AuthContext';
 import { useInsightStore } from '../insight/insightData';
 import { notifications } from '@mantine/notifications';
-import { LinkIcon } from '@heroicons/react/24/solid';
 import { useWindowStoreActions } from '../../../stores/windowStateStore';
+import { PlusCircleIcon } from '@heroicons/react/16/solid';
 
 const EntityWindowContent: React.FC = () => {
   const { t } = useTranslation();
@@ -40,7 +40,7 @@ const EntityWindowContent: React.FC = () => {
   const selections = useSelectedEntities();
   const { setSelections } = useEntitySelectionActions();
   const { addEntities } = useEntityDataActions();
-  const { selected } = useInsightStore();
+  const selected = useInsightStore((state) => state.getSelectedInsight());
   const { register, setDragging } = useWindowStoreActions();
 
   const lastSelection = selections[selections.length - 1];
@@ -119,7 +119,7 @@ const EntityWindowContent: React.FC = () => {
           onDragStart={handleDragStart}
           onDragEnd={() => setDragging(undefined)}
         >
-          <LinkIcon width={16} />
+          <PlusCircleIcon />
         </ActionIcon>
       </Group>
       <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />

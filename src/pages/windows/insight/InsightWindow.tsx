@@ -1,4 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
+import { notifications } from '@mantine/notifications';
+import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import {
   Anchor,
   Box,
@@ -10,20 +13,19 @@ import {
   Stack,
   Text,
 } from '@mantine/core';
-import { useInsightStore } from './insightData';
-import { Editor as InsightEditor } from '../../../components/editor/InsightEditor';
-import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
+import { InsightEditor } from '../../../components/editor/InsightEditor';
 import { getViewEntities } from 'omni-osint-crud-client';
-import { notifications } from '@mantine/notifications';
+import { useInsightStore } from './insightData';
 import { transformEntities } from '../../../components/forms/entityForm/entity';
 import { useAuth } from '../../../provider/AuthContext';
 import { useWindowManager } from '../WindowManager';
+import { useCrudClient } from '../../../api/useCrudyClient';
 
 const InsightWindowContent: React.FC = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const { selected } = useInsightStore();
+  const { crudClient } = useCrudClient();
+  const selected = useInsightStore((state) => state.getSelectedInsight());
   const { setActiveWindowByName } = useWindowManager();
 
   const { data, isError, isLoading } = useQuery({
@@ -33,6 +35,7 @@ const InsightWindowContent: React.FC = () => {
         path: {
           id: selected?._id!,
         },
+        client: crudClient,
       }),
     enabled: !!selected?._id,
   });

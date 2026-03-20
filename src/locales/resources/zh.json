@@ -50,7 +50,7 @@
   },
   "common": {
     "error": "错误",
-    "save": "",
+    "save": "保存",
     "cancel": "取消",
     "edit": "",
     "delete": "删除",
@@ -107,9 +107,12 @@
       "newKey": "新键",
       "newValue": "新值"
     },
+    "monitoring": {
+      "source": {
+        "name": "来源名称"
+      }
+    },
     "editor": {
-      "sidebarTitle": "相关事件、人物、组织等...",
-      "toggleSidebar": "",
       "tools": {
         "undo": "撤销",
         "redo": "重做",
@@ -125,11 +128,6 @@
         "h1": "标题 1",
         "h2": "标题 2",
         "h3": "标题 3"
-      }
-    },
-    "monitoring": {
-      "source": {
-        "name": "来源名称"
       }
     }
   },
@@ -176,6 +174,26 @@
       "submit": "提交"
     }
   },
+  "insight": {
+    "update": {
+      "error": ""
+    },
+    "single": {
+      "queryError": "查询分析文章时出错。",
+      "empty": ""
+    },
+    "list": {
+      "title": "推荐分析文章",
+      "queryError": "查询分析文章时出错。",
+      "create": {
+        "new": "新分析文章"
+      }
+    },
+    "create": {
+      "error": "无法创建新的分析文章",
+      "title": "新分析文章"
+    }
+  },
   "network": {
     "spark": {
       "deleteEdgeError": "",
@@ -200,26 +218,6 @@
     "create": {
       "error": "创建失败。",
       "title": "创建新的"
-    }
-  },
-  "insight": {
-    "single": {
-      "queryError": "查询分析文章时出错。",
-      "empty": ""
-    },
-    "list": {
-      "title": "推荐分析文章",
-      "queryError": "查询分析文章时出错。",
-      "create": {
-        "new": "新分析文章"
-      }
-    },
-    "create": {
-      "error": "无法创建新的分析文章",
-      "title": "新分析文章"
-    },
-    "update": {
-      "error": ""
     }
   },
   "data": {

@@ -107,9 +107,12 @@
       "newKey": "New Key",
       "newValue": "New Value"
     },
+    "monitoring": {
+      "source": {
+        "name": "Source Name"
+      }
+    },
     "editor": {
-      "sidebarTitle": "Editor",
-      "toggleSidebar": "",
       "tools": {
         "undo": "Undo",
         "redo": "Redo",
@@ -125,11 +128,6 @@
         "h1": "Heading 1",
         "h2": "Heading 2",
         "h3": "Heading 3"
-      }
-    },
-    "monitoring": {
-      "source": {
-        "name": "Source Name"
       }
     }
   },
@@ -176,6 +174,26 @@
       "submit": "Submit"
     }
   },
+  "insight": {
+    "update": {
+      "error": ""
+    },
+    "single": {
+      "queryError": "Error querying insight.",
+      "empty": "No insight found."
+    },
+    "list": {
+      "title": "",
+      "queryError": "Error querying insights.",
+      "create": {
+        "new": "New Insight"
+      }
+    },
+    "create": {
+      "error": "Failed to create insight.",
+      "title": "Create New Insight"
+    }
+  },
   "network": {
     "spark": {
       "deleteEdgeError": "",
@@ -200,27 +218,6 @@
     "create": {
       "error": "Creation failed.",
       "title": "Create New"
-    }
-  },
-  "insight": {
-    "single": {
-      "queryError": "Error querying insight.",
-      "empty": "No insight found."
-    },
-    "list": {
-      "title": "",
-      "queryError": "Error querying insights.",
-      "create": {
-        "new": "New Insight"
-      }
-    },
-    "create": {
-      "error": "Failed to create insight.",
-      "title": "Create New Insight",
-      "placeholder": ""
-    },
-    "update": {
-      "error": ""
     }
   },
   "data": {

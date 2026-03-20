@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { ActionIcon, Box, Button, Group, Loader, ScrollArea, Stack, Title } from '@mantine/core';
-import type { OsintView, OsintViewMainData } from 'omni-osint-crud-client/types';
-import { createView, queryViews, updateView } from 'omni-osint-crud-client/sdk';
-import { PlusIcon } from '@heroicons/react/24/solid';
-import { useInsightStore } from './insightData';
-import { InsightForm } from '../../../components/forms';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { useWindowManager } from '../WindowManager';
+import { PlusIcon } from '@heroicons/react/24/solid';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { notifications } from '@mantine/notifications';
+import { ActionIcon, Box, Button, Group, Loader, ScrollArea, Stack, Title } from '@mantine/core';
+import { InsightForm } from '../../../components/forms';
 import { InputWindow } from '../../../components/modals/InputWindow';
 import { useCrudClient } from '../../../api/useCrudyClient';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import type { OsintView, OsintViewMainData } from 'omni-osint-crud-client/types';
+import { createView, queryViews, updateView } from 'omni-osint-crud-client/sdk';
+import { useInsightStore } from './insightData';
+import { useWindowManager } from '../WindowManager';
 import { useAuth } from '../../../provider/AuthContext';
 
 interface CreationModalProps {
@@ -179,8 +179,10 @@ const InsightListWindowContent: React.FC = () => {
                   color="gray"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setSelected(insight);
-                    setActiveWindowByName('Insight');
+                    if (insight._id) {
+                      setSelected(insight._id);
+                      setActiveWindowByName('Insight');
+                    }
                   }}
                 >
                   <ArrowRightIcon style={{ width: 18, height: 18 }} />
