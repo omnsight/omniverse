@@ -43,7 +43,7 @@ const CreationModal: React.FC<CreationModalProps> = ({ insight, setInsight }) =>
       console.error(`Error [${status}] creating insight`, error);
       notifications.show({
         title: t('common.error'),
-        message: t('insight.create.error'),
+        message: t('pages.windows.insight.InsightListWindow.createError'),
         color: 'red',
       });
     } else {
@@ -56,7 +56,7 @@ const CreationModal: React.FC<CreationModalProps> = ({ insight, setInsight }) =>
   if (insight) {
     return (
       <InputWindow
-        title={t('insight.create.title')}
+        title={t('pages.windows.insight.InsightListWindow.createTitle')}
         cancel={t('common.cancel')}
         submit={t('common.create')}
         onClose={() => setInsight(undefined)}
@@ -99,18 +99,22 @@ const InsightListWindowContent: React.FC = () => {
   const { setActiveWindowByName } = useWindowManager();
   const [insightToCreate, setInsightToCreate] = useState<OsintView | undefined>(undefined);
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['insights'],
     queryFn: async () => {
-      const response = await queryViews({ client: crudClient });
-      console.debug('Fetched insights', response.data);
-      return response.data;
+      const {data, error} = await queryViews({ client: crudClient });
+      if (error) {
+        console.error('Error fetching insight data', error);
+        throw error;
+      }
+      console.debug('Fetched insights', data);
+      return data;
     },
     staleTime: 1 * 60 * 1000,
   });
 
   useEffect(() => {
-    if (isError) {
+    if (error) {
       console.error('Error fetching insight data', error);
       notifications.show({
         title: t('common.error'),
@@ -118,7 +122,7 @@ const InsightListWindowContent: React.FC = () => {
         color: 'red',
       });
     }
-  }, [isError, error]);
+  }, [error]);
 
   useEffect(() => {
     if (data?.views) {

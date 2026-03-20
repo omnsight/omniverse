@@ -1,4 +1,14 @@
-import { Menu, Avatar, rem, Switch, Select, useMantineColorScheme } from '@mantine/core';
+import {
+  Menu,
+  Avatar,
+  rem,
+  Switch,
+  Select,
+  useMantineColorScheme,
+  Group,
+  Text,
+  ActionIcon,
+} from '@mantine/core';
 import {
   UserCircleIcon,
   ArrowUpCircleIcon,
@@ -23,8 +33,8 @@ export const UserMenu: React.FC = () => {
     return (
       <Menu width={200}>
         <Menu.Target>
-          <Avatar component="button" radius="xl" color="gray">
-            ?
+          <Avatar radius="xl" color="gray">
+            <UserCircleIcon />
           </Avatar>
         </Menu.Target>
         <Menu.Dropdown>
@@ -39,13 +49,19 @@ export const UserMenu: React.FC = () => {
   return (
     <Menu width={200}>
       <Menu.Target>
-        <Avatar component="button" src={null} radius="xl" color="blue">
-          {(user?.username || '?').charAt(0).toUpperCase()}
-        </Avatar>
+        <Avatar
+            radius="xl"
+            src={null}
+            alt="User profile"
+            color="blue"
+            style={{ cursor: 'pointer' }}
+          >
+            {(user?.username || '?').charAt(0).toUpperCase()}
+          </Avatar>
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Label>{t('pages.layouts.UserMenu.application')}</Menu.Label>
+        <Menu.Label>{t('pages.layouts.UserMenu.account')}</Menu.Label>
         <Menu.Item leftSection={<UserCircleIcon style={{ width: rem(14) }} />}>
           {t('pages.layouts.UserMenu.profile')}
         </Menu.Item>
@@ -72,7 +88,7 @@ export const UserMenu: React.FC = () => {
           onClick={() => setColorScheme('auto')}
           rightSection={<Switch size="xs" checked={colorScheme === 'auto'} readOnly />}
         >
-          {t('pages.layouts.UserMenu.system')}
+          {t('pages.layouts.UserMenu.systemMode')}
         </Menu.Item>
 
         <Menu.Divider />

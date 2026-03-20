@@ -24,6 +24,8 @@ interface Props {
   event: Event;
   width?: number | string;
   withTitle?: boolean;
+  useLabel: boolean;
+  useInput: boolean;
   onUpdate?: (data: EventMainData) => void;
   onClick?: () => void;
 }
@@ -32,6 +34,8 @@ export const EventForm: React.FC<Props> = ({
   event,
   width,
   withTitle = true,
+  useLabel,
+  useInput,
   onUpdate,
   onClick,
 }) => {

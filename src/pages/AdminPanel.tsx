@@ -11,7 +11,7 @@ import { MapWindow } from './windows/main/MapWindow';
 
 export const AdminDashboard: React.FC = () => {
   return (
-    <Box h="100%" w="100%">
+    <Box h="100%" w="100%" bg="light-dark(gray.0, dark.8)">
       {/* 1. MAIN HORIZONTAL GROUP */}
       <Group orientation="horizontal">
         {/* Monitor Window */}

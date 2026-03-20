@@ -73,7 +73,7 @@ const InsightWindowContent: React.FC = () => {
 
   const breadcrumbs = [
     <Anchor href="#" onClick={() => setActiveWindowByName('InsightList')} key="1">
-      {t('pages.windows.insight.InsightWindow.title')}
+      {t('pages.windows.insight.InsightWindow.InsightWindowTitle')}
     </Anchor>,
     <Text key="2">{selected.name}</Text>,
   ];

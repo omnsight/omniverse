@@ -139,7 +139,7 @@ export const InsightEditor: React.FC<EditorProps> = ({ insight, entities, readon
       console.error(`Error [${status}] updating insight`, error);
       notifications.show({
         title: t('common.error'),
-        message: t('components.editor.InsightEditor.error'),
+        message: t('components.editor.InsightEditor.updateInsightError'),
         color: 'red',
       });
     } else {

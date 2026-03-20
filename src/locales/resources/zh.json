@@ -1,51 +1,65 @@
 {
   "pages": {
     "ErrorPage": {
-      "title": "?",
-      "description": "?",
-      "return": "?"
+      "title": "错误页面",
+      "description": "遇到未知错误",
+      "return": "返回首页"
     },
     "layouts": {
       "UserMenu": {
-        "login": "?",
-        "application": "?",
-        "profile": "?",
-        "theme": "?",
-        "lightMode": "?",
-        "darkMode": "?",
-        "system": "?",
-        "language": "?",
-        "english": "?",
-        "chinese": "?",
-        "selectLanguage": "?",
-        "signOut": "?"
+        "login": "登录",
+        "account": "账号",
+        "profile": "账户资料",
+        "theme": "主题",
+        "lightMode": "浅色主题",
+        "darkMode": "深色主题",
+        "systemMode": "系统主题",
+        "language": "语言",
+        "english": "英文",
+        "chinese": "中文",
+        "selectLanguage": "选择语言",
+        "signOut": "退出登录"
       },
       "Topbar": {
-        "queryEntitiesError": "?",
-        "selectDateRange": "?"
+        "queryEntitiesError": "无法查询到有关数据，请检查查询参数",
+        "selectDateRange": "?",
+        "searchPlaceholder": "搜索",
+        "searchFilters": "搜索过滤器",
+        "country": "国家"
       },
       "Sidebar": {
-        "logo": "?",
-        "subtitle": "?",
-        "intelligence": "?",
-        "monitor": "?",
-        "admin": "?"
+        "logo": "Nexus",
+        "subtitle": "信息情报可视化平台",
+        "intelligence": "信息综合",
+        "monitor": "信源监控",
+        "admin": "管理员面板"
       },
       "RangeDatePicker": {
-        "dateLimitExceeded": "?",
-        "dateLimitMessage": "?",
-        "presets": "?",
-        "today": "?",
-        "yesterday": "?",
-        "lastWeek": "?",
-        "lastMonth": "?",
-        "selectDateRange": "?"
+        "dateLimitExceeded": "日期范围超出上限",
+        "dateLimitMessage": "日期范围不能超过一个月",
+        "presets": "预设日期范围",
+        "today": "今天",
+        "yesterday": "昨天",
+        "lastWeek": "上一周",
+        "lastMonth": "上一个月",
+        "selectDateRange": "选择日期范围"
       },
       "CountrySelect": {
-        "select": "?"
+        "select": "请选择国家/地区"
       }
     },
     "windows": {
+      "monitor": {
+        "MonitorWindow": {
+          "noSourceSelected": "?",
+          "title": "?"
+        },
+        "MonitorListWindow": {
+          "getSourcesError": "?",
+          "error": "?",
+          "title": "?"
+        }
+      },
       "network": {
         "SparkGraph": {
           "deleteEdgeError": "?",
@@ -56,17 +70,6 @@
           "selectSameType": "?",
           "showAttributes": "?",
           "showMainData": "?"
-        }
-      },
-      "monitor": {
-        "MonitorWindow": {
-          "noSourceSelected": "?",
-          "title": "?"
-        },
-        "MonitorListWindow": {
-          "getSourcesError": "?",
-          "error": "?",
-          "title": "?"
         }
       },
       "data": {
@@ -83,9 +86,9 @@
           "title": "?"
         },
         "EntityListWindow": {
-          "error": "?",
-          "createEventTitle": "?",
-          "title": "?"
+          "error": "无法创建事件，请稍后再试。",
+          "createEventTitle": "创建事件",
+          "title": "相关事件"
         }
       },
       "context": {
@@ -99,35 +102,32 @@
       "insight": {
         "InsightWindow": {
           "queryError": "?",
-          "empty": "?",
-          "title": "?"
+          "empty": "没有选中的文章,请选择并点击一篇专栏",
+          "InsightWindowTitle": "分析专栏"
         },
         "InsightListWindow": {
-          "error": "?",
-          "title": "?",
-          "queryError": "?"
+          "createError": "发表新专栏失败，请稍后尝试",
+          "createTitle": "发表新专栏",
+          "queryError": "获取专栏失败，请稍后重试。",
+          "error": "无法更新内容，请检查输入。",
+          "title": "分析专栏"
         }
       }
     }
   },
   "common": {
     "error": "错误",
+    "reset": "重置",
+    "apply": "应用",
     "save": "保存",
+    "notFound": "未找到",
     "cancel": "取消",
     "edit": "?",
     "delete": "删除",
     "add": "添加",
-    "notFound": "未找到",
     "create": "创建"
   },
   "components": {
-    "map": {
-      "MapTools": {
-        "start": "?",
-        "normalMode": "?",
-        "rulerMode": "?"
-      }
-    },
     "graph": {
       "Graph": {
         "noPermission": "?"
@@ -159,6 +159,13 @@
         }
       }
     },
+    "map": {
+      "MapTools": {
+        "start": "?",
+        "normalMode": "?",
+        "rulerMode": "?"
+      }
+    },
     "forms": {
       "WebsiteForm": {
         "title": "?"
@@ -178,6 +185,9 @@
       "MonitoringSourceForm": {
         "name": "?"
       },
+      "InsightForm": {
+        "insightDescriptionPlaceholder": "专栏精短概述（主题、事件、重要发现等）"
+      },
       "EventForm": {
         "title": "事件标题"
       },
@@ -192,50 +202,50 @@
         }
       }
     },
+    "editor": {
+      "InsightEditor": {
+        "noRelatedEntities": "暂无相关事件、人物、组织等",
+        "updateInsightError": "无法更新专栏，请稍后再试",
+        "openGallery": "相关事件、人物、组织等"
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "恢复视图"
+        }
+      },
+      "tools": {
+        "UnredoTools": {
+          "undo": "撤销",
+          "redo": "重做"
+        },
+        "TextTools": {
+          "bold": "加粗",
+          "italic": "斜体",
+          "strike": "删除线",
+          "highlight": "高亮"
+        },
+        "TextSpecialTools": {
+          "codeBlock": "代码块",
+          "blockquote": "引用块"
+        },
+        "ListTools": {
+          "bulletList": "无序列表",
+          "orderedList": "有序列表",
+          "horizontalRule": "水平分隔线"
+        },
+        "HeadingTools": {
+          "h1": "一级标题",
+          "h2": "二级标题",
+          "h3": "三级标题"
+        }
+      }
+    },
     "fields": {
       "EditableAttributes": {
         "key": "?",
         "value": "?",
         "newKey": "?",
         "newValue": "?"
-      }
-    },
-    "editor": {
-      "InsightEditor": {
-        "noRelatedEntities": "?",
-        "error": "?",
-        "openGallery": "?"
-      },
-      "extensions": {
-        "WindowAnchor": {
-          "restore": "?"
-        }
-      },
-      "tools": {
-        "UnredoTools": {
-          "undo": "?",
-          "redo": "?"
-        },
-        "TextTools": {
-          "bold": "?",
-          "italic": "?",
-          "strike": "?",
-          "highlight": "?"
-        },
-        "TextSpecialTools": {
-          "codeBlock": "?",
-          "blockquote": "?"
-        },
-        "ListTools": {
-          "bulletList": "?",
-          "orderedList": "?",
-          "horizontalRule": "?"
-        },
-        "HeadingTools": {
-          "h1": "?",
-          "h2": "?",
-          "h3": "?"
-        }
       }
     }
   },
@@ -263,10 +273,10 @@
     "locality": "城市",
     "administrativeArea": "行政区域",
     "country": "国家",
-    "enter": "输入",
-    "unknown": "未知",
     "relation": "关系",
     "createdDate": "创建日期",
-    "updatedDate": "更新日期"
+    "updatedDate": "更新日期",
+    "enter": "输入",
+    "unknown": "未知"
   }
 }

@@ -14,8 +14,10 @@ export const RangeDatePicker: React.FC<Props> = ({ dateRange, setDateRange }) =>
 
   const handleDateChange = (val: [string | null, string | null]) => {
     if (val[0] && val[1]) {
-      const start = new Date(val[0]);
-      const end = new Date(val[1]);
+      const [sYear, sMonth, sDay] = val[0].split('-').map(Number);
+      const [eYear, eMonth, eDay] = val[1].split('-').map(Number);
+      const start = new Date(sYear, sMonth - 1, sDay);
+      const end = new Date(eYear, eMonth - 1, eDay);
       end.setHours(23, 59, 59, 999);
 
       const maxEndDate = new Date(start);

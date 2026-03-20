@@ -47,7 +47,7 @@ export const InsightForm: React.FC<InsightFormProps> = ({
           onChange={(val) => onUpdate?.({ description: val })}
           useInput={useInput}
           canEdit={!!onUpdate}
-          placeholder={t('placeholder.description')}
+          placeholder={t('components.forms.InsightForm.insightDescriptionPlaceholder')}
         />
       </Stack>
       {children}

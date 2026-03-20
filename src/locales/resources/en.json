@@ -1,51 +1,65 @@
 {
   "pages": {
     "ErrorPage": {
-      "title": "?",
-      "description": "?",
-      "return": "?"
+      "title": "Error Page",
+      "description": "Oops! Encountered an unknown error",
+      "return": "Return to Home"
     },
     "layouts": {
       "UserMenu": {
-        "login": "?",
-        "application": "?",
-        "profile": "?",
-        "theme": "?",
-        "lightMode": "?",
-        "darkMode": "?",
-        "system": "?",
-        "language": "?",
-        "english": "?",
-        "chinese": "?",
-        "selectLanguage": "?",
-        "signOut": "?"
+        "login": "Login",
+        "account": "Account",
+        "profile": "Profile",
+        "theme": "Theme",
+        "lightMode": "Light Mode",
+        "darkMode": "Dark Mode",
+        "systemMode": "System Mode",
+        "language": "Language",
+        "english": "English",
+        "chinese": "Chinese",
+        "selectLanguage": "Select Language",
+        "signOut": "Sign Out"
       },
       "Topbar": {
-        "queryEntitiesError": "?",
-        "selectDateRange": "?"
+        "queryEntitiesError": "Failed to query entities",
+        "selectDateRange": "?",
+        "searchPlaceholder": "Search",
+        "searchFilters": "Search Filters",
+        "country": "Country"
       },
       "Sidebar": {
-        "logo": "?",
-        "subtitle": "?",
-        "intelligence": "?",
-        "monitor": "?",
-        "admin": "?"
+        "logo": "Nexus",
+        "subtitle": "Intelligence Platform",
+        "intelligence": "Intelligence Panel",
+        "monitor": "Monitor Panel",
+        "admin": "Admin Panel"
       },
       "RangeDatePicker": {
-        "dateLimitExceeded": "?",
-        "dateLimitMessage": "?",
-        "presets": "?",
-        "today": "?",
-        "yesterday": "?",
-        "lastWeek": "?",
-        "lastMonth": "?",
-        "selectDateRange": "?"
+        "dateLimitExceeded": "Date range exceeds upper limit",
+        "dateLimitMessage": "Date range cannot exceed one month",
+        "presets": "Preset Date Ranges",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "lastWeek": "Last Week",
+        "lastMonth": "Last Month",
+        "selectDateRange": "Select Date Range"
       },
       "CountrySelect": {
-        "select": "?"
+        "select": "Select Country/Region"
       }
     },
     "windows": {
+      "monitor": {
+        "MonitorWindow": {
+          "noSourceSelected": "?",
+          "title": "?"
+        },
+        "MonitorListWindow": {
+          "getSourcesError": "?",
+          "error": "?",
+          "title": "?"
+        }
+      },
       "network": {
         "SparkGraph": {
           "deleteEdgeError": "?",
@@ -56,17 +70,6 @@
           "selectSameType": "?",
           "showAttributes": "?",
           "showMainData": "?"
-        }
-      },
-      "monitor": {
-        "MonitorWindow": {
-          "noSourceSelected": "?",
-          "title": "?"
-        },
-        "MonitorListWindow": {
-          "getSourcesError": "?",
-          "error": "?",
-          "title": "?"
         }
       },
       "data": {
@@ -83,9 +86,9 @@
           "title": "?"
         },
         "EntityListWindow": {
-          "error": "?",
-          "createEventTitle": "?",
-          "title": "?"
+          "error": "Failed to create event",
+          "createEventTitle": "Create Event",
+          "title": "Related Events"
         }
       },
       "context": {
@@ -99,35 +102,32 @@
       "insight": {
         "InsightWindow": {
           "queryError": "?",
-          "empty": "?",
-          "title": "?"
+          "empty": "No selected article",
+          "InsightWindowTitle": "Insight Analysis"
         },
         "InsightListWindow": {
-          "error": "?",
-          "title": "?",
-          "queryError": "?"
+          "createError": "Failed to create insight, please try again later.",
+          "createTitle": "Create New Insight",
+          "queryError": "Failed to query insights, please try again later.",
+          "error": "Failed to update content, please check your input.",
+          "title": "Insight Column"
         }
       }
     }
   },
   "common": {
     "error": "Error",
+    "reset": "Reset",
+    "apply": "Apply",
     "save": "?",
+    "notFound": "Not Found",
     "cancel": "?",
     "edit": "?",
     "delete": "Delete",
     "add": "Add",
-    "notFound": "Not Found",
     "create": "?"
   },
   "components": {
-    "map": {
-      "MapTools": {
-        "start": "?",
-        "normalMode": "?",
-        "rulerMode": "?"
-      }
-    },
     "graph": {
       "Graph": {
         "noPermission": "?"
@@ -159,6 +159,13 @@
         }
       }
     },
+    "map": {
+      "MapTools": {
+        "start": "?",
+        "normalMode": "?",
+        "rulerMode": "?"
+      }
+    },
     "forms": {
       "WebsiteForm": {
         "title": "?"
@@ -178,6 +185,9 @@
       "MonitoringSourceForm": {
         "name": "?"
       },
+      "InsightForm": {
+        "insightDescriptionPlaceholder": "Short summary of the insight (theme, event, important discoveries, etc.)"
+      },
       "EventForm": {
         "title": "Event Title"
       },
@@ -192,50 +202,50 @@
         }
       }
     },
+    "editor": {
+      "InsightEditor": {
+        "noRelatedEntities": "No related events, people, and etc.",
+        "updateInsightError": "Failed to update insight, please try again later.",
+        "openGallery": "Related Events, People, and etc."
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "Restore Window"
+        }
+      },
+      "tools": {
+        "UnredoTools": {
+          "undo": "Undo",
+          "redo": "Redo"
+        },
+        "TextTools": {
+          "bold": "Bold",
+          "italic": "Italic",
+          "strike": "Strike",
+          "highlight": "Highlight"
+        },
+        "TextSpecialTools": {
+          "codeBlock": "Code Block",
+          "blockquote": "Blockquote"
+        },
+        "ListTools": {
+          "bulletList": "Bullet List",
+          "orderedList": "Ordered List",
+          "horizontalRule": "Horizontal Rule"
+        },
+        "HeadingTools": {
+          "h1": "H1 Heading",
+          "h2": "H2 Heading",
+          "h3": "H3 Heading"
+        }
+      }
+    },
     "fields": {
       "EditableAttributes": {
         "key": "?",
         "value": "?",
         "newKey": "?",
         "newValue": "?"
-      }
-    },
-    "editor": {
-      "InsightEditor": {
-        "noRelatedEntities": "?",
-        "error": "?",
-        "openGallery": "?"
-      },
-      "extensions": {
-        "WindowAnchor": {
-          "restore": "?"
-        }
-      },
-      "tools": {
-        "UnredoTools": {
-          "undo": "?",
-          "redo": "?"
-        },
-        "TextTools": {
-          "bold": "?",
-          "italic": "?",
-          "strike": "?",
-          "highlight": "?"
-        },
-        "TextSpecialTools": {
-          "codeBlock": "?",
-          "blockquote": "?"
-        },
-        "ListTools": {
-          "bulletList": "?",
-          "orderedList": "?",
-          "horizontalRule": "?"
-        },
-        "HeadingTools": {
-          "h1": "?",
-          "h2": "?",
-          "h3": "?"
-        }
       }
     }
   },
@@ -263,10 +273,10 @@
     "locality": "Locality",
     "administrativeArea": "Administrative Area",
     "country": "Country",
-    "enter": "Enter",
-    "unknown": "Unknown",
     "relation": "Relation",
     "createdDate": "Created Date",
-    "updatedDate": "Updated Date"
+    "updatedDate": "Updated Date",
+    "enter": "Enter",
+    "unknown": "Unknown"
   }
 }

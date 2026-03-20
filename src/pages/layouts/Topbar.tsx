@@ -1,7 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { AppShell, Group, Popover, Button, rem } from '@mantine/core';
+import {
+  AppShell,
+  Group,
+  Popover,
+  Button,
+  rem,
+  TextInput,
+  ActionIcon,
+  Menu,
+  Stack,
+  Box,
+  Text,
+} from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { CalendarDaysIcon } from '@heroicons/react/24/solid';
+import {
+  CalendarDaysIcon,
+  MagnifyingGlassIcon,
+  AdjustmentsHorizontalIcon,
+} from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { queryEvents } from 'omni-osint-query-client';
@@ -22,28 +38,37 @@ export const AppTopbar: React.FC = () => {
     return [start, end];
   });
   const [popoverOpened, setPopoverOpened] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
 
-  const { data, isError, error } = useQuery({
-    queryKey: ['global-search-entities', dateRange, country || ''],
-    queryFn: async () =>
-      await queryEvents({
+  const { data, error, refetch } = useQuery({
+    queryKey: ['global-search-entities', dateRange, country || '', searchInput],
+    queryFn: async () => {
+      const { data, error } = await queryEvents({
         body: {
           date_start: Math.floor(dateRange[0]!.getTime() / 1000),
           date_end: Math.floor(dateRange[1]!.getTime() / 1000),
           country_code: country,
+          query: searchInput,
         },
-      }),
-    enabled: !!dateRange[0] && !!dateRange[1],
+      });
+      if (error) {
+        console.error('Error fetching global search entities', error);
+        throw error;
+      }
+      console.debug('Fetched global search entities', data);
+      return data;
+    },
+    enabled: false,
     staleTime: 5 * 60 * 1000,
     retry: 1,
   });
 
   useEffect(() => {
-    if (data?.data) {
+    if (data) {
       setEntities(
         {
-          events: data.data.events || [],
-          relations: data.data.relations || [],
+          events: data.events || [],
+          relations: data.relations || [],
         },
         ['global-search-entities', dateRange, country || ''],
       );
@@ -51,7 +76,7 @@ export const AppTopbar: React.FC = () => {
   }, [data, setEntities]);
 
   useEffect(() => {
-    if (isError) {
+    if (error) {
       notifications.show({
         title: t('common.error'),
         message: t('pages.layouts.Topbar.queryEntitiesError'),
@@ -59,7 +84,7 @@ export const AppTopbar: React.FC = () => {
       });
       console.error('Failed to query entities', error);
     }
-  }, [isError, error, t]);
+  }, [error, t]);
 
   const formatDateRange = (range: [Date | undefined, Date | undefined]) => {
     if (!range[0]) return t('pages.layouts.Topbar.selectDateRange');
@@ -68,11 +93,76 @@ export const AppTopbar: React.FC = () => {
     return `${startStr} - ${endStr}`;
   };
 
+  const handleSearch = () => {
+    if (dateRange[0] && dateRange[1]) {
+      refetch();
+    }
+  };
+
+  const handleReset = () => {
+    setSearchInput('');
+    setCountry(undefined);
+    setDateRange([undefined, undefined]);
+  };
+
   return (
     <AppShell.Header p="xs">
       <Group justify="space-between">
         <Group>
-          <CountrySelect country={country} setCountry={setCountry} />
+          <Group
+            pl="xs"
+            pr="xs"
+            gap="sm"
+            wrap="nowrap"
+            style={(theme) => ({
+              border: `${rem(1)} solid ${theme.colors.gray[4]}`,
+              borderRadius: theme.radius.sm,
+            })}
+          >
+            <ActionIcon variant="default" color="gray" size="md" onClick={handleSearch}>
+              <MagnifyingGlassIcon style={{ width: rem(16) }} />
+            </ActionIcon>
+            <TextInput
+              variant="unstyled"
+              placeholder={t('pages.layouts.Topbar.searchPlaceholder')}
+              size="md"
+              value={searchInput}
+              onChange={(event) => setSearchInput(event.currentTarget.value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  handleSearch();
+                }
+              }}
+            />
+            <Menu withArrow shadow="md">
+              <Menu.Target>
+                <ActionIcon variant="default" color="gray" size="md">
+                  <AdjustmentsHorizontalIcon style={{ width: rem(16) }} />
+                </ActionIcon>
+              </Menu.Target>
+              <Menu.Dropdown p="md">
+                <Menu.Label mb="xs" p={0} style={{ fontSize: rem(14), fontWeight: 700 }}>
+                  {t('pages.layouts.Topbar.searchFilters')}
+                </Menu.Label>
+                <Stack gap="sm">
+                  <Box>
+                    <Text size="xs" fw={500} mb={4} c="dimmed">
+                      {t('pages.layouts.Topbar.country')}
+                    </Text>
+                    <CountrySelect country={country} setCountry={setCountry} />
+                  </Box>
+                </Stack>
+                <Group justify="flex-end" mt="md">
+                  <Button variant="subtle" size="xs" color="gray" onClick={handleReset}>
+                    {t('common.reset')}
+                  </Button>
+                  <Button size="xs" onClick={handleSearch}>
+                    {t('common.apply')}
+                  </Button>
+                </Group>
+              </Menu.Dropdown>
+            </Menu>
+          </Group>
 
           <Popover
             opened={popoverOpened}
@@ -95,7 +185,6 @@ export const AppTopbar: React.FC = () => {
             </Popover.Dropdown>
           </Popover>
         </Group>
-
         <UserMenu />
       </Group>
     </AppShell.Header>

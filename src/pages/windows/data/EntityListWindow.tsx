@@ -59,7 +59,7 @@ const CreationModal: React.FC<CreationModalProps> = ({ event, setEvent }) => {
         onClose={() => setEvent(undefined)}
         onSubmit={submitNewEvent}
       >
-        <EventForm event={event} onUpdate={updateEvent} />
+        <EventForm event={event} useLabel={true} useInput={true} onUpdate={updateEvent} />
       </InputWindow>
     );
   } else {
@@ -87,6 +87,8 @@ export const EntityListWindowContent: React.FC = () => {
               <Box key={entity._id}>
                 <EventForm
                   event={entity}
+                  useLabel={false}
+                  useInput={false}
                   onClick={() => {
                     setSelections([entity._id || '']);
                     setActiveWindowByName('Entity');
