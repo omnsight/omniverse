@@ -83,8 +83,8 @@ export const EditableAttributes: React.FC<Props> = ({ value, onChange, canEdit }
       <Table>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>{t('components.attributes.key')}</Table.Th>
-            <Table.Th>{t('components.attributes.value')}</Table.Th>
+            <Table.Th>{t('components.fields.EditableAttributes.key')}</Table.Th>
+            <Table.Th>{t('components.fields.EditableAttributes.value')}</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
@@ -130,8 +130,8 @@ export const EditableAttributes: React.FC<Props> = ({ value, onChange, canEdit }
       <Table>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>{t('components.attributes.key')}</Table.Th>
-            <Table.Th>{t('components.attributes.value')}</Table.Th>
+            <Table.Th>{t('components.fields.EditableAttributes.key')}</Table.Th>
+            <Table.Th>{t('components.fields.EditableAttributes.value')}</Table.Th>
             {isEditing && <Table.Th />}
           </Table.Tr>
         </Table.Thead>
@@ -154,7 +154,7 @@ export const EditableAttributes: React.FC<Props> = ({ value, onChange, canEdit }
       {isEditing && (
         <Group mt="md">
           <TextInput
-            placeholder={t('components.attributes.newKey')}
+            placeholder={t('components.fields.EditableAttributes.newKey')}
             value={newKey}
             onChange={(e) => setNewKey(e.currentTarget.value)}
           />
@@ -165,21 +165,21 @@ export const EditableAttributes: React.FC<Props> = ({ value, onChange, canEdit }
           />
           {newType === 'text' && (
             <TextInput
-              placeholder={t('components.attributes.newValue')}
+              placeholder={t('components.fields.EditableAttributes.newValue')}
               value={newValue}
               onChange={(e) => setNewValue(e.currentTarget.value)}
             />
           )}
           {newType === 'number' && (
             <NumberInput
-              placeholder={t('components.attributes.newValue')}
+              placeholder={t('components.fields.EditableAttributes.newValue')}
               value={newValue}
               onChange={setNewValue}
             />
           )}
           {newType === 'date' && (
             <DateInput
-              placeholder={t('components.attributes.newValue')}
+              placeholder={t('components.fields.EditableAttributes.newValue')}
               value={newValue}
               onChange={setNewValue}
             />

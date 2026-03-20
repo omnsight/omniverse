@@ -23,10 +23,10 @@ export const AppSidebar: React.FC = () => {
           <GlobeAltIcon style={{ width: rem(34), flexShrink: 0 }} className="text-blue-600" />
           <Stack gap={0}>
             <Text fw={700} size="md" lh={1}>
-              {t('layout.Sidebar.logo')}
+              {t('pages.layouts.Sidebar.logo')}
             </Text>
             <Text size={rem(10)} c="dimmed" lh={1.2}>
-              {t('layout.Sidebar.subtitle')}
+              {t('pages.layouts.Sidebar.subtitle')}
             </Text>
           </Stack>
         </Group>
@@ -36,7 +36,7 @@ export const AppSidebar: React.FC = () => {
       {/* --- Main Navigation --- */}
       <AppShell.Section grow>
         <NavLink
-          label={t('layout.Sidebar.intelligence')}
+          label={t('pages.layouts.Sidebar.intelligence')}
           leftSection={<LightBulbIcon style={{ width: rem(20) }} />}
           active={isActive('/intelligence')}
           variant="light"
@@ -44,7 +44,7 @@ export const AppSidebar: React.FC = () => {
           onClick={() => navigate('/intelligence')}
         />
         <NavLink
-          label={t('layout.Sidebar.monitor')}
+          label={t('pages.layouts.Sidebar.monitor')}
           leftSection={<EyeIcon style={{ width: rem(20) }} />}
           active={isActive('/monitor')}
           variant="light"
@@ -53,7 +53,7 @@ export const AppSidebar: React.FC = () => {
         />
         {hasRole('admin') && (
           <NavLink
-            label={t('layout.Sidebar.admin')}
+            label={t('pages.layouts.Sidebar.admin')}
             leftSection={<UserCircleIcon style={{ width: rem(20) }} />}
             active={isActive('/admin')}
             variant="light"

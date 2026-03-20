@@ -14,7 +14,7 @@ export const HeadingToolbar: React.FC<Props> = ({ editor }) => {
 
   return (
     <Group gap={4}>
-      <Tooltip label={t('components.editor.tools.h1')}>
+      <Tooltip label={t('components.editor.tools.HeadingTools.h1')}>
         <ActionIcon
           variant={editor.isActive('heading', { level: 1 }) ? 'filled' : 'subtle'}
           onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
@@ -24,7 +24,7 @@ export const HeadingToolbar: React.FC<Props> = ({ editor }) => {
           </Text>
         </ActionIcon>
       </Tooltip>
-      <Tooltip label={t('components.editor.tools.h2')}>
+      <Tooltip label={t('components.editor.tools.HeadingTools.h2')}>
         <ActionIcon
           variant={editor.isActive('heading', { level: 2 }) ? 'filled' : 'subtle'}
           onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
@@ -34,7 +34,7 @@ export const HeadingToolbar: React.FC<Props> = ({ editor }) => {
           </Text>
         </ActionIcon>
       </Tooltip>
-      <Tooltip label={t('components.editor.tools.h3')}>
+      <Tooltip label={t('components.editor.tools.HeadingTools.h3')}>
         <ActionIcon
           variant={editor.isActive('heading', { level: 3 }) ? 'filled' : 'subtle'}
           onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}

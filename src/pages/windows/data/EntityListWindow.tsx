@@ -9,75 +9,92 @@ import { PlusIcon } from '@heroicons/react/24/solid';
 import { InputWindow } from '../../../components/modals/InputWindow';
 import { createEvent, type Event, type EventMainData } from 'omni-osint-crud-client';
 import { notifications } from '@mantine/notifications';
+import { useCrudClient } from '../../../api/useCrudyClient';
 
-export const EntityListWindowContent: React.FC = () => {
+interface CreationModalProps {
+  event: Event | undefined;
+  setEvent: (event: Event | undefined) => void;
+}
+
+const CreationModal: React.FC<CreationModalProps> = ({ event, setEvent }) => {
   const { t } = useTranslation();
-  const { events, actions } = useEntityDataStore();
-  const { setActiveWindowByName } = useWindowManager();
-  const { setSelections } = useEntitySelectionActions();
-  const [eventToCreate, setEventToCreate] = useState<Event | undefined>(undefined);
+  const { crudClient } = useCrudClient();
+  const { actions } = useEntityDataStore();
 
   const updateEvent = (data: EventMainData) => {
-    if (!eventToCreate) return;
-    setEventToCreate({
-      ...eventToCreate,
+    if (!event) return;
+    setEvent({
+      ...event,
       ...data,
     });
   };
 
   const submitNewEvent = async () => {
-    if (!eventToCreate) return;
+    if (!event) return;
     const { data, error, status } = await createEvent({
-      body: eventToCreate,
+      body: event,
+      client: crudClient,
     });
 
     if (error) {
       console.error(`Error [${status}] creating event`, error);
       notifications.show({
         title: t('common.error'),
-        message: t('insight.create.error'),
+        message: t('pages.windows.data.EntityListWindow.error'),
         color: 'red',
       });
     } else {
       actions.addEntities({ events: [data] });
-      setEventToCreate(undefined);
+      setEvent(undefined);
       console.log('Created event', data);
     }
   };
+
+  if (event) {
+    return (
+      <InputWindow
+        title={t('pages.windows.data.EntityListWindow.createEventTitle')}
+        cancel={t('common.cancel')}
+        submit={t('common.create')}
+        onClose={() => setEvent(undefined)}
+        onSubmit={submitNewEvent}
+      >
+        <EventForm event={event} onUpdate={updateEvent} />
+      </InputWindow>
+    );
+  } else {
+    return (
+      <Button fullWidth onClick={() => setEvent({})}>
+        <PlusIcon style={{ width: 20, height: 20 }} />
+      </Button>
+    );
+  }
+};
+
+export const EntityListWindowContent: React.FC = () => {
+  const { events } = useEntityDataStore();
+  const { setActiveWindowByName } = useWindowManager();
+  const { setSelections } = useEntitySelectionActions();
+  const { authed } = useCrudClient();
+  const [eventToCreate, setEventToCreate] = useState<Event | undefined>(undefined);
 
   return (
     <Box pos="relative" h="100%" w="100%">
       <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars>
         <Box p="lg">
           <Stack>
-            <SimpleGrid cols={3} spacing="xl">
-              {events.map((entity) => (
-                <Box key={entity._id}>
-                  <EventForm
-                    event={entity}
-                    onClick={() => {
-                      setSelections([entity._id || '']);
-                      setActiveWindowByName('Entity');
-                    }}
-                  />
-                </Box>
-              ))}
-            </SimpleGrid>
-            {eventToCreate ? (
-              <InputWindow
-                title={t('createEventTitle')}
-                cancel={t('common.cancel')}
-                submit={t('common.create')}
-                onClose={() => setEventToCreate(undefined)}
-                onSubmit={submitNewEvent}
-              >
-                <EventForm event={eventToCreate} onUpdate={updateEvent} />
-              </InputWindow>
-            ) : (
-              <Button fullWidth onClick={() => setEventToCreate({})}>
-                <PlusIcon style={{ width: 20, height: 20 }} />
-              </Button>
-            )}
+            {events.map((entity) => (
+              <Box key={entity._id}>
+                <EventForm
+                  event={entity}
+                  onClick={() => {
+                    setSelections([entity._id || '']);
+                    setActiveWindowByName('Entity');
+                  }}
+                />
+              </Box>
+            ))}
+            {authed && <CreationModal event={eventToCreate} setEvent={setEventToCreate} />}
           </Stack>
         </Box>
       </ScrollArea>
@@ -90,7 +107,7 @@ export const EntityListWindow: React.FC = () => {
   return (
     <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
       <Box p="lg" pb={0}>
-        <Title order={3}>{t('data.entity.list.title')}</Title>
+        <Title order={3}>{t('pages.windows.data.EntityListWindow.title')}</Title>
       </Box>
       <EntityListWindowContent />
     </Box>

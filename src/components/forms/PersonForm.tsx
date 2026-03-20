@@ -31,7 +31,7 @@ export const PersonForm: React.FC<Props> = ({ person, onUpdate, onClick }) => {
         value={person.name || ''}
         onChange={(val) => onUpdate?.({ name: val })}
         canEdit={!!onUpdate}
-        placeholder={t('components.entity.person.name')}
+        placeholder={t('components.forms.PersonForm.name')}
         order={4}
       />
 

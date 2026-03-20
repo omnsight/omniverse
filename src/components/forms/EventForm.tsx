@@ -28,7 +28,13 @@ interface Props {
   onClick?: () => void;
 }
 
-export const EventForm: React.FC<Props> = ({ event, width, withTitle, onUpdate, onClick }) => {
+export const EventForm: React.FC<Props> = ({
+  event,
+  width,
+  withTitle = true,
+  onUpdate,
+  onClick,
+}) => {
   const { t, i18n } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
 
@@ -76,7 +82,7 @@ export const EventForm: React.FC<Props> = ({ event, width, withTitle, onUpdate, 
           value={event.title || ''}
           onChange={(val) => onUpdate?.({ title: val })}
           canEdit={!!onUpdate}
-          placeholder={t('entity.event.title')}
+          placeholder={t('components.forms.EventForm.title')}
           order={4}
         />
       )}

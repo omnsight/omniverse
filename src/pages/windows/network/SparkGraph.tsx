@@ -99,7 +99,7 @@ export const SparkGraph: React.FC = () => {
         const { error } = await deleteRelation({ path: { id } });
         if (error) {
           notifications.show({
-            message: t('network.spark.deleteEdgeError'),
+            message: t('pages.windows.network.SparkGraph.deleteEdgeError'),
             color: 'red',
           });
         }
@@ -107,7 +107,7 @@ export const SparkGraph: React.FC = () => {
         const { error } = await deleteEntity({ path: { id } });
         if (error) {
           notifications.show({
-            message: t('network.spark.deleteEntityError'),
+            message: t('pages.windows.network.SparkGraph.deleteEntityError'),
             color: 'red',
           });
         }

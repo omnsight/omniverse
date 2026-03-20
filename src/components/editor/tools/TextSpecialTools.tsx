@@ -15,7 +15,7 @@ export const TextSpecialToolbar: React.FC<Props> = ({ editor }) => {
 
   return (
     <Group gap={4}>
-      <Tooltip label={t('components.editor.tools.codeBlock')}>
+      <Tooltip label={t('components.editor.tools.TextSpecialTools.codeBlock')}>
         <ActionIcon
           variant={editor.isActive('codeBlock') ? 'filled' : 'subtle'}
           onClick={() => editor.chain().focus().toggleCodeBlock().run()}
@@ -23,7 +23,7 @@ export const TextSpecialToolbar: React.FC<Props> = ({ editor }) => {
           <CodeBracketIcon style={{ width: 16 }} />
         </ActionIcon>
       </Tooltip>
-      <Tooltip label={t('components.editor.tools.blockquote')}>
+      <Tooltip label={t('components.editor.tools.TextSpecialTools.blockquote')}>
         <ActionIcon
           variant={editor.isActive('blockquote') ? 'filled' : 'subtle'}
           onClick={() => editor.chain().focus().toggleBlockquote().run()}

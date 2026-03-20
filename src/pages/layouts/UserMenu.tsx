@@ -29,7 +29,7 @@ export const UserMenu: React.FC = () => {
         </Menu.Target>
         <Menu.Dropdown>
           <Menu.Item leftSection={<ArrowUpCircleIcon style={{ width: rem(14) }} />} onClick={login}>
-            {t('layout.UserMenu.login')}
+            {t('pages.layouts.UserMenu.login')}
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
@@ -45,47 +45,47 @@ export const UserMenu: React.FC = () => {
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Label>{t('layout.UserMenu.application')}</Menu.Label>
+        <Menu.Label>{t('pages.layouts.UserMenu.application')}</Menu.Label>
         <Menu.Item leftSection={<UserCircleIcon style={{ width: rem(14) }} />}>
-          {t('layout.UserMenu.profile')}
+          {t('pages.layouts.UserMenu.profile')}
         </Menu.Item>
 
         <Menu.Divider />
 
-        <Menu.Label>{t('layout.UserMenu.theme')}</Menu.Label>
+        <Menu.Label>{t('pages.layouts.UserMenu.theme')}</Menu.Label>
         <Menu.Item
           leftSection={<SunIcon style={{ width: rem(14), height: rem(14) }} />}
           onClick={() => setColorScheme('light')}
           rightSection={<Switch size="xs" checked={colorScheme === 'light'} readOnly />}
         >
-          {t('layout.UserMenu.lightMode')}
+          {t('pages.layouts.UserMenu.lightMode')}
         </Menu.Item>
         <Menu.Item
           leftSection={<MoonIcon style={{ width: rem(14), height: rem(14) }} />}
           onClick={() => setColorScheme('dark')}
           rightSection={<Switch size="xs" checked={colorScheme === 'dark'} readOnly />}
         >
-          {t('layout.UserMenu.darkMode')}
+          {t('pages.layouts.UserMenu.darkMode')}
         </Menu.Item>
         <Menu.Item
           leftSection={<ComputerDesktopIcon style={{ width: rem(14), height: rem(14) }} />}
           onClick={() => setColorScheme('auto')}
           rightSection={<Switch size="xs" checked={colorScheme === 'auto'} readOnly />}
         >
-          {t('layout.UserMenu.system')}
+          {t('pages.layouts.UserMenu.system')}
         </Menu.Item>
 
         <Menu.Divider />
 
-        <Menu.Label>{t('layout.UserMenu.language')}</Menu.Label>
+        <Menu.Label>{t('pages.layouts.UserMenu.language')}</Menu.Label>
         <Select
           data={[
-            { value: 'en', label: t('layout.UserMenu.english') },
-            { value: 'zh', label: t('layout.UserMenu.chinese') },
+            { value: 'en', label: t('pages.layouts.UserMenu.english') },
+            { value: 'zh', label: t('pages.layouts.UserMenu.chinese') },
           ]}
           value={i18n.language}
           onChange={(value) => value && handleLanguageChange(value)}
-          placeholder={t('layout.UserMenu.selectLanguage')}
+          placeholder={t('pages.layouts.UserMenu.selectLanguage')}
           size="xs"
           mx="xs"
           mb="xs"
@@ -97,7 +97,7 @@ export const UserMenu: React.FC = () => {
           onClick={logout}
           leftSection={<ArrowLeftCircleIcon style={{ width: rem(14) }} />}
         >
-          {t('layout.UserMenu.auth.signOut')}
+          {t('pages.layouts.UserMenu.signOut')}
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

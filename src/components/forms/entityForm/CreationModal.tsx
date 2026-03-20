@@ -40,7 +40,7 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
         if (error) {
           notifications.show({
             title: t('common.error'),
-            message: t('entity.create.error'),
+            message: t('components.forms.entityForm.CreationModal.error'),
             color: 'red',
           });
         } else {
@@ -54,7 +54,7 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
         if (organizationError) {
           notifications.show({
             title: t('common.error'),
-            message: t('entity.create.error'),
+            message: t('components.forms.entityForm.CreationModal.error'),
             color: 'red',
           });
         } else {
@@ -68,7 +68,7 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
         if (personError) {
           notifications.show({
             title: t('common.error'),
-            message: t('entity.create.error'),
+            message: t('components.forms.entityForm.CreationModal.error'),
             color: 'red',
           });
         } else {
@@ -82,7 +82,7 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
         if (relationError) {
           notifications.show({
             title: t('common.error'),
-            message: t('entity.create.error'),
+            message: t('components.forms.entityForm.CreationModal.error'),
             color: 'red',
           });
         } else {
@@ -96,7 +96,7 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
         if (sourceError) {
           notifications.show({
             title: t('common.error'),
-            message: t('entity.create.error'),
+            message: t('components.forms.entityForm.CreationModal.error'),
             color: 'red',
           });
         } else {
@@ -110,7 +110,7 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
         if (websiteError) {
           notifications.show({
             title: t('common.error'),
-            message: t('entity.create.error'),
+            message: t('components.forms.entityForm.CreationModal.error'),
             color: 'red',
           });
         } else {
@@ -127,8 +127,8 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
 
   return (
     <WindowModal
-      title={t('entity.create.title')}
-      submit={t('entity.create.submit')}
+      title={t('components.forms.entityForm.CreationModal.title')}
+      submit={t('components.forms.entityForm.CreationModal.submit')}
       onClose={() => setEntity(undefined)}
       onSubmit={createEntity}
     >

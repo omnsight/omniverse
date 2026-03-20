@@ -1,139 +1,245 @@
 {
-  "page": {
-    "error": {
-      "title": "Error",
-      "description": "An unexpected error has occurred.",
-      "return": "Return to Home"
-    }
-  },
-  "layout": {
-    "UserMenu": {
-      "login": "Login",
-      "application": "Application",
-      "profile": "Profile",
-      "theme": "Theme",
-      "lightMode": "Light Mode",
-      "darkMode": "Dark Mode",
-      "system": "System",
-      "language": "Language",
-      "english": "English",
-      "chinese": "Chinese",
-      "selectLanguage": "Select Language",
-      "auth": {
-        "signOut": "Sign Out"
+  "pages": {
+    "ErrorPage": {
+      "title": "?",
+      "description": "?",
+      "return": "?"
+    },
+    "layouts": {
+      "UserMenu": {
+        "login": "?",
+        "application": "?",
+        "profile": "?",
+        "theme": "?",
+        "lightMode": "?",
+        "darkMode": "?",
+        "system": "?",
+        "language": "?",
+        "english": "?",
+        "chinese": "?",
+        "selectLanguage": "?",
+        "signOut": "?"
+      },
+      "Topbar": {
+        "queryEntitiesError": "?",
+        "selectDateRange": "?"
+      },
+      "Sidebar": {
+        "logo": "?",
+        "subtitle": "?",
+        "intelligence": "?",
+        "monitor": "?",
+        "admin": "?"
+      },
+      "RangeDatePicker": {
+        "dateLimitExceeded": "?",
+        "dateLimitMessage": "?",
+        "presets": "?",
+        "today": "?",
+        "yesterday": "?",
+        "lastWeek": "?",
+        "lastMonth": "?",
+        "selectDateRange": "?"
+      },
+      "CountrySelect": {
+        "select": "?"
       }
     },
-    "Topbar": {
-      "queryEntitiesError": "Error querying entities",
-      "selectDateRange": "Select Date Range"
-    },
-    "Sidebar": {
-      "logo": "Nexus",
-      "subtitle": "Intelligence Platform",
-      "intelligence": "Intelligence",
-      "monitor": "Monitor",
-      "admin": "Admin"
-    },
-    "DatePicker": {
-      "dateLimitExceeded": "Date limit exceeded",
-      "dateLimitMessage": "The maximum date range has been exceeded.",
-      "presets": "Presets",
-      "today": "Today",
-      "yesterday": "Yesterday",
-      "lastWeek": "Last Week",
-      "lastMonth": "Last Month",
-      "selectDateRange": "Select Date Range"
-    },
-    "CountrySelect": {
-      "select": "Select a country"
+    "windows": {
+      "network": {
+        "SparkGraph": {
+          "deleteEdgeError": "?",
+          "deleteEntityError": "?"
+        },
+        "ComparsionView": {
+          "selectAtLeastTwo": "?",
+          "selectSameType": "?",
+          "showAttributes": "?",
+          "showMainData": "?"
+        }
+      },
+      "monitor": {
+        "MonitorWindow": {
+          "noSourceSelected": "?",
+          "title": "?"
+        },
+        "MonitorListWindow": {
+          "getSourcesError": "?",
+          "error": "?",
+          "title": "?"
+        }
+      },
+      "data": {
+        "EntityWindow": {
+          "queryError": "?",
+          "warning": "?",
+          "noEntitySelected": "?",
+          "noInghtSelected": "?",
+          "relatedOrganizations": "?",
+          "relatedWebsites": "?",
+          "relatedEvents": "?",
+          "relatedSources": "?",
+          "addNeighbors": "?",
+          "title": "?"
+        },
+        "EntityListWindow": {
+          "error": "?",
+          "createEventTitle": "?",
+          "title": "?"
+        }
+      },
+      "context": {
+        "GlobalEventTimelineWindow": {
+          "queryError": "?"
+        },
+        "GlobalEventRecommendationWindow": {
+          "queryError": "?"
+        }
+      },
+      "insight": {
+        "InsightWindow": {
+          "queryError": "?",
+          "empty": "?",
+          "title": "?"
+        },
+        "InsightListWindow": {
+          "error": "?",
+          "title": "?",
+          "queryError": "?"
+        }
+      }
     }
   },
   "common": {
     "error": "Error",
-    "save": "",
-    "cancel": "",
-    "edit": "",
+    "save": "?",
+    "cancel": "?",
+    "edit": "?",
     "delete": "Delete",
     "add": "Add",
     "notFound": "Not Found",
-    "create": ""
+    "create": "?"
   },
   "components": {
-    "MapTools": {
-      "start": "Start",
-      "normalMode": "Normal Mode",
-      "rulerMode": "Ruler Mode"
-    },
-    "graph": {
-      "remove": {
-        "noPermission": "You do not have permission to perform this action."
-      },
-      "connect": {
-        "noPermission": "You do not have permission to perform this action."
-      },
-      "create": "Create"
-    },
-    "entity": {
-      "person": {
-        "type": "Person",
-        "name": "Name"
-      },
-      "organization": {
-        "type": "Organization",
-        "name": "Name"
-      },
-      "event": {
-        "type": "Event",
-        "title": "Title"
-      },
-      "website": {
-        "type": "Website",
-        "title": "Title",
-        "name": "Name"
-      },
-      "source": {
-        "type": "Source",
-        "title": "Title",
-        "name": "Name"
-      },
-      "relation": {
-        "label": "Relation",
-        "name": "Name"
+    "map": {
+      "MapTools": {
+        "start": "?",
+        "normalMode": "?",
+        "rulerMode": "?"
       }
     },
-    "attributes": {
-      "key": "Key",
-      "value": "Value",
-      "newKey": "New Key",
-      "newValue": "New Value"
+    "graph": {
+      "Graph": {
+        "noPermission": "?"
+      },
+      "ContextMenu": {
+        "create": "?",
+        "type": "?"
+      },
+      "nodes": {
+        "WebsiteNode": {
+          "name": "?"
+        },
+        "SourceNode": {
+          "name": "?"
+        },
+        "PersonNode": {
+          "name": "?"
+        },
+        "OrganizationNode": {
+          "name": "?"
+        },
+        "EventNode": {
+          "title": "?"
+        }
+      },
+      "edges": {
+        "RelationEdge": {
+          "name": "?"
+        }
+      }
     },
-    "monitoring": {
-      "source": {
-        "name": "Source Name"
+    "forms": {
+      "WebsiteForm": {
+        "title": "?"
+      },
+      "SourceForm": {
+        "title": "?"
+      },
+      "RelationForm": {
+        "label": "?"
+      },
+      "PersonForm": {
+        "name": "?"
+      },
+      "OrganizationForm": {
+        "name": "?"
+      },
+      "MonitoringSourceForm": {
+        "name": "?"
+      },
+      "EventForm": {
+        "title": "Event Title"
+      },
+      "entityForm": {
+        "FormRenderer": {
+          "error": "?"
+        },
+        "CreationModal": {
+          "error": "?",
+          "title": "?",
+          "submit": "?"
+        }
+      }
+    },
+    "fields": {
+      "EditableAttributes": {
+        "key": "?",
+        "value": "?",
+        "newKey": "?",
+        "newValue": "?"
       }
     },
     "editor": {
+      "InsightEditor": {
+        "noRelatedEntities": "?",
+        "error": "?",
+        "openGallery": "?"
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "?"
+        }
+      },
       "tools": {
-        "undo": "Undo",
-        "redo": "Redo",
-        "bold": "Bold",
-        "italic": "Italic",
-        "strike": "Strikethrough",
-        "highlight": "Highlight",
-        "codeBlock": "Code Block",
-        "blockquote": "Blockquote",
-        "bulletList": "Bullet List",
-        "orderedList": "Ordered List",
-        "horizontalRule": "Horizontal Rule",
-        "h1": "Heading 1",
-        "h2": "Heading 2",
-        "h3": "Heading 3"
+        "UnredoTools": {
+          "undo": "?",
+          "redo": "?"
+        },
+        "TextTools": {
+          "bold": "?",
+          "italic": "?",
+          "strike": "?",
+          "highlight": "?"
+        },
+        "TextSpecialTools": {
+          "codeBlock": "?",
+          "blockquote": "?"
+        },
+        "ListTools": {
+          "bulletList": "?",
+          "orderedList": "?",
+          "horizontalRule": "?"
+        },
+        "HeadingTools": {
+          "h1": "?",
+          "h2": "?",
+          "h3": "?"
+        }
       }
     }
   },
   "placeholder": {
-    "enter": "Enter",
-    "unknown": "Unknown",
     "url": "URL",
     "description": "Description",
     "foundedDate": "Founded Date",
@@ -151,102 +257,16 @@
       "type": "Source Type"
     },
     "lastReviewed": "Last Reviewed",
-    "title": "",
+    "title": "?",
     "date": "Date",
     "address": "Address",
     "locality": "Locality",
     "administrativeArea": "Administrative Area",
     "country": "Country",
+    "enter": "Enter",
+    "unknown": "Unknown",
     "relation": "Relation",
     "createdDate": "Created Date",
     "updatedDate": "Updated Date"
-  },
-  "entity": {
-    "event": {
-      "title": "Event Title"
-    },
-    "update": {
-      "error": "Update failed"
-    },
-    "create": {
-      "error": "Creation failed",
-      "title": "Create New",
-      "submit": "Submit"
-    }
-  },
-  "insight": {
-    "update": {
-      "error": ""
-    },
-    "single": {
-      "queryError": "Error querying insight.",
-      "empty": "No insight found."
-    },
-    "list": {
-      "title": "",
-      "queryError": "Error querying insights.",
-      "create": {
-        "new": "New Insight"
-      }
-    },
-    "create": {
-      "error": "Failed to create insight.",
-      "title": "Create New Insight"
-    }
-  },
-  "network": {
-    "spark": {
-      "deleteEdgeError": "",
-      "deleteEntityError": ""
-    },
-    "comparison": {
-      "selectAtLeastTwo": "Select at least two items to compare.",
-      "selectSameType": "Select items of the same type to compare.",
-      "showAttributes": "Show Attributes",
-      "showMainData": "Show Main Data"
-    }
-  },
-  "monitoring": {
-    "single": {
-      "noSourceSelected": "No source selected.",
-      "title": ""
-    },
-    "list": {
-      "getSourcesError": "Error retrieving sources.",
-      "title": ""
-    },
-    "create": {
-      "error": "Creation failed.",
-      "title": "Create New"
-    }
-  },
-  "data": {
-    "entity": {
-      "single": {
-        "queryError": "",
-        "warning": "Warning",
-        "noEntitySelected": "No entity selected.",
-        "noInghtSelected": "No insight selected.",
-        "relatedOrganizations": "Related Organizations",
-        "relatedWebsites": "Related Websites",
-        "relatedEvents": "Related Events",
-        "relatedSources": "Related Sources",
-        "addNeighbors": "Add Neighbors",
-        "title": ""
-      },
-      "list": {
-        "title": ""
-      }
-    }
-  },
-  "context": {
-    "recommendation": {
-      "queryError": "Error querying recommendations."
-    }
-  },
-  "editor": {
-    "windowAnchor": {
-      "restore": "Restore"
-    }
   }
 }

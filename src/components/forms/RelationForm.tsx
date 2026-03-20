@@ -25,7 +25,7 @@ export const RelationForm: React.FC<Props> = ({ relation, onUpdate, onClick }) =
         value={relation.label || ''}
         onChange={(val) => onUpdate?.({ label: val })}
         canEdit={!!onUpdate}
-        placeholder={t('components.entity.relation.label')}
+        placeholder={t('components.forms.RelationForm.label')}
         order={4}
       />
 

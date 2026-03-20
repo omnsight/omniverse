@@ -54,7 +54,7 @@ export const AppTopbar: React.FC = () => {
     if (isError) {
       notifications.show({
         title: t('common.error'),
-        message: t('layout.Topbar.queryEntitiesError'),
+        message: t('pages.layouts.Topbar.queryEntitiesError'),
         color: 'red',
       });
       console.error('Failed to query entities', error);
@@ -62,7 +62,7 @@ export const AppTopbar: React.FC = () => {
   }, [isError, error, t]);
 
   const formatDateRange = (range: [Date | undefined, Date | undefined]) => {
-    if (!range[0]) return t('layout.Topbar.selectDateRange');
+    if (!range[0]) return t('pages.layouts.Topbar.selectDateRange');
     const startStr = range[0].toLocaleDateString();
     const endStr = range[1] ? range[1].toLocaleDateString() : '...';
     return `${startStr} - ${endStr}`;

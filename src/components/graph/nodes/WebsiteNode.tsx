@@ -39,7 +39,7 @@ export const WebsiteNode: React.FC<NodeProps<Website>> = memo(({ data, selected 
           pointerEvents: 'none',
         }}
       >
-        {website?.url || t('placeholder.unknown') + t('components.entity.website.name')}
+        {website?.url || t('placeholder.unknown') + t('components.graph.nodes.WebsiteNode.name')}
       </Text>
     </Box>
   );

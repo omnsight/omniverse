@@ -23,8 +23,8 @@ export const RangeDatePicker: React.FC<Props> = ({ dateRange, setDateRange }) =>
 
       if (end > maxEndDate) {
         notifications.show({
-          title: t('layout.DatePicker.dateLimitExceeded'),
-          message: t('layout.DatePicker.dateLimitMessage'),
+          title: t('pages.layouts.RangeDatePicker.dateLimitExceeded'),
+          message: t('pages.layouts.RangeDatePicker.dateLimitMessage'),
           color: 'orange',
         });
         setDateRange([start, maxEndDate]);
@@ -65,24 +65,24 @@ export const RangeDatePicker: React.FC<Props> = ({ dateRange, setDateRange }) =>
     <Group align="flex-start">
       <Stack gap="xs">
         <Text size="sm" fw={500} mb={5}>
-          {t('layout.DatePicker.presets')}
+          {t('pages.layouts.RangeDatePicker.presets')}
         </Text>
         <Button variant="light" size="xs" onClick={() => applyPreset('today')}>
-          {t('layout.DatePicker.today')}
+          {t('pages.layouts.RangeDatePicker.today')}
         </Button>
         <Button variant="light" size="xs" onClick={() => applyPreset('yesterday')}>
-          {t('layout.DatePicker.yesterday')}
+          {t('pages.layouts.RangeDatePicker.yesterday')}
         </Button>
         <Button variant="light" size="xs" onClick={() => applyPreset('lastWeek')}>
-          {t('layout.DatePicker.lastWeek')}
+          {t('pages.layouts.RangeDatePicker.lastWeek')}
         </Button>
         <Button variant="light" size="xs" onClick={() => applyPreset('lastMonth')}>
-          {t('layout.DatePicker.lastMonth')}
+          {t('pages.layouts.RangeDatePicker.lastMonth')}
         </Button>
       </Stack>
       <Stack gap="xs">
         <Text size="sm" fw={500} mb={5}>
-          {t('layout.DatePicker.selectDateRange')}
+          {t('pages.layouts.RangeDatePicker.selectDateRange')}
         </Text>
         <DatePicker
           type="range"

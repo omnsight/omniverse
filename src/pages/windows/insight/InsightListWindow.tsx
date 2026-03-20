@@ -32,7 +32,7 @@ const CreationModal: React.FC<CreationModalProps> = ({ insight, setInsight }) =>
     });
   };
 
-  const createInsight = async () => {
+  const submitNewInsight = async () => {
     if (!insight) return;
     const { data, error, status } = await createView({
       body: insight,
@@ -60,7 +60,7 @@ const CreationModal: React.FC<CreationModalProps> = ({ insight, setInsight }) =>
         cancel={t('common.cancel')}
         submit={t('common.create')}
         onClose={() => setInsight(undefined)}
-        onSubmit={createInsight}
+        onSubmit={submitNewInsight}
       >
         <InsightForm insight={insight} useLabel={true} useInput={true} onUpdate={updateInsight} />
       </InputWindow>
@@ -114,7 +114,7 @@ const InsightListWindowContent: React.FC = () => {
       console.error('Error fetching insight data', error);
       notifications.show({
         title: t('common.error'),
-        message: t('insight.list.queryError'),
+        message: t('pages.windows.insight.InsightListWindow.queryError'),
         color: 'red',
       });
     }
@@ -140,7 +140,7 @@ const InsightListWindowContent: React.FC = () => {
       console.error(`Error [${status}] updating insight`, error);
       notifications.show({
         title: t('common.error'),
-        message: t('insight.update.error'),
+        message: t('pages.windows.insight.InsightListWindow.error'),
         color: 'red',
       });
     } else {
@@ -202,7 +202,7 @@ export const InsightListWindow: React.FC = () => {
   return (
     <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
       <Box p="lg" pb={0}>
-        <Title order={3}>{t('insight.list.title')}</Title>
+        <Title order={3}>{t('pages.windows.insight.InsightListWindow.title')}</Title>
       </Box>
       <InsightListWindowContent />
     </Box>

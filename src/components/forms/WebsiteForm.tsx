@@ -43,7 +43,7 @@ export const WebsiteForm: React.FC<Props> = ({ website, onUpdate, onClick }) => 
           value={website.title || ''}
           onChange={(val) => onUpdate?.({ title: val })}
           canEdit={!!onUpdate}
-          placeholder={t('components.entity.website.title')}
+          placeholder={t('components.forms.WebsiteForm.title')}
           order={4}
           style={{ flex: 'initial' }}
         />

@@ -17,7 +17,7 @@ npm run clean
 Generate translations:
 
 ```bash
-npm run check-translations
+npm run manage-translations
 ```
 
 ## 🚀 Run Service Locally & Debug

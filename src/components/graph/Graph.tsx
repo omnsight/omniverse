@@ -141,7 +141,7 @@ const EntityGraphContent: React.FC<EntityGraphProps> = ({
   const handleConnection = (connection: Connection) => {
     if (!hasWritePermission) {
       notifications.show({
-        message: t('components.graph.connect.noPermission'),
+        message: t('components.graph.Graph.noPermission'),
         color: 'red',
       });
     } else {
@@ -158,7 +158,7 @@ const EntityGraphContent: React.FC<EntityGraphProps> = ({
   const handleCreate = (entity: Entity) => {
     if (!hasWritePermission) {
       notifications.show({
-        message: t('components.graph.connect.noPermission'),
+        message: t('components.graph.Graph.noPermission'),
         color: 'red',
       });
     } else {

@@ -44,7 +44,7 @@ const InsightWindowContent: React.FC = () => {
     if (isError) {
       notifications.show({
         title: t('common.error'),
-        message: t('insight.single.queryError'),
+        message: t('pages.windows.insight.InsightWindow.queryError'),
         color: 'red',
       });
     }
@@ -66,14 +66,14 @@ const InsightWindowContent: React.FC = () => {
   if (!selected) {
     return (
       <Group justify="center" align="center" style={{ flex: 1 }}>
-        <Text>{t('insight.single.empty')}</Text>
+        <Text>{t('pages.windows.insight.InsightWindow.empty')}</Text>
       </Group>
     );
   }
 
   const breadcrumbs = [
     <Anchor href="#" onClick={() => setActiveWindowByName('InsightList')} key="1">
-      {t('insight.list.title')}
+      {t('pages.windows.insight.InsightWindow.title')}
     </Anchor>,
     <Text key="2">{selected.name}</Text>,
   ];

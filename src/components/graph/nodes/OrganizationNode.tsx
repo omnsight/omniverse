@@ -39,7 +39,7 @@ export const OrganizationNode: React.FC<NodeProps<Organization>> = memo(({ data,
           pointerEvents: 'none',
         }}
       >
-        {organization?.name || t('placeholder.unknown') + t('components.entity.organization.name')}
+        {organization?.name || t('placeholder.unknown') + t('components.graph.nodes.OrganizationNode.name')}
       </Text>
     </Box>
   );

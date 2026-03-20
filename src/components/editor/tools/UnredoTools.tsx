@@ -15,7 +15,7 @@ export const UnredoToolbar: React.FC<Props> = ({ editor }) => {
 
   return (
     <Group gap={4}>
-      <Tooltip label={t('components.editor.tools.undo')}>
+      <Tooltip label={t('components.editor.tools.UnredoTools.undo')}>
         <ActionIcon
           variant="subtle"
           onClick={() => editor.chain().focus().undo().run()}
@@ -24,7 +24,7 @@ export const UnredoToolbar: React.FC<Props> = ({ editor }) => {
           <ArrowUturnLeftIcon style={{ width: 16 }} />
         </ActionIcon>
       </Tooltip>
-      <Tooltip label={t('components.editor.tools.redo')}>
+      <Tooltip label={t('components.editor.tools.UnredoTools.redo')}>
         <ActionIcon
           variant="subtle"
           onClick={() => editor.chain().focus().redo().run()}

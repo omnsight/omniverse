@@ -80,7 +80,7 @@ const EntityCarousel: React.FC<CarouselProps> = ({ entities }) => {
             <Box style={{ textAlign: 'center', opacity: 0.4 }}>
               <InboxIcon style={{ width: 40, margin: '0 auto' }} />
               <Text size="sm" fw={500}>
-                {t('insight.editor.noRelatedEntities')}
+                {t('components.editor.InsightEditor.noRelatedEntities')}
               </Text>
             </Box>
           </Center>
@@ -139,7 +139,7 @@ export const InsightEditor: React.FC<EditorProps> = ({ insight, entities, readon
       console.error(`Error [${status}] updating insight`, error);
       notifications.show({
         title: t('common.error'),
-        message: t('insight.update.error'),
+        message: t('components.editor.InsightEditor.error'),
         color: 'red',
       });
     } else {
@@ -245,7 +245,7 @@ export const InsightEditor: React.FC<EditorProps> = ({ insight, entities, readon
           {opened ? (
             <ChevronDownIcon style={{ width: '16px' }} />
           ) : (
-            <Tooltip label={t('openGallery')} withArrow>
+            <Tooltip label={t('components.editor.InsightEditor.openGallery')} withArrow>
               <Squares2X2Icon style={{ width: '16px' }} />
             </Tooltip>
           )}

@@ -36,7 +36,7 @@ export const GlobalEventTimelineGraph: React.FC = () => {
       console.error('Error querying recommendation data', error);
       notifications.show({
         title: t('common.error'),
-        message: t('context.recommendation.queryError'),
+        message: t('pages.windows.context.GlobalEventTimelineWindow.queryError'),
         color: 'red',
       });
     }

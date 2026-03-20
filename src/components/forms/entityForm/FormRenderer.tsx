@@ -40,7 +40,7 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdat
         if (error) {
           notifications.show({
             title: t('common.error'),
-            message: t('entity.update.error'),
+            message: t('components.forms.entityForm.FormRenderer.error'),
             color: 'red',
           });
           return;
@@ -58,7 +58,7 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdat
         if (organizationError) {
           notifications.show({
             title: t('common.error'),
-            message: t('entity.update.error'),
+            message: t('components.forms.entityForm.FormRenderer.error'),
             color: 'red',
           });
           return;
@@ -76,7 +76,7 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdat
         if (personError) {
           notifications.show({
             title: t('common.error'),
-            message: t('entity.update.error'),
+            message: t('components.forms.entityForm.FormRenderer.error'),
             color: 'red',
           });
           return;
@@ -94,7 +94,7 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdat
         if (relationError) {
           notifications.show({
             title: t('common.error'),
-            message: t('entity.update.error'),
+            message: t('components.forms.entityForm.FormRenderer.error'),
             color: 'red',
           });
           return;
@@ -112,7 +112,7 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdat
         if (sourceError) {
           notifications.show({
             title: t('common.error'),
-            message: t('entity.update.error'),
+            message: t('components.forms.entityForm.FormRenderer.error'),
             color: 'red',
           });
           return;
@@ -130,7 +130,7 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdat
         if (websiteError) {
           notifications.show({
             title: t('common.error'),
-            message: t('entity.update.error'),
+            message: t('components.forms.entityForm.FormRenderer.error'),
             color: 'red',
           });
           return;

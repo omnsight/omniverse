@@ -33,7 +33,7 @@ export const CountrySelect: React.FC<Props> = ({ country, setCountry }) => {
 
   return (
     <Select
-      placeholder={t('layout.CountrySelect.select')}
+      placeholder={t('pages.layouts.CountrySelect.select')}
       data={countryOptions}
       value={country}
       onChange={(val) => val && setCountry(val)}

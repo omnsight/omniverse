@@ -1,139 +1,245 @@
 {
-  "page": {
-    "error": {
-      "title": "错误",
-      "description": "发生了意外错误。",
-      "return": "返回首页"
-    }
-  },
-  "layout": {
-    "UserMenu": {
-      "login": "登录",
-      "application": "应用",
-      "profile": "个人资料",
-      "theme": "主题",
-      "lightMode": "亮色模式",
-      "darkMode": "暗色模式",
-      "system": "系统",
-      "language": "语言",
-      "english": "英语",
-      "chinese": "中文",
-      "selectLanguage": "选择语言",
-      "auth": {
-        "signOut": "登出"
+  "pages": {
+    "ErrorPage": {
+      "title": "?",
+      "description": "?",
+      "return": "?"
+    },
+    "layouts": {
+      "UserMenu": {
+        "login": "?",
+        "application": "?",
+        "profile": "?",
+        "theme": "?",
+        "lightMode": "?",
+        "darkMode": "?",
+        "system": "?",
+        "language": "?",
+        "english": "?",
+        "chinese": "?",
+        "selectLanguage": "?",
+        "signOut": "?"
+      },
+      "Topbar": {
+        "queryEntitiesError": "?",
+        "selectDateRange": "?"
+      },
+      "Sidebar": {
+        "logo": "?",
+        "subtitle": "?",
+        "intelligence": "?",
+        "monitor": "?",
+        "admin": "?"
+      },
+      "RangeDatePicker": {
+        "dateLimitExceeded": "?",
+        "dateLimitMessage": "?",
+        "presets": "?",
+        "today": "?",
+        "yesterday": "?",
+        "lastWeek": "?",
+        "lastMonth": "?",
+        "selectDateRange": "?"
+      },
+      "CountrySelect": {
+        "select": "?"
       }
     },
-    "Topbar": {
-      "queryEntitiesError": "查询出错",
-      "selectDateRange": "选择日期范围"
-    },
-    "Sidebar": {
-      "logo": "Nexus",
-      "subtitle": "情报可视化平台",
-      "intelligence": "信息可视化",
-      "monitor": "信源监控",
-      "admin": "管理员面板"
-    },
-    "DatePicker": {
-      "dateLimitExceeded": "超出日期限制",
-      "dateLimitMessage": "已超出最大日期范围。",
-      "presets": "预设",
-      "today": "今天",
-      "yesterday": "昨天",
-      "lastWeek": "上周",
-      "lastMonth": "上个月",
-      "selectDateRange": "选择日期范围"
-    },
-    "CountrySelect": {
-      "select": "选择一个国家"
+    "windows": {
+      "network": {
+        "SparkGraph": {
+          "deleteEdgeError": "?",
+          "deleteEntityError": "?"
+        },
+        "ComparsionView": {
+          "selectAtLeastTwo": "?",
+          "selectSameType": "?",
+          "showAttributes": "?",
+          "showMainData": "?"
+        }
+      },
+      "monitor": {
+        "MonitorWindow": {
+          "noSourceSelected": "?",
+          "title": "?"
+        },
+        "MonitorListWindow": {
+          "getSourcesError": "?",
+          "error": "?",
+          "title": "?"
+        }
+      },
+      "data": {
+        "EntityWindow": {
+          "queryError": "?",
+          "warning": "?",
+          "noEntitySelected": "?",
+          "noInghtSelected": "?",
+          "relatedOrganizations": "?",
+          "relatedWebsites": "?",
+          "relatedEvents": "?",
+          "relatedSources": "?",
+          "addNeighbors": "?",
+          "title": "?"
+        },
+        "EntityListWindow": {
+          "error": "?",
+          "createEventTitle": "?",
+          "title": "?"
+        }
+      },
+      "context": {
+        "GlobalEventTimelineWindow": {
+          "queryError": "?"
+        },
+        "GlobalEventRecommendationWindow": {
+          "queryError": "?"
+        }
+      },
+      "insight": {
+        "InsightWindow": {
+          "queryError": "?",
+          "empty": "?",
+          "title": "?"
+        },
+        "InsightListWindow": {
+          "error": "?",
+          "title": "?",
+          "queryError": "?"
+        }
+      }
     }
   },
   "common": {
     "error": "错误",
     "save": "保存",
     "cancel": "取消",
-    "edit": "",
+    "edit": "?",
     "delete": "删除",
     "add": "添加",
     "notFound": "未找到",
     "create": "创建"
   },
   "components": {
-    "MapTools": {
-      "start": "起点",
-      "normalMode": "普通模式",
-      "rulerMode": "测距模式"
-    },
-    "graph": {
-      "remove": {
-        "noPermission": "您没有权限执行此操作。"
-      },
-      "connect": {
-        "noPermission": "您没有权限执行此操作。"
-      },
-      "create": "创建"
-    },
-    "entity": {
-      "person": {
-        "type": "个人",
-        "name": "个人姓名"
-      },
-      "organization": {
-        "type": "组织类型",
-        "name": "组织名称"
-      },
-      "event": {
-        "type": "事件类型",
-        "title": "事件标题"
-      },
-      "website": {
-        "type": "网站",
-        "title": "标题",
-        "name": "网站名称"
-      },
-      "source": {
-        "type": "信源类型",
-        "title": "标题",
-        "name": "信源名称"
-      },
-      "relation": {
-        "label": "关系标签",
-        "name": "关系名称"
+    "map": {
+      "MapTools": {
+        "start": "?",
+        "normalMode": "?",
+        "rulerMode": "?"
       }
     },
-    "attributes": {
-      "key": "键",
-      "value": "值",
-      "newKey": "新键",
-      "newValue": "新值"
+    "graph": {
+      "Graph": {
+        "noPermission": "?"
+      },
+      "ContextMenu": {
+        "create": "?",
+        "type": "?"
+      },
+      "nodes": {
+        "WebsiteNode": {
+          "name": "?"
+        },
+        "SourceNode": {
+          "name": "?"
+        },
+        "PersonNode": {
+          "name": "?"
+        },
+        "OrganizationNode": {
+          "name": "?"
+        },
+        "EventNode": {
+          "title": "?"
+        }
+      },
+      "edges": {
+        "RelationEdge": {
+          "name": "?"
+        }
+      }
     },
-    "monitoring": {
-      "source": {
-        "name": "来源名称"
+    "forms": {
+      "WebsiteForm": {
+        "title": "?"
+      },
+      "SourceForm": {
+        "title": "?"
+      },
+      "RelationForm": {
+        "label": "?"
+      },
+      "PersonForm": {
+        "name": "?"
+      },
+      "OrganizationForm": {
+        "name": "?"
+      },
+      "MonitoringSourceForm": {
+        "name": "?"
+      },
+      "EventForm": {
+        "title": "事件标题"
+      },
+      "entityForm": {
+        "FormRenderer": {
+          "error": "?"
+        },
+        "CreationModal": {
+          "error": "?",
+          "title": "?",
+          "submit": "?"
+        }
+      }
+    },
+    "fields": {
+      "EditableAttributes": {
+        "key": "?",
+        "value": "?",
+        "newKey": "?",
+        "newValue": "?"
       }
     },
     "editor": {
+      "InsightEditor": {
+        "noRelatedEntities": "?",
+        "error": "?",
+        "openGallery": "?"
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "?"
+        }
+      },
       "tools": {
-        "undo": "撤销",
-        "redo": "重做",
-        "bold": "粗体",
-        "italic": "斜体",
-        "strike": "删除线",
-        "highlight": "高亮",
-        "codeBlock": "代码块",
-        "blockquote": "引用",
-        "bulletList": "无序列表",
-        "orderedList": "有序列表",
-        "horizontalRule": "水平分割线",
-        "h1": "标题 1",
-        "h2": "标题 2",
-        "h3": "标题 3"
+        "UnredoTools": {
+          "undo": "?",
+          "redo": "?"
+        },
+        "TextTools": {
+          "bold": "?",
+          "italic": "?",
+          "strike": "?",
+          "highlight": "?"
+        },
+        "TextSpecialTools": {
+          "codeBlock": "?",
+          "blockquote": "?"
+        },
+        "ListTools": {
+          "bulletList": "?",
+          "orderedList": "?",
+          "horizontalRule": "?"
+        },
+        "HeadingTools": {
+          "h1": "?",
+          "h2": "?",
+          "h3": "?"
+        }
       }
     }
   },
   "placeholder": {
-    "enter": "输入",
-    "unknown": "未知",
     "url": "链接",
     "description": "描述",
     "foundedDate": "成立日期",
@@ -157,96 +263,10 @@
     "locality": "城市",
     "administrativeArea": "行政区域",
     "country": "国家",
+    "enter": "输入",
+    "unknown": "未知",
     "relation": "关系",
     "createdDate": "创建日期",
     "updatedDate": "更新日期"
-  },
-  "entity": {
-    "event": {
-      "title": "事件标题"
-    },
-    "update": {
-      "error": "更新失败"
-    },
-    "create": {
-      "error": "创建失败",
-      "title": "创建新的",
-      "submit": "提交"
-    }
-  },
-  "insight": {
-    "update": {
-      "error": ""
-    },
-    "single": {
-      "queryError": "查询分析文章时出错。",
-      "empty": ""
-    },
-    "list": {
-      "title": "推荐分析文章",
-      "queryError": "查询分析文章时出错。",
-      "create": {
-        "new": "新分析文章"
-      }
-    },
-    "create": {
-      "error": "无法创建新的分析文章",
-      "title": "新分析文章"
-    }
-  },
-  "network": {
-    "spark": {
-      "deleteEdgeError": "",
-      "deleteEntityError": ""
-    },
-    "comparison": {
-      "selectAtLeastTwo": "请至少选择两项进行比较。",
-      "selectSameType": "请选择相同类型的项目进行比较。",
-      "showAttributes": "显示属性",
-      "showMainData": "显示主要数据"
-    }
-  },
-  "monitoring": {
-    "single": {
-      "noSourceSelected": "未选择来源。",
-      "title": ""
-    },
-    "list": {
-      "getSourcesError": "检索来源时出错。",
-      "title": ""
-    },
-    "create": {
-      "error": "创建失败。",
-      "title": "创建新的"
-    }
-  },
-  "data": {
-    "entity": {
-      "single": {
-        "queryError": "",
-        "warning": "警告",
-        "noEntitySelected": "未选择实体。",
-        "noInghtSelected": "未选择见解。",
-        "relatedOrganizations": "相关组织",
-        "relatedWebsites": "相关网站",
-        "relatedEvents": "相关事件",
-        "relatedSources": "相关来源",
-        "addNeighbors": "加载相关实体",
-        "title": ""
-      },
-      "list": {
-        "title": "相关事件"
-      }
-    }
-  },
-  "context": {
-    "recommendation": {
-      "queryError": "查询推荐时出错。"
-    }
-  },
-  "editor": {
-    "windowAnchor": {
-      "restore": "恢复视图"
-    }
   }
 }

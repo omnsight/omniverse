@@ -50,7 +50,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
         </Menu.Target>
 
         <Menu.Dropdown>
-          {hasWritePermission && <Menu.Label>{t('components.graph.create')}</Menu.Label>}
+          {hasWritePermission && <Menu.Label>{t('components.graph.ContextMenu.create')}</Menu.Label>}
 
           {hasWritePermission && (
             <Menu.Item
@@ -113,7 +113,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('components.entity.source.type')}
+              {t('components.graph.ContextMenu.type')}
             </Menu.Item>
           )}
         </Menu.Dropdown>

@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "clean": "rm -rf node_modules package-lock.json dist",
-    "check-translations": "node scripts/check-translations.js"
+    "manage-translations": "node scripts/manage-translations.js -n common,placeholder"
   },
   "dependencies": {
     "@gfazioli/mantine-split-pane": "^2.5.6",

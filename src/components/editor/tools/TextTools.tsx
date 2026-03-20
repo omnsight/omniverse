@@ -15,7 +15,7 @@ export const TextToolbar: React.FC<Props> = ({ editor }) => {
 
   return (
     <Group gap={4}>
-      <Tooltip label={t('components.editor.tools.bold')}>
+      <Tooltip label={t('components.editor.tools.TextTools.bold')}>
         <ActionIcon
           variant={editor.isActive('bold') ? 'filled' : 'subtle'}
           onClick={() => editor.chain().focus().toggleBold().run()}
@@ -23,7 +23,7 @@ export const TextToolbar: React.FC<Props> = ({ editor }) => {
           <BoldIcon style={{ width: 16 }} />
         </ActionIcon>
       </Tooltip>
-      <Tooltip label={t('components.editor.tools.italic')}>
+      <Tooltip label={t('components.editor.tools.TextTools.italic')}>
         <ActionIcon
           variant={editor.isActive('italic') ? 'filled' : 'subtle'}
           onClick={() => editor.chain().focus().toggleItalic().run()}
@@ -31,7 +31,7 @@ export const TextToolbar: React.FC<Props> = ({ editor }) => {
           <ItalicIcon style={{ width: 16 }} />
         </ActionIcon>
       </Tooltip>
-      <Tooltip label={t('components.editor.tools.strike')}>
+      <Tooltip label={t('components.editor.tools.TextTools.strike')}>
         <ActionIcon
           variant={editor.isActive('strike') ? 'filled' : 'subtle'}
           onClick={() => editor.chain().focus().toggleStrike().run()}
@@ -39,7 +39,7 @@ export const TextToolbar: React.FC<Props> = ({ editor }) => {
           <MinusCircleIcon style={{ width: 16 }} />
         </ActionIcon>
       </Tooltip>
-      <Tooltip label={t('components.editor.tools.highlight')}>
+      <Tooltip label={t('components.editor.tools.TextTools.highlight')}>
         <ActionIcon
           variant={editor.isActive('highlight') ? 'filled' : 'subtle'}
           onClick={() => editor.chain().focus().toggleHighlight().run()}

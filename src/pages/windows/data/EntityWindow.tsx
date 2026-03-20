@@ -58,7 +58,7 @@ const EntityWindowContent: React.FC = () => {
       console.error('Error fetching entity data', error);
       notifications.show({
         title: t('common.error'),
-        message: t('data.entity.single.queryError'),
+        message: t('pages.windows.data.EntityWindow.queryError'),
         color: 'red',
       });
     }
@@ -73,14 +73,14 @@ const EntityWindowContent: React.FC = () => {
   const handleDragStart = (e: React.DragEvent) => {
     if (!lastSelection.data._id) {
       notifications.show({
-        title: t('data.entity.single.warning'),
-        message: t('data.entity.single.noEntitySelected'),
+        title: t('pages.windows.data.EntityWindow.warning'),
+        message: t('pages.windows.data.EntityWindow.noEntitySelected'),
         color: 'orange',
       });
     } else if (!selected) {
       notifications.show({
-        title: t('data.entity.single.warning'),
-        message: t('data.entity.single.noInghtSelected'),
+        title: t('pages.windows.data.EntityWindow.warning'),
+        message: t('pages.windows.data.EntityWindow.noInghtSelected'),
         color: 'orange',
       });
     } else {
@@ -106,7 +106,7 @@ const EntityWindowContent: React.FC = () => {
   if (!lastSelection) {
     return (
       <Group justify="center" align="center" style={{ flex: 1 }}>
-        <Text>{t('data.entity.single.noEntitySelected')}</Text>
+        <Text>{t('pages.windows.data.EntityWindow.noEntitySelected')}</Text>
       </Group>
     );
   }
@@ -136,7 +136,7 @@ const EntityWindowContent: React.FC = () => {
           <SimpleGrid cols={2} spacing="xl">
             {/* Organizations */}
             <Stack gap="xs">
-              <Text fw={600}>{t('data.entity.single.relatedOrganizations')}</Text>
+              <Text fw={600}>{t('pages.windows.data.EntityWindow.relatedOrganizations')}</Text>
               <AvatarSpan>
                 {data?.data?.organizations?.map((entity: any) => (
                   <OrganizationAvatar
@@ -151,7 +151,7 @@ const EntityWindowContent: React.FC = () => {
 
             {/* Websites */}
             <Stack gap="xs">
-              <Text fw={600}>{t('data.entity.single.relatedWebsites')}</Text>
+              <Text fw={600}>{t('pages.windows.data.EntityWindow.relatedWebsites')}</Text>
               <AvatarSpan>
                 {data?.data?.websites?.map((entity: any) => (
                   <WebsiteAvatar
@@ -166,7 +166,7 @@ const EntityWindowContent: React.FC = () => {
 
             {/* Events */}
             <Stack gap="xs">
-              <Text fw={600}>{t('data.entity.single.relatedEvents')}</Text>
+              <Text fw={600}>{t('pages.windows.data.EntityWindow.relatedEvents')}</Text>
               <AvatarSpan>
                 {data?.data?.events?.map((entity: any) => (
                   <EventAvatar
@@ -181,7 +181,7 @@ const EntityWindowContent: React.FC = () => {
 
           {/* Full Sources List */}
           <Stack gap="xs" mt="md">
-            <Text fw={600}>{t('data.entity.single.relatedSources')}</Text>
+            <Text fw={600}>{t('pages.windows.data.EntityWindow.relatedSources')}</Text>
             <Stack gap="xs">
               {data?.data?.sources?.map((source: any) => (
                 <SourceAvatarRow
@@ -232,7 +232,7 @@ const EntityWindowContent: React.FC = () => {
                   }
                 }}
               >
-                {t('data.entity.single.addNeighbors')}
+                {t('pages.windows.data.EntityWindow.addNeighbors')}
               </Button>
             </Group>
           )}
@@ -247,7 +247,7 @@ export const EntityWindow: React.FC = () => {
   return (
     <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
       <Box p="lg" pb={0}>
-        <Title order={3}>{t('data.entity.single.title')}</Title>
+        <Title order={3}>{t('pages.windows.data.EntityWindow.title')}</Title>
       </Box>
       <EntityWindowContent />
     </Box>

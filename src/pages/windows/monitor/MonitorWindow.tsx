@@ -24,7 +24,7 @@ const MonitorWindowContent: React.FC = () => {
   if (!selected) {
     return (
       <Group justify="center" align="center" style={{ flex: 1 }}>
-        <Text>{t('monitoring.single.noSourceSelected')}</Text>
+        <Text>{t('pages.windows.monitor.MonitorWindow.noSourceSelected')}</Text>
       </Group>
     );
   }
@@ -41,7 +41,7 @@ export const MonitorWindow: React.FC = () => {
   return (
     <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
       <Box p="lg" pb={0}>
-        <Title order={3}>{t('monitoring.single.title')}</Title>
+        <Title order={3}>{t('pages.windows.monitor.MonitorWindow.title')}</Title>
       </Box>
       <MonitorWindowContent />
     </Box>

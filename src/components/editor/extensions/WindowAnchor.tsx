@@ -12,7 +12,7 @@ export const WindowAnchorComponent: React.FC<NodeViewProps> = ({ node }) => {
 
   return (
     <NodeViewWrapper className="inline-block mx-1">
-      <Tooltip label={t('editor.windowAnchor.restore')}>
+      <Tooltip label={t('components.editor.extensions.WindowAnchor.restore')}>
         <Button
           variant="light"
           size="compact-xs"

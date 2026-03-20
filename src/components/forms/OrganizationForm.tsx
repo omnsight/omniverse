@@ -32,7 +32,7 @@ export const OrganizationForm: React.FC<Props> = ({ organization, onUpdate, onCl
         value={organization.name || ''}
         onChange={(val) => onUpdate?.({ name: val })}
         canEdit={!!onUpdate}
-        placeholder={t('components.entity.organization.name')}
+        placeholder={t('components.forms.OrganizationForm.name')}
         order={4}
       />
 

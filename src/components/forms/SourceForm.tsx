@@ -42,7 +42,7 @@ export const SourceForm: React.FC<Props> = ({ source, onUpdate, onClick }) => {
           value={source.name || source.url || ''}
           onChange={(val) => onUpdate?.({ name: val })}
           canEdit={!!onUpdate}
-          placeholder={t('components.entity.source.title')}
+          placeholder={t('components.forms.SourceForm.title')}
           order={4}
           style={{ flex: 'initial' }}
         />

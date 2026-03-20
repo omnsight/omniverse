@@ -14,7 +14,7 @@ export const ListToolbar: React.FC<Props> = ({ editor }) => {
 
   return (
     <Group gap={4}>
-      <Tooltip label={t('components.editor.tools.bulletList')}>
+      <Tooltip label={t('components.editor.tools.ListTools.bulletList')}>
         <ActionIcon
           variant={editor.isActive('bulletList') ? 'filled' : 'subtle'}
           onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -22,7 +22,7 @@ export const ListToolbar: React.FC<Props> = ({ editor }) => {
           <ListBulletIcon style={{ width: 16 }} />
         </ActionIcon>
       </Tooltip>
-      <Tooltip label={t('components.editor.tools.orderedList')}>
+      <Tooltip label={t('components.editor.tools.ListTools.orderedList')}>
         <ActionIcon
           variant={editor.isActive('orderedList') ? 'filled' : 'subtle'}
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
@@ -30,7 +30,7 @@ export const ListToolbar: React.FC<Props> = ({ editor }) => {
           <QueueListIcon style={{ width: 16 }} />
         </ActionIcon>
       </Tooltip>
-      <Tooltip label={t('components.editor.tools.horizontalRule')}>
+      <Tooltip label={t('components.editor.tools.ListTools.horizontalRule')}>
         <ActionIcon
           variant="subtle"
           onClick={() => editor.chain().focus().setHorizontalRule().run()}

@@ -8,10 +8,10 @@ export const ErrorPage: React.FC = () => {
   return (
     <Center h="100%">
       <Box ta="center">
-        <Title order={1}>{t('page.error.title')}</Title>
-        <Text mt="sm">{t('page.error.description')}</Text>
+        <Title order={1}>{t('pages.ErrorPage.title')}</Title>
+        <Text mt="sm">{t('pages.ErrorPage.description')}</Text>
         <Button component={Link} to="/" mt="lg">
-          {t('page.error.return')}
+          {t('pages.ErrorPage.return')}
         </Button>
       </Box>
     </Center>

@@ -32,7 +32,7 @@ const MonitorListWindowContent: React.FC = () => {
       console.error('Error fetching sources data', error);
       notifications.show({
         title: t('common.error'),
-        message: t('monitoring.list.getSourcesError'),
+        message: t('pages.windows.monitor.MonitorListWindow.getSourcesError'),
         color: 'red',
       });
     }
@@ -62,7 +62,7 @@ const MonitorListWindowContent: React.FC = () => {
       console.error('Error creating source', error);
       notifications.show({
         title: t('common.error'),
-        message: t('monitoring.create.error'),
+        message: t('pages.windows.monitor.MonitorListWindow.error'),
         color: 'red',
       });
     } else {
@@ -121,7 +121,7 @@ export const MonitorListWindow: React.FC = () => {
   return (
     <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
       <Box p="lg" pb={0}>
-        <Title order={3}>{t('monitoring.list.title')}</Title>
+        <Title order={3}>{t('pages.windows.monitor.MonitorListWindow.title')}</Title>
       </Box>
       <MonitorListWindowContent />
     </Box>

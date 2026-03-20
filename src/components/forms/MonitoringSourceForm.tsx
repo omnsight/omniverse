@@ -29,7 +29,7 @@ export const MonitoringSourceForm: React.FC<Props> = ({ source, onUpdate }) => {
           value={source.name || ''}
           onChange={(val) => onUpdate?.({ name: val })}
           canEdit={!!onUpdate}
-          placeholder={t('components.monitoring.source.name')}
+          placeholder={t('components.forms.MonitoringSourceForm.name')}
           order={4}
         />
 
