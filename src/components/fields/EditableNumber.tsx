@@ -8,6 +8,7 @@ export interface EditableNumberProps {
   onChange: (value: number | string) => void;
   placeholder: string;
   canEdit?: boolean;
+  useInput?: boolean;
 }
 
 export const EditableNumber: React.FC<EditableNumberProps> = ({
@@ -15,6 +16,7 @@ export const EditableNumber: React.FC<EditableNumberProps> = ({
   onChange,
   placeholder,
   canEdit = false,
+  useInput = false,
 }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
@@ -36,7 +38,7 @@ export const EditableNumber: React.FC<EditableNumberProps> = ({
     }
   };
 
-  if (isEditing) {
+  if (isEditing || useInput) {
     return (
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <NumberInput

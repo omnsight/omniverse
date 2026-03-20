@@ -49,17 +49,6 @@
       }
     },
     "windows": {
-      "monitor": {
-        "MonitorWindow": {
-          "noSourceSelected": "?",
-          "title": "?"
-        },
-        "MonitorListWindow": {
-          "getSourcesError": "?",
-          "error": "?",
-          "title": "?"
-        }
-      },
       "network": {
         "SparkGraph": {
           "deleteEdgeError": "?",
@@ -70,6 +59,17 @@
           "selectSameType": "?",
           "showAttributes": "?",
           "showMainData": "?"
+        }
+      },
+      "monitor": {
+        "MonitorWindow": {
+          "noSourceSelected": "?",
+          "title": "?"
+        },
+        "MonitorListWindow": {
+          "getSourcesError": "?",
+          "error": "?",
+          "title": "?"
         }
       },
       "data": {
@@ -91,14 +91,6 @@
           "title": "相关事件"
         }
       },
-      "context": {
-        "GlobalEventTimelineWindow": {
-          "queryError": "?"
-        },
-        "GlobalEventRecommendationWindow": {
-          "queryError": "?"
-        }
-      },
       "insight": {
         "InsightWindow": {
           "queryError": "?",
@@ -112,6 +104,14 @@
           "error": "无法更新内容，请检查输入。",
           "title": "分析专栏"
         }
+      },
+      "context": {
+        "GlobalEventTimelineWindow": {
+          "queryError": "?"
+        },
+        "GlobalEventRecommendationWindow": {
+          "queryError": "?"
+        }
       }
     }
   },
@@ -120,11 +120,14 @@
     "reset": "重置",
     "apply": "应用",
     "save": "保存",
-    "notFound": "未找到",
     "cancel": "取消",
     "edit": "?",
     "delete": "删除",
-    "add": "添加",
+    "text": "文本",
+    "number": "数字",
+    "date": "日期",
+    "insert": "插入新属性",
+    "notFound": "未找到",
     "create": "创建"
   },
   "components": {
@@ -189,7 +192,8 @@
         "insightDescriptionPlaceholder": "专栏精短概述（主题、事件、重要发现等）"
       },
       "EventForm": {
-        "title": "事件标题"
+        "title": "事件标题",
+        "eventDescription": "事件详细描述"
       },
       "entityForm": {
         "FormRenderer": {
@@ -202,16 +206,19 @@
         }
       }
     },
+    "fields": {
+      "EditableAttributes": {
+        "key": "属性",
+        "value": "内容",
+        "newKey": "新属性",
+        "newValue": "新内容"
+      }
+    },
     "editor": {
       "InsightEditor": {
         "noRelatedEntities": "暂无相关事件、人物、组织等",
         "updateInsightError": "无法更新专栏，请稍后再试",
         "openGallery": "相关事件、人物、组织等"
-      },
-      "extensions": {
-        "WindowAnchor": {
-          "restore": "恢复视图"
-        }
       },
       "tools": {
         "UnredoTools": {
@@ -238,14 +245,11 @@
           "h2": "二级标题",
           "h3": "三级标题"
         }
-      }
-    },
-    "fields": {
-      "EditableAttributes": {
-        "key": "?",
-        "value": "?",
-        "newKey": "?",
-        "newValue": "?"
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "恢复视图"
+        }
       }
     }
   },
@@ -269,14 +273,16 @@
     "lastReviewed": "最后审查",
     "title": "标题",
     "date": "日期",
+    "location": "位置",
     "address": "地址",
     "locality": "城市",
     "administrativeArea": "行政区域",
     "country": "国家",
+    "enter": "输入",
+    "unknown": "未知",
+    "select": "请选择",
     "relation": "关系",
     "createdDate": "创建日期",
-    "updatedDate": "更新日期",
-    "enter": "输入",
-    "unknown": "未知"
+    "updatedDate": "更新日期"
   }
 }

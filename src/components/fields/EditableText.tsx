@@ -8,6 +8,7 @@ interface Props {
   onChange: (value: string) => void;
   placeholder: string;
   canEdit?: boolean;
+  useInput?: boolean;
 }
 
 export const EditableText: React.FC<Props> = ({
@@ -15,6 +16,7 @@ export const EditableText: React.FC<Props> = ({
   onChange,
   placeholder,
   canEdit = false,
+  useInput = false,
 }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
@@ -36,7 +38,7 @@ export const EditableText: React.FC<Props> = ({
     }
   };
 
-  if (isEditing) {
+  if (isEditing || useInput) {
     return (
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <TextInput

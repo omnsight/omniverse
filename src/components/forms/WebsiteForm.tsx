@@ -26,9 +26,11 @@ interface Props {
   website: Website;
   onUpdate?: (data: WebsiteMainData) => void;
   onClick?: () => void;
+  useLabel?: boolean;
+  useInput?: boolean;
 }
 
-export const WebsiteForm: React.FC<Props> = ({ website, onUpdate, onClick }) => {
+export const WebsiteForm: React.FC<Props> = ({ website, onUpdate, onClick, useLabel, useInput }) => {
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
 
@@ -39,10 +41,12 @@ export const WebsiteForm: React.FC<Props> = ({ website, onUpdate, onClick }) => 
       onClick={onClick}
     >
       <Group gap="xs">
+        {useLabel && <Text size="sm" fw={500}>{t('components.forms.WebsiteForm.title')}</Text>}
         <EditableTitle
           value={website.title || ''}
           onChange={(val) => onUpdate?.({ title: val })}
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('components.forms.WebsiteForm.title')}
           order={4}
           style={{ flex: 'initial' }}
@@ -60,14 +64,17 @@ export const WebsiteForm: React.FC<Props> = ({ website, onUpdate, onClick }) => 
           value={website.url ?? ''}
           onChange={(val) => onUpdate?.({ url: val })}
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('placeholder.url')}
         />
       </Group>
 
+      {useLabel && <Text size="sm" fw={500}>{t('placeholder.description')}</Text>}
       <EditableTextarea
         value={website.description || ''}
         onChange={(val) => onUpdate?.({ description: val })}
         canEdit={!!onUpdate}
+        useInput={useInput}
         placeholder={t('placeholder.description')}
       />
 
@@ -83,6 +90,7 @@ export const WebsiteForm: React.FC<Props> = ({ website, onUpdate, onClick }) => 
             })
           }
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('placeholder.foundedDate')}
         />
       </Group>
@@ -99,14 +107,17 @@ export const WebsiteForm: React.FC<Props> = ({ website, onUpdate, onClick }) => 
             })
           }
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('placeholder.discoveredDate')}
         />
       </Group>
 
+      {useLabel && <Text size="sm" fw={500}>{t('placeholder.tags')}</Text>}
       <EditableTags
         value={website.tags || []}
         onChange={(tags) => onUpdate?.({ tags })}
         canEdit={!!onUpdate}
+        useInput={useInput}
         placeholder={t('placeholder.tags')}
       />
 

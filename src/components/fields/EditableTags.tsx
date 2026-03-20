@@ -8,6 +8,7 @@ export interface EditableTagsProps {
   onChange: (value: string[]) => void;
   placeholder?: string;
   canEdit?: boolean;
+  useInput?: boolean;
 }
 
 export const EditableTags: React.FC<EditableTagsProps> = ({
@@ -15,6 +16,7 @@ export const EditableTags: React.FC<EditableTagsProps> = ({
   onChange,
   placeholder,
   canEdit = false,
+  useInput = false,
 }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
@@ -36,7 +38,7 @@ export const EditableTags: React.FC<EditableTagsProps> = ({
     }
   };
 
-  if (isEditing) {
+  if (isEditing || useInput) {
     return (
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <TagsInput

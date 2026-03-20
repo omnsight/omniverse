@@ -7,12 +7,14 @@ export interface EditableSelectProps extends Omit<SelectProps, 'onChange'> {
   value?: string;
   onChange: (value: string) => void;
   canEdit?: boolean;
+  useInput?: boolean;
 }
 
 export const EditableSelect: React.FC<EditableSelectProps> = ({
   value,
   onChange,
   canEdit = false,
+  useInput = false,
   data,
   placeholder,
   ...selectProps
@@ -59,7 +61,7 @@ export const EditableSelect: React.FC<EditableSelectProps> = ({
     return value;
   }, [value, data]);
 
-  if (isEditing) {
+  if (isEditing || useInput) {
     return (
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <Select
@@ -69,7 +71,7 @@ export const EditableSelect: React.FC<EditableSelectProps> = ({
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           data={data}
-          placeholder={`${t('placeholder.enter')}${placeholder}...`}
+          placeholder={`${t('placeholder.select')}${placeholder}...`}
           {...selectProps}
         />
       </div>

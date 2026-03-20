@@ -15,28 +15,34 @@ import { ChevronDownIcon } from '@heroicons/react/24/solid';
 
 interface Props {
   source: MonitoringSource;
+  useLabel?: boolean;
+  useInput?: boolean;
   onUpdate?: (data: MonitoringSourceMainData) => void;
 }
 
-export const MonitoringSourceForm: React.FC<Props> = ({ source, onUpdate }) => {
+export const MonitoringSourceForm: React.FC<Props> = ({ source, useLabel, useInput, onUpdate }) => {
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
 
   return (
     <Paper withBorder p="md" radius="md">
       <Stack>
+        {useLabel && <Text size="sm" fw={500}>{t('components.forms.MonitoringSourceForm.name')}</Text>}
         <EditableTitle
           value={source.name || ''}
           onChange={(val) => onUpdate?.({ name: val })}
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('components.forms.MonitoringSourceForm.name')}
           order={4}
         />
 
+        {useLabel && <Text size="sm" fw={500}>{t('placeholder.description')}</Text>}
         <EditableTextarea
           value={source.description || ''}
           onChange={(val) => onUpdate?.({ description: val })}
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('placeholder.description')}
         />
 
@@ -46,6 +52,7 @@ export const MonitoringSourceForm: React.FC<Props> = ({ source, onUpdate }) => {
             value={source.type || ''}
             onChange={(val) => onUpdate?.({ type: val as any })}
             canEdit={!!onUpdate}
+            useInput={useInput}
             data={['website', 'twitter', 'telegram']}
             placeholder={t('placeholder.source.type')}
           />
@@ -56,6 +63,7 @@ export const MonitoringSourceForm: React.FC<Props> = ({ source, onUpdate }) => {
             value={source.url || ''}
             onChange={(val) => onUpdate?.({ url: val })}
             canEdit={!!onUpdate}
+            useInput={useInput}
             placeholder={t('placeholder.url')}
           />
         </Group>
@@ -66,6 +74,7 @@ export const MonitoringSourceForm: React.FC<Props> = ({ source, onUpdate }) => {
             value={source.reliability || 0}
             onChange={(val) => onUpdate?.({ reliability: Number(val) })}
             canEdit={!!onUpdate}
+            useInput={useInput}
             placeholder={t('placeholder.reliability')}
           />
         </Group>
@@ -75,6 +84,7 @@ export const MonitoringSourceForm: React.FC<Props> = ({ source, onUpdate }) => {
             value={(source.last_reviewed || 0) * 1000}
             onChange={(date) => onUpdate?.({ last_reviewed: date.getTime() / 1000 })}
             canEdit={!!onUpdate}
+            useInput={useInput}
             placeholder={t('placeholder.lastReviewed')}
           />
         </Group>

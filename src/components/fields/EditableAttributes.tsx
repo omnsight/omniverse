@@ -161,7 +161,11 @@ export const EditableAttributes: React.FC<Props> = ({ value, onChange, canEdit }
           <Select
             value={newType}
             onChange={(type) => setNewType(type || 'text')}
-            data={['text', 'number', 'date']}
+            data={[
+              { label: t('common.text'), value: 'text' },
+              { label: t('common.number'), value: 'number' },
+              { label: t('common.date'), value: 'date' },
+            ]}
           />
           {newType === 'text' && (
             <TextInput
@@ -184,7 +188,7 @@ export const EditableAttributes: React.FC<Props> = ({ value, onChange, canEdit }
               onChange={setNewValue}
             />
           )}
-          <Button onClick={handleAdd}>{t('common.add')}</Button>
+          <Button onClick={handleAdd}>{t('common.insert')}</Button>
         </Group>
       )}
     </div>

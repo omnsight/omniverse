@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { CalendarDaysIcon, ChevronDownIcon, MapPinIcon } from '@heroicons/react/24/outline';
-import { Collapse, Divider, Group, Stack, Title, UnstyledButton, rem } from '@mantine/core';
+import { Collapse, Divider, Group, Stack, Title, UnstyledButton, rem, Text } from '@mantine/core';
 import { type Event, type EventMainData } from 'omni-osint-crud-client';
 import { useTranslation } from 'react-i18next';
 import countries from 'i18n-iso-countries';
@@ -24,8 +24,8 @@ interface Props {
   event: Event;
   width?: number | string;
   withTitle?: boolean;
-  useLabel: boolean;
-  useInput: boolean;
+  useLabel?: boolean;
+  useInput?: boolean;
   onUpdate?: (data: EventMainData) => void;
   onClick?: () => void;
 }
@@ -34,8 +34,8 @@ export const EventForm: React.FC<Props> = ({
   event,
   width,
   withTitle = true,
-  useLabel,
-  useInput,
+  useLabel = false,
+  useInput = false,
   onUpdate,
   onClick,
 }) => {
@@ -82,15 +82,20 @@ export const EventForm: React.FC<Props> = ({
       onClick={onClick}
     >
       {withTitle && (
-        <EditableTitle
-          value={event.title || ''}
-          onChange={(val) => onUpdate?.({ title: val })}
-          canEdit={!!onUpdate}
-          placeholder={t('components.forms.EventForm.title')}
-          order={4}
-        />
+        <>
+          {useLabel && <Text size="sm" fw={500}>{t('components.forms.EventForm.title')}</Text>}
+          <EditableTitle
+            value={event.title || ''}
+            onChange={(val) => onUpdate?.({ title: val })}
+            canEdit={!!onUpdate}
+            useInput={useInput}
+            placeholder={t('components.forms.EventForm.title')}
+            order={4}
+          />
+        </>
       )}
 
+      {useLabel && <Text size="sm" fw={500}>{t('placeholder.date')}</Text>}
       <Group gap="xs" c="dimmed">
         <CalendarDaysIcon style={{ width: rem(18), height: rem(18) }} />
         <EditableDate
@@ -101,10 +106,12 @@ export const EventForm: React.FC<Props> = ({
             })
           }
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('placeholder.date')}
         />
       </Group>
 
+      {useLabel && <Text size="sm" fw={500}>{t('placeholder.location')}</Text>}
       <Group gap="xs" c="dimmed" align="flex-start" wrap="nowrap">
         <MapPinIcon style={{ width: rem(18), height: rem(18), flexShrink: 0, marginTop: rem(2) }} />
         <Stack gap={0} style={{ flex: 1 }}>
@@ -112,24 +119,28 @@ export const EventForm: React.FC<Props> = ({
             value={(event.location || {}).address}
             onChange={(val) => handleLocationUpdate('address', val)}
             canEdit={!!onUpdate}
+            useInput={useInput}
             placeholder={t('placeholder.address')}
           />
           <EditableText
             value={(event.location || {}).locality}
             onChange={(val) => handleLocationUpdate('locality', val)}
             canEdit={!!onUpdate}
+            useInput={useInput}
             placeholder={t('placeholder.locality')}
           />
           <EditableText
             value={(event.location || {}).administrative_area}
             onChange={(val) => handleLocationUpdate('administrative_area', val)}
             canEdit={!!onUpdate}
+            useInput={useInput}
             placeholder={t('placeholder.administrativeArea')}
           />
           <EditableSelect
             value={(event.location || {}).country_code}
             onChange={(val) => handleLocationUpdate('country_code', val)}
             canEdit={!!onUpdate}
+            useInput={useInput}
             placeholder={t('placeholder.country')}
             data={countryOptions}
             searchable
@@ -138,17 +149,21 @@ export const EventForm: React.FC<Props> = ({
         </Stack>
       </Group>
 
+      {useLabel && <Text size="sm" fw={500}>{t('placeholder.description')}</Text>}
       <EditableTextarea
         value={event.description || ''}
         onChange={(val) => onUpdate?.({ description: val })}
         canEdit={!!onUpdate}
-        placeholder={t('placeholder.description')}
+        useInput={useInput}
+        placeholder={t('components.forms.EventForm.eventDescription')}
       />
 
+      {useLabel && <Text size="sm" fw={500}>{t('placeholder.tags')}</Text>}
       <EditableTags
         value={event.tags || []}
         onChange={(tags) => onUpdate?.({ tags })}
         canEdit={!!onUpdate}
+        useInput={useInput}
         placeholder={t('placeholder.tags')}
       />
 

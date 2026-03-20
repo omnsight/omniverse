@@ -15,9 +15,11 @@ interface Props {
   organization: Organization;
   onUpdate?: (data: OrganizationMainData) => void;
   onClick?: () => void;
+  useLabel?: boolean;
+  useInput?: boolean;
 }
 
-export const OrganizationForm: React.FC<Props> = ({ organization, onUpdate, onClick }) => {
+export const OrganizationForm: React.FC<Props> = ({ organization, onUpdate, onClick, useLabel, useInput }) => {
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
 
@@ -28,10 +30,12 @@ export const OrganizationForm: React.FC<Props> = ({ organization, onUpdate, onCl
       style={{ position: 'relative', cursor: onClick ? 'pointer' : 'default' }}
       onClick={onClick}
     >
+      {useLabel && <Text size="sm" fw={500}>{t('components.forms.OrganizationForm.name')}</Text>}
       <EditableTitle
         value={organization.name || ''}
         onChange={(val) => onUpdate?.({ name: val })}
         canEdit={!!onUpdate}
+        useInput={useInput}
         placeholder={t('components.forms.OrganizationForm.name')}
         order={4}
       />
@@ -44,6 +48,7 @@ export const OrganizationForm: React.FC<Props> = ({ organization, onUpdate, onCl
           value={organization.type || ''}
           onChange={(val) => onUpdate?.({ type: val })}
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('placeholder.type')}
         />
       </Group>
@@ -60,6 +65,7 @@ export const OrganizationForm: React.FC<Props> = ({ organization, onUpdate, onCl
             })
           }
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('placeholder.foundedDate')}
         />
       </Group>
@@ -76,14 +82,17 @@ export const OrganizationForm: React.FC<Props> = ({ organization, onUpdate, onCl
             })
           }
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('placeholder.discoveredDate')}
         />
       </Group>
 
+      {useLabel && <Text size="sm" fw={500}>{t('placeholder.tags')}</Text>}
       <EditableTags
         value={organization.tags || []}
         onChange={(tags) => onUpdate?.({ tags })}
         canEdit={!!onUpdate}
+        useInput={useInput}
         placeholder={t('placeholder.tags')}
       />
 

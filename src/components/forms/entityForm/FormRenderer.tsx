@@ -16,9 +16,11 @@ interface Props {
   entity: Entity;
   onUpdated?: (entities: Entities) => void;
   onUpdate?: (data: EntityMainData) => void;
+  useLabel?: boolean;
+  useInput?: boolean;
 }
 
-export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdate }) => {
+export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdate, useLabel, useInput }) => {
   const { t } = useTranslation();
 
   const handleUpdate = async (patch: EntityMainData) => {
@@ -144,22 +146,24 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdat
 
   switch (entity.type) {
     case 'Event':
-      return <EventForm event={entity.data} onUpdate={onUpdated ? handleUpdate : onUpdate} />;
+      return <EventForm event={entity.data} onUpdate={onUpdated ? handleUpdate : onUpdate} useLabel={useLabel} useInput={useInput} />;
     case 'Organization':
       return (
         <OrganizationForm
           organization={entity.data}
           onUpdate={onUpdated ? handleUpdate : onUpdate}
+          useLabel={useLabel}
+          useInput={useInput}
         />
       );
     case 'Person':
-      return <PersonForm person={entity.data} onUpdate={onUpdated ? handleUpdate : onUpdate} />;
+      return <PersonForm person={entity.data} onUpdate={onUpdated ? handleUpdate : onUpdate} useLabel={useLabel} useInput={useInput} />;
     case 'Relation':
-      return <RelationForm relation={entity.data} onUpdate={onUpdated ? handleUpdate : onUpdate} />;
+      return <RelationForm relation={entity.data} onUpdate={onUpdated ? handleUpdate : onUpdate} useLabel={useLabel} useInput={useInput} />;
     case 'Source':
-      return <SourceForm source={entity.data} onUpdate={onUpdated ? handleUpdate : onUpdate} />;
+      return <SourceForm source={entity.data} onUpdate={onUpdated ? handleUpdate : onUpdate} useLabel={useLabel} useInput={useInput} />;
     case 'Website':
-      return <WebsiteForm website={entity.data} onUpdate={onUpdated ? handleUpdate : onUpdate} />;
+      return <WebsiteForm website={entity.data} onUpdate={onUpdated ? handleUpdate : onUpdate} useLabel={useLabel} useInput={useInput} />;
     default:
       return null;
   }

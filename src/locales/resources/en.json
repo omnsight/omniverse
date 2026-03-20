@@ -49,17 +49,6 @@
       }
     },
     "windows": {
-      "monitor": {
-        "MonitorWindow": {
-          "noSourceSelected": "?",
-          "title": "?"
-        },
-        "MonitorListWindow": {
-          "getSourcesError": "?",
-          "error": "?",
-          "title": "?"
-        }
-      },
       "network": {
         "SparkGraph": {
           "deleteEdgeError": "?",
@@ -70,6 +59,17 @@
           "selectSameType": "?",
           "showAttributes": "?",
           "showMainData": "?"
+        }
+      },
+      "monitor": {
+        "MonitorWindow": {
+          "noSourceSelected": "?",
+          "title": "?"
+        },
+        "MonitorListWindow": {
+          "getSourcesError": "?",
+          "error": "?",
+          "title": "?"
         }
       },
       "data": {
@@ -91,14 +91,6 @@
           "title": "Related Events"
         }
       },
-      "context": {
-        "GlobalEventTimelineWindow": {
-          "queryError": "?"
-        },
-        "GlobalEventRecommendationWindow": {
-          "queryError": "?"
-        }
-      },
       "insight": {
         "InsightWindow": {
           "queryError": "?",
@@ -112,6 +104,14 @@
           "error": "Failed to update content, please check your input.",
           "title": "Insight Column"
         }
+      },
+      "context": {
+        "GlobalEventTimelineWindow": {
+          "queryError": "?"
+        },
+        "GlobalEventRecommendationWindow": {
+          "queryError": "?"
+        }
       }
     }
   },
@@ -120,11 +120,14 @@
     "reset": "Reset",
     "apply": "Apply",
     "save": "?",
-    "notFound": "Not Found",
     "cancel": "?",
     "edit": "?",
     "delete": "Delete",
-    "add": "Add",
+    "text": "text",
+    "number": "number",
+    "date": "date",
+    "insert": "Insert New",
+    "notFound": "Not Found",
     "create": "?"
   },
   "components": {
@@ -189,7 +192,8 @@
         "insightDescriptionPlaceholder": "Short summary of the insight (theme, event, important discoveries, etc.)"
       },
       "EventForm": {
-        "title": "Event Title"
+        "title": "Event Title",
+        "eventDescription": "event description"
       },
       "entityForm": {
         "FormRenderer": {
@@ -202,16 +206,19 @@
         }
       }
     },
+    "fields": {
+      "EditableAttributes": {
+        "key": "Attribute",
+        "value": "Value",
+        "newKey": "New Attribute",
+        "newValue": "New Value"
+      }
+    },
     "editor": {
       "InsightEditor": {
         "noRelatedEntities": "No related events, people, and etc.",
         "updateInsightError": "Failed to update insight, please try again later.",
         "openGallery": "Related Events, People, and etc."
-      },
-      "extensions": {
-        "WindowAnchor": {
-          "restore": "Restore Window"
-        }
       },
       "tools": {
         "UnredoTools": {
@@ -238,14 +245,11 @@
           "h2": "H2 Heading",
           "h3": "H3 Heading"
         }
-      }
-    },
-    "fields": {
-      "EditableAttributes": {
-        "key": "?",
-        "value": "?",
-        "newKey": "?",
-        "newValue": "?"
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "Restore Window"
+        }
       }
     }
   },
@@ -269,14 +273,16 @@
     "lastReviewed": "Last Reviewed",
     "title": "?",
     "date": "Date",
+    "location": "Location",
     "address": "Address",
     "locality": "Locality",
     "administrativeArea": "Administrative Area",
     "country": "Country",
+    "enter": "Enter",
+    "unknown": "Unknown",
+    "select": "Select ",
     "relation": "Relation",
     "createdDate": "Created Date",
-    "updatedDate": "Updated Date",
-    "enter": "Enter",
-    "unknown": "Unknown"
+    "updatedDate": "Updated Date"
   }
 }

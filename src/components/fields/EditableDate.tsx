@@ -9,6 +9,7 @@ export interface EditableDateProps {
   onChange: (value: Date) => void;
   placeholder: string;
   canEdit?: boolean;
+  useInput?: boolean;
 }
 
 export const EditableDate: React.FC<EditableDateProps> = ({
@@ -16,6 +17,7 @@ export const EditableDate: React.FC<EditableDateProps> = ({
   onChange,
   placeholder,
   canEdit = false,
+  useInput = false,
 }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
@@ -39,7 +41,7 @@ export const EditableDate: React.FC<EditableDateProps> = ({
     }
   };
 
-  if (isEditing) {
+  if (isEditing || useInput) {
     return (
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <DateTimePicker

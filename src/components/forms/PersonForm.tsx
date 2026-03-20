@@ -15,9 +15,11 @@ interface Props {
   person: Person;
   onUpdate?: (data: PersonMainData) => void;
   onClick?: () => void;
+  useLabel?: boolean;
+  useInput?: boolean;
 }
 
-export const PersonForm: React.FC<Props> = ({ person, onUpdate, onClick }) => {
+export const PersonForm: React.FC<Props> = ({ person, onUpdate, onClick, useLabel, useInput }) => {
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
 
@@ -27,10 +29,12 @@ export const PersonForm: React.FC<Props> = ({ person, onUpdate, onClick }) => {
       style={{ position: 'relative', cursor: onClick ? 'pointer' : 'default' }}
       onClick={onClick}
     >
+      {useLabel && <Text size="sm" fw={500}>{t('components.forms.PersonForm.name')}</Text>}
       <EditableTitle
         value={person.name || ''}
         onChange={(val) => onUpdate?.({ name: val })}
         canEdit={!!onUpdate}
+        useInput={useInput}
         placeholder={t('components.forms.PersonForm.name')}
         order={4}
       />
@@ -41,6 +45,7 @@ export const PersonForm: React.FC<Props> = ({ person, onUpdate, onClick }) => {
           value={person.role || ''}
           onChange={(val) => onUpdate?.({ role: val })}
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('placeholder.role')}
         />
       </Group>
@@ -51,6 +56,7 @@ export const PersonForm: React.FC<Props> = ({ person, onUpdate, onClick }) => {
           value={person.nationality || ''}
           onChange={(val) => onUpdate?.({ nationality: val })}
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('placeholder.nationality')}
         />
       </Group>
@@ -67,14 +73,17 @@ export const PersonForm: React.FC<Props> = ({ person, onUpdate, onClick }) => {
             })
           }
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('placeholder.birthDate')}
         />
       </Group>
 
+      {useLabel && <Text size="sm" fw={500}>{t('placeholder.tags')}</Text>}
       <EditableTags
         value={person.tags || []}
         onChange={(tags) => onUpdate?.({ tags })}
         canEdit={!!onUpdate}
+        useInput={useInput}
         placeholder={t('placeholder.tags')}
       />
 

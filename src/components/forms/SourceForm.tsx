@@ -25,9 +25,11 @@ interface Props {
   source: Source;
   onUpdate?: (data: SourceMainData) => void;
   onClick?: () => void;
+  useLabel?: boolean;
+  useInput?: boolean;
 }
 
-export const SourceForm: React.FC<Props> = ({ source, onUpdate, onClick }) => {
+export const SourceForm: React.FC<Props> = ({ source, onUpdate, onClick, useLabel, useInput }) => {
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
 
@@ -38,10 +40,12 @@ export const SourceForm: React.FC<Props> = ({ source, onUpdate, onClick }) => {
       onClick={onClick}
     >
       <Group gap="xs">
+        {useLabel && <Text size="sm" fw={500}>{t('components.forms.SourceForm.title')}</Text>}
         <EditableTitle
           value={source.name || source.url || ''}
           onChange={(val) => onUpdate?.({ name: val })}
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('components.forms.SourceForm.title')}
           order={4}
           style={{ flex: 'initial' }}
@@ -59,6 +63,7 @@ export const SourceForm: React.FC<Props> = ({ source, onUpdate, onClick }) => {
           value={source.url || ''}
           onChange={(val) => onUpdate?.({ url: val })}
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('placeholder.url')}
         />
       </Group>
@@ -69,14 +74,17 @@ export const SourceForm: React.FC<Props> = ({ source, onUpdate, onClick }) => {
           value={source.reliability || 0}
           onChange={(val) => onUpdate?.({ reliability: Number(val) })}
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('placeholder.reliability')}
         />
       </Group>
 
+      {useLabel && <Text size="sm" fw={500}>{t('placeholder.tags')}</Text>}
       <EditableTags
         value={source.tags || []}
         onChange={(val) => onUpdate?.({ tags: val })}
         canEdit={!!onUpdate}
+        useInput={useInput}
         placeholder={t('placeholder.tags')}
       />
 

@@ -9,9 +9,11 @@ interface Props {
   relation: Relation;
   onUpdate?: (data: RelationMainData) => void;
   onClick?: () => void;
+  useLabel?: boolean;
+  useInput?: boolean;
 }
 
-export const RelationForm: React.FC<Props> = ({ relation, onUpdate, onClick }) => {
+export const RelationForm: React.FC<Props> = ({ relation, onUpdate, onClick, useLabel, useInput }) => {
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
 
@@ -21,10 +23,12 @@ export const RelationForm: React.FC<Props> = ({ relation, onUpdate, onClick }) =
       style={{ position: 'relative', cursor: onClick ? 'pointer' : 'default' }}
       onClick={onClick}
     >
+      {useLabel && <Text size="sm" fw={500}>{t('components.forms.RelationForm.label')}</Text>}
       <EditableTitle
         value={relation.label || ''}
         onChange={(val) => onUpdate?.({ label: val })}
         canEdit={!!onUpdate}
+        useInput={useInput}
         placeholder={t('components.forms.RelationForm.label')}
         order={4}
       />
@@ -35,6 +39,7 @@ export const RelationForm: React.FC<Props> = ({ relation, onUpdate, onClick }) =
           value={relation.name || ''}
           onChange={(val) => onUpdate?.({ name: val })}
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('placeholder.name')}
         />
       </Group>
@@ -45,6 +50,7 @@ export const RelationForm: React.FC<Props> = ({ relation, onUpdate, onClick }) =
           value={relation.confidence ?? 0}
           onChange={(val) => onUpdate?.({ confidence: Number(val) })}
           canEdit={!!onUpdate}
+          useInput={useInput}
           placeholder={t('placeholder.confidence')}
         />
       </Group>
