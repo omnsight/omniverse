@@ -1,10 +1,17 @@
 import React from 'react';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
-import { CreateService } from 'omni-osint-crud-client';
+import {
+  createEvent,
+  createOrganization,
+  createPerson,
+  createRelation,
+  createSource,
+  createWebsite,
+} from 'omni-osint-crud-client';
 import type { Entities, Entity, EntityMainData } from './entity';
-import { Button, Modal } from '@mantine/core';
 import { EntityFormRenderer } from './FormRenderer';
+import { WindowModal } from '../../modals/WindowModal';
 
 interface Props {
   entity?: Entity;
@@ -27,42 +34,91 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
     if (!entity) return;
 
     const entities: Entities = {};
-    try {
-      switch (entity.type) {
-        case 'Event':
-          const event = await CreateService.createEvent(entity.data);
-          entities.events = [event];
-          break;
-        case 'Organization':
-          const organization = await CreateService.createOrganization(entity.data);
+    switch (entity.type) {
+      case 'Event':
+        const { data, error } = await createEvent({ body: entity.data });
+        if (error) {
+          notifications.show({
+            title: t('common.error'),
+            message: t('entity.create.error'),
+            color: 'red',
+          });
+        } else {
+          entities.events = [data];
+        }
+        break;
+      case 'Organization':
+        const { data: organization, error: organizationError } = await createOrganization({
+          body: entity.data,
+        });
+        if (organizationError) {
+          notifications.show({
+            title: t('common.error'),
+            message: t('entity.create.error'),
+            color: 'red',
+          });
+        } else {
           entities.organizations = [organization];
-          break;
-        case 'Person':
-          const person = await CreateService.createPerson(entity.data);
+        }
+        break;
+      case 'Person':
+        const { data: person, error: personError } = await createPerson({
+          body: entity.data,
+        });
+        if (personError) {
+          notifications.show({
+            title: t('common.error'),
+            message: t('entity.create.error'),
+            color: 'red',
+          });
+        } else {
           entities.people = [person];
-          break;
-        case 'Relation':
-          const relation = await CreateService.createRelation(entity.data);
+        }
+        break;
+      case 'Relation':
+        const { data: relation, error: relationError } = await createRelation({
+          body: entity.data,
+        });
+        if (relationError) {
+          notifications.show({
+            title: t('common.error'),
+            message: t('entity.create.error'),
+            color: 'red',
+          });
+        } else {
           entities.relations = [relation];
-          break;
-        case 'Source':
-          const source = await CreateService.createSource(entity.data);
+        }
+        break;
+      case 'Source':
+        const { data: source, error: sourceError } = await createSource({
+          body: entity.data,
+        });
+        if (sourceError) {
+          notifications.show({
+            title: t('common.error'),
+            message: t('entity.create.error'),
+            color: 'red',
+          });
+        } else {
           entities.sources = [source];
-          break;
-        case 'Website':
-          const website = await CreateService.createWebsite(entity.data);
+        }
+        break;
+      case 'Website':
+        const { data: website, error: websiteError } = await createWebsite({
+          body: entity.data,
+        });
+        if (websiteError) {
+          notifications.show({
+            title: t('common.error'),
+            message: t('entity.create.error'),
+            color: 'red',
+          });
+        } else {
           entities.websites = [website];
-          break;
-      }
-      console.log('Created entities', entities);
-      onCreated(entities);
-    } catch (error) {
-      notifications.show({
-        title: t('common.error'),
-        message: t('entity.create.error'),
-        color: 'red',
-      });
+        }
+        break;
     }
+    onCreated(entities);
   };
 
   if (!entity) {
@@ -70,9 +126,13 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
   }
 
   return (
-    <Modal opened={!!entity} onClose={() => setEntity(undefined)} title={t('entity.create.title')}>
+    <WindowModal
+      title={t('entity.create.title')}
+      submit={t('entity.create.submit')}
+      onClose={() => setEntity(undefined)}
+      onSubmit={createEntity}
+    >
       <EntityFormRenderer entity={entity} onUpdate={updateEntity} />
-      <Button onClick={createEntity}>{t('entity.create.submit')}</Button>
-    </Modal>
+    </WindowModal>
   );
 };

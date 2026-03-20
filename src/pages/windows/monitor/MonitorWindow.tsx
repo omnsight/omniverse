@@ -1,34 +1,49 @@
 import React from 'react';
-import { Box, ScrollArea, Text } from '@mantine/core';
+import { Box, Group, ScrollArea, Text, Title } from '@mantine/core';
 import { useMonitorStore } from './monitorData';
 import { MonitoringSourceForm } from '../../../components/forms/MonitoringSourceForm';
-import { MonitoringSourcesService } from 'omni-monitoring-client';
+import { updateMonitoringSource } from 'omni-monitoring-client';
 import { useTranslation } from 'react-i18next';
 import { useDataOwner } from '../../../provider/AuthContext';
 
-export const MonitorWindow: React.FC = () => {
+const MonitorWindowContent: React.FC = () => {
   const { t } = useTranslation();
   const { selected } = useMonitorStore();
   const isOwner = useDataOwner(selected);
 
   const handleUpdate = (data: any) => {
     if (!selected?._id) return;
-    MonitoringSourcesService.updateMonitoringSource(selected._id, data);
+    updateMonitoringSource({
+      body: data,
+      path: {
+        id: selected._id,
+      },
+    });
   };
 
   if (!selected) {
     return (
-      <Box pos="relative" h="100%" w="100%">
+      <Group justify="center" align="center" style={{ flex: 1 }}>
         <Text>{t('monitoring.single.noSourceSelected')}</Text>
-      </Box>
+      </Group>
     );
   }
 
   return (
-    <Box pos="relative" h="100%" w="100%">
-      <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars p="md">
-        <MonitoringSourceForm source={selected} onUpdate={isOwner ? handleUpdate : undefined} />
-      </ScrollArea>
+    <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars p="md">
+      <MonitoringSourceForm source={selected} onUpdate={isOwner ? handleUpdate : undefined} />
+    </ScrollArea>
+  );
+};
+
+export const MonitorWindow: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
+      <Box p="lg" pb={0}>
+        <Title order={3}>{t('monitoring.single.title')}</Title>
+      </Box>
+      <MonitorWindowContent />
     </Box>
   );
 };

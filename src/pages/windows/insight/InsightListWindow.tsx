@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Group, Loader, Paper, ScrollArea, Stack, Title } from '@mantine/core';
+import { Box, Button, Group, Loader, ScrollArea, Stack, Title } from '@mantine/core';
 import {
   type OsintView,
   type OsintViewMainData,
-  ReadService,
-  CreateService,
+  createView,
+  queryViews,
 } from 'omni-osint-crud-client';
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { useInsightStore } from './insightData';
@@ -13,8 +13,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useWindowManager } from '../WindowManager';
 import { notifications } from '@mantine/notifications';
+import { InputWindow } from '../../../components/modals/InputWindow';
 
-export const InsightListWindow: React.FC = () => {
+const InsightListWindowContent: React.FC = () => {
   const { t } = useTranslation();
   const { insights, setInsights, setSelected } = useInsightStore();
   const { setActiveWindowByName } = useWindowManager();
@@ -22,7 +23,7 @@ export const InsightListWindow: React.FC = () => {
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['insights'],
-    queryFn: () => ReadService.queryViews(),
+    queryFn: () => queryViews(),
   });
 
   useEffect(() => {
@@ -37,8 +38,8 @@ export const InsightListWindow: React.FC = () => {
   }, [isError, error]);
 
   useEffect(() => {
-    if (data && data.views) {
-      setInsights(data.views);
+    if (data?.data?.views) {
+      setInsights(data.data.views);
     }
   }, [data, setInsights]);
 
@@ -52,83 +53,86 @@ export const InsightListWindow: React.FC = () => {
 
   const createInsight = async () => {
     if (!insightToCreate) return;
-    try {
-      const insight = await CreateService.createView(insightToCreate);
-      setInsights([...insights, insight]);
-      setInsightToCreate(undefined);
-      console.log('Created insight', insight);
-    } catch (error) {
-      console.error('Error creating insight', error);
+    const { data, error, status } = await createView({
+      body: insightToCreate,
+    });
+
+    if (error) {
+      console.error(`Error [${status}] creating insight`, error);
       notifications.show({
         title: t('common.error'),
         message: t('insight.create.error'),
         color: 'red',
       });
+    } else {
+      setInsights([...insights, data]);
+      setInsightToCreate(undefined);
+      console.log('Created insight', data);
     }
   };
 
   if (isLoading) {
     return (
-      <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
-        <Box p="lg" pb={0}>
-          <Title order={3}>{t('insight.list.title')}</Title>
-        </Box>
-        <Group justify="center" align="center" style={{ flex: 1 }}>
-          <Loader />
-        </Group>
-      </Box>
+      <Group justify="center" align="center" style={{ flex: 1 }}>
+        <Loader />
+      </Group>
     );
   }
 
+  return (
+    <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars>
+      <Box p="lg" pt="sm">
+        <Stack>
+          {insights.map((insight) => (
+            <InsightForm
+              key={insight._id}
+              insight={insight}
+              useLabel={false}
+              useInput={false}
+              onClick={() => {
+                setSelected(insight);
+                setActiveWindowByName('Insight');
+              }}
+            />
+          ))}
+          {insightToCreate ? (
+            <InputWindow
+              title={t('insight.create.title')}
+              cancel={t('common.cancel')}
+              submit={t('common.create')}
+              onClose={() => setInsightToCreate(undefined)}
+              onSubmit={createInsight}
+            >
+              <InsightForm
+                useLabel={true}
+                insight={insightToCreate}
+                useInput={true}
+                onUpdate={updateInsight}
+              />
+            </InputWindow>
+          ) : (
+            <Button
+              fullWidth
+              leftSection={<PlusIcon style={{ width: 20, height: 20 }} />}
+              onClick={() => setInsightToCreate({ analysis: [] })}
+            >
+              {t('insight.list.create.new')}
+            </Button>
+          )}
+        </Stack>
+      </Box>
+    </ScrollArea>
+  );
+};
+
+export const InsightListWindow: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
       <Box p="lg" pb={0}>
         <Title order={3}>{t('insight.list.title')}</Title>
       </Box>
-      <Box style={{ flex: 1, minHeight: 0 }}>
-        <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars>
-          <Box p="lg" pt="sm">
-            <Stack>
-              {insights.map((insight) => (
-                <InsightForm
-                  key={insight._id}
-                  insight={insight}
-                  useLabel={false}
-                  useInput={false}
-                  onClick={() => {
-                    setSelected(insight);
-                    setActiveWindowByName('Insight');
-                  }}
-                />
-              ))}
-              {insightToCreate ? (
-                <Paper withBorder p="md">
-                  <InsightForm
-                    useLabel={true}
-                    insight={insightToCreate}
-                    useInput={true}
-                    onUpdate={updateInsight}
-                  />
-                  <Group justify="flex-end" mt="md">
-                    <Button variant="default" onClick={() => setInsightToCreate(undefined)}>
-                      {t('common.cancel')}
-                    </Button>
-                    <Button onClick={createInsight}>{t('common.create')}</Button>
-                  </Group>
-                </Paper>
-              ) : (
-                <Button
-                  fullWidth
-                  leftSection={<PlusIcon style={{ width: 20, height: 20 }} />}
-                  onClick={() => setInsightToCreate({} as OsintView)}
-                >
-                  {t('insight.list.create.new')}
-                </Button>
-              )}
-            </Stack>
-          </Box>
-        </ScrollArea>
-      </Box>
+      <InsightListWindowContent />
     </Box>
   );
 };

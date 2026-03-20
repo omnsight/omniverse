@@ -10,10 +10,12 @@ import {
   LoadingOverlay,
   Button,
   ActionIcon,
+  Title,
+  Loader,
 } from '@mantine/core';
 import { useEntitySelectionActions, useSelectedEntities } from './entitySelection';
 import { useEntityDataActions } from '../network/entityData';
-import { QueryService } from 'omni-osint-query-client';
+import { queryNeighbors } from 'omni-osint-query-client';
 import {
   AvatarSpan,
   OrganizationAvatar,
@@ -21,6 +23,7 @@ import {
   PersonAvatar,
   SourceAvatarRow,
   EventAvatar,
+  EmptyAvatar,
 } from '../../../components/avatars';
 import { EntityFormRenderer, getEntityTitle } from '../../../components/forms/entityForm';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +34,7 @@ import { notifications } from '@mantine/notifications';
 import { LinkIcon } from '@heroicons/react/24/solid';
 import { useWindowStoreActions } from '../../../stores/windowStateStore';
 
-export const EntityWindow: React.FC = () => {
+const EntityWindowContent: React.FC = () => {
   const { t } = useTranslation();
   const { user, hasRole } = useAuth();
   const selections = useSelectedEntities();
@@ -41,14 +44,25 @@ export const EntityWindow: React.FC = () => {
   const { register, setDragging } = useWindowStoreActions();
 
   const lastSelection = selections[selections.length - 1];
-  const { data: neighbors, isLoading } = useQuery({
+  const auth = useEntityAuth(lastSelection?.data);
+  const hasWritePermission = user ? (hasRole('admin') || hasRole('pro')) && auth.canEdit : false;
+
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ['neighbors', lastSelection?.data._id],
-    queryFn: () => QueryService.queryNeighbors({ entity_id: lastSelection.data._id || '' }),
+    queryFn: () => queryNeighbors({ body: { entity_id: lastSelection.data._id || '' } }),
     enabled: !!lastSelection,
   });
 
-  const auth = useEntityAuth(lastSelection?.data);
-  const hasWritePermission = user ? (hasRole('admin') || hasRole('pro')) && auth.canEdit : false;
+  useEffect(() => {
+    if (isError) {
+      console.error('Error fetching entity data', error);
+      notifications.show({
+        title: t('common.error'),
+        message: t('data.entity.single.queryError'),
+        color: 'red',
+      });
+    }
+  }, [isError, error]);
 
   useEffect(() => {
     register('entity-window', (savedState) => {
@@ -81,11 +95,19 @@ export const EntityWindow: React.FC = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <Group justify="center" align="center" style={{ flex: 1 }}>
+        <Loader />
+      </Group>
+    );
+  }
+
   if (!lastSelection) {
     return (
-      <Box pos="relative" h="100%" w="100%">
+      <Group justify="center" align="center" style={{ flex: 1 }}>
         <Text>{t('data.entity.single.noEntitySelected')}</Text>
-      </Box>
+      </Group>
     );
   }
 
@@ -116,13 +138,14 @@ export const EntityWindow: React.FC = () => {
             <Stack gap="xs">
               <Text fw={600}>{t('data.entity.single.relatedOrganizations')}</Text>
               <AvatarSpan>
-                {neighbors?.organizations?.map((entity: any) => (
+                {data?.data?.organizations?.map((entity: any) => (
                   <OrganizationAvatar
                     key={entity._id}
                     data={entity}
-                    relation={neighbors?.relations?.find((r: any) => r._to === entity._id)}
+                    relation={data?.data?.relations?.find((r: any) => r._to === entity._id)}
                   />
                 )) || []}
+                <EmptyAvatar />
               </AvatarSpan>
             </Stack>
 
@@ -130,13 +153,14 @@ export const EntityWindow: React.FC = () => {
             <Stack gap="xs">
               <Text fw={600}>{t('data.entity.single.relatedWebsites')}</Text>
               <AvatarSpan>
-                {neighbors?.websites?.map((entity: any) => (
+                {data?.data?.websites?.map((entity: any) => (
                   <WebsiteAvatar
                     key={entity._id}
                     data={entity}
-                    relation={neighbors?.relations?.find((r: any) => r._to === entity._id)}
+                    relation={data?.data?.relations?.find((r: any) => r._to === entity._id)}
                   />
                 )) || []}
+                <EmptyAvatar />
               </AvatarSpan>
             </Stack>
 
@@ -144,11 +168,11 @@ export const EntityWindow: React.FC = () => {
             <Stack gap="xs">
               <Text fw={600}>{t('data.entity.single.relatedEvents')}</Text>
               <AvatarSpan>
-                {neighbors?.events?.map((entity: any) => (
+                {data?.data?.events?.map((entity: any) => (
                   <EventAvatar
                     key={entity._id}
                     data={entity}
-                    relation={neighbors?.relations?.find((r: any) => r._to === entity._id)}
+                    relation={data?.data?.relations?.find((r: any) => r._to === entity._id)}
                   />
                 )) || []}
               </AvatarSpan>
@@ -159,12 +183,12 @@ export const EntityWindow: React.FC = () => {
           <Stack gap="xs" mt="md">
             <Text fw={600}>{t('data.entity.single.relatedSources')}</Text>
             <Stack gap="xs">
-              {neighbors?.sources?.map((source: any) => (
+              {data?.data?.sources?.map((source: any) => (
                 <SourceAvatarRow
                   width={400}
                   key={source._id}
                   data={source}
-                  relation={neighbors?.relations?.find((r: any) => r._to === source._id)}
+                  relation={data?.data?.relations?.find((r: any) => r._to === source._id)}
                 />
               )) || []}
             </Stack>
@@ -175,32 +199,33 @@ export const EntityWindow: React.FC = () => {
       {/* STICKY BOTTOM LEFT: PERSONS */}
       <Box style={{ position: 'absolute', bottom: 15, left: 15, zIndex: 10 }}>
         <AvatarSpan>
-          {neighbors?.persons?.map((person: any) => (
+          {data?.data?.persons?.map((person: any) => (
             <PersonAvatar
               key={person._id}
               data={person}
-              relation={neighbors?.relations?.find((r: any) => r._to === person._id)}
+              relation={data?.data?.relations?.find((r: any) => r._to === person._id)}
             />
           )) || []}
+          <EmptyAvatar />
         </AvatarSpan>
       </Box>
 
-      {/* STICKY BOTTOM Right: Edit toggle */}
+      {/* STICKY BOTTOM Right */}
       <Box style={{ position: 'absolute', bottom: 15, right: 15, zIndex: 10 }}>
         <Stack align="flex-end" gap="xs">
           {hasWritePermission && (
             <Group gap="sm">
               <Button
                 onClick={() => {
-                  if (neighbors) {
+                  if (data?.data) {
                     addEntities(
                       {
-                        events: neighbors.events,
-                        organizations: neighbors.organizations,
-                        people: neighbors.persons,
-                        sources: neighbors.sources,
-                        websites: neighbors.websites,
-                        relations: neighbors.relations,
+                        events: data?.data?.events,
+                        organizations: data?.data?.organizations,
+                        people: data?.data?.persons,
+                        sources: data?.data?.sources,
+                        websites: data?.data?.websites,
+                        relations: data?.data?.relations,
                       },
                       ['neighbors', lastSelection?.data._id],
                     );
@@ -213,6 +238,18 @@ export const EntityWindow: React.FC = () => {
           )}
         </Stack>
       </Box>
+    </Box>
+  );
+};
+
+export const EntityWindow: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
+      <Box p="lg" pb={0}>
+        <Title order={3}>{t('data.entity.single.title')}</Title>
+      </Box>
+      <EntityWindowContent />
     </Box>
   );
 };

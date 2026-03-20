@@ -1,8 +1,8 @@
 import { useDisclosure } from '@mantine/hooks';
 import { useEffect } from 'react';
-import { OpenAPI as OsintQueryApi } from 'omni-osint-query-client';
-import { OpenAPI as OsintCrudApi } from 'omni-osint-crud-client';
-import { OpenAPI as MonitoringApi } from 'omni-monitoring-client';
+import { client as OsintQueryClient } from 'omni-osint-query-client/client';
+import { client as OsintCrudClient } from 'omni-osint-crud-client/client';
+import { client as MonitoringClient } from 'omni-monitoring-client/client';
 import { AppShell } from '@mantine/core';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppTopbar } from './pages/layouts/Topbar';
@@ -20,12 +20,30 @@ function App() {
 
   useEffect(() => {
     if (user) {
-      OsintCrudApi.BASE = import.meta.env.VITE_OSINT_CRUD_API_BASE_URL;
-      OsintCrudApi.TOKEN = user.token;
-      OsintQueryApi.BASE = import.meta.env.VITE_OSINT_QUERY_API_BASE_URL;
-      OsintQueryApi.TOKEN = user.token;
-      MonitoringApi.BASE = import.meta.env.VITE_MONITORING_API_BASE_URL;
-      MonitoringApi.TOKEN = user.token;
+      OsintCrudClient.setConfig({
+        baseURL: import.meta.env.VITE_OSINT_CRUD_API_BASE_URL,
+        withCredentials: true,
+      });
+      OsintCrudClient.instance.interceptors.request.use((config) => {
+        config.headers['Authorization'] = `Bearer ${user.token}`;
+        return config;
+      });
+      OsintQueryClient.setConfig({
+        baseURL: import.meta.env.VITE_OSINT_QUERY_API_BASE_URL,
+        withCredentials: true,
+      });
+      OsintQueryClient.instance.interceptors.request.use((config) => {
+        config.headers['Authorization'] = `Bearer ${user.token}`;
+        return config;
+      });
+      MonitoringClient.setConfig({
+        baseURL: import.meta.env.VITE_MONITORING_API_BASE_URL,
+        withCredentials: true,
+      });
+      MonitoringClient.instance.interceptors.request.use((config) => {
+        config.headers['Authorization'] = `Bearer ${user.token}`;
+        return config;
+      });
     }
   }, [user]);
 

@@ -4,7 +4,7 @@ import { notifications } from '@mantine/notifications';
 import { CalendarDaysIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { QueryService } from 'omni-osint-query-client';
+import { queryEvents } from 'omni-osint-query-client';
 import { useEntityDataActions } from '../windows/network/entityData';
 import { CountrySelect } from './CountrySelect';
 import { RangeDatePicker } from './RangeDatePicker';
@@ -25,26 +25,25 @@ export const AppTopbar: React.FC = () => {
 
   const { data, isError, error } = useQuery({
     queryKey: ['global-search-entities', dateRange, country || ''],
-    queryFn: async () => {
-      const res = await QueryService.queryEvents({
-        date_start: Math.floor(dateRange[0]!.getTime() / 1000),
-        date_end: Math.floor(dateRange[1]!.getTime() / 1000),
-        country_code: country,
-      });
-      console.debug('searchData', res.events, res.relations);
-      return res;
-    },
+    queryFn: async () =>
+      await queryEvents({
+        body: {
+          date_start: Math.floor(dateRange[0]!.getTime() / 1000),
+          date_end: Math.floor(dateRange[1]!.getTime() / 1000),
+          country_code: country,
+        },
+      }),
     enabled: !!dateRange[0] && !!dateRange[1],
     staleTime: 5 * 60 * 1000,
     retry: 1,
   });
 
   useEffect(() => {
-    if (data) {
+    if (data?.data) {
       setEntities(
         {
-          events: data.events,
-          relations: data.relations,
+          events: data.data.events || [],
+          relations: data.data.relations || [],
         },
         ['global-search-entities', dateRange, country || ''],
       );

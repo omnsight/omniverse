@@ -47,7 +47,7 @@ export const WindowManager: React.FC<WindowManagerProps> = ({ windows }) => {
           left="50%"
           style={{
             transform: 'translateX(-50%)',
-            zIndex: 100,
+            zIndex: 1000,
             opacity: 0,
             transition: 'opacity 0.2s ease, visibility 0.2s',
             pointerEvents: 'none',

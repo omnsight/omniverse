@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Modal, ScrollArea, SimpleGrid, Text } from '@mantine/core';
+import { Box, Button, Group, Loader, ScrollArea, Stack, Title } from '@mantine/core';
 import {
   type MonitoringSource,
   type MonitoringSourceMainData,
-  MonitoringSourcesService,
+  getMonitoringSourcesByUser,
+  createMonitoringSource,
 } from 'omni-monitoring-client';
 import { useMonitorStore } from './monitorData';
 import { MonitoringSourceForm } from '../../../components/forms';
@@ -11,23 +12,19 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useWindowManager } from '../WindowManager';
 import { notifications } from '@mantine/notifications';
+import { InputWindow } from '../../../components/modals/InputWindow';
+import { useAuth } from '../../../provider/AuthContext';
 
-export const MonitorListWindow: React.FC = () => {
+const MonitorListWindowContent: React.FC = () => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const { sources, setSources, setSelected } = useMonitorStore();
   const { setActiveWindowByName } = useWindowManager();
-  const [sourceToCreate, setSourceToCreate] = useState<Partial<MonitoringSource> | undefined>(
-    undefined,
-  );
+  const [sourceToCreate, setSourceToCreate] = useState<MonitoringSource | undefined>(undefined);
 
-  const {
-    data: fetchedSources,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ['monitoring-sources'],
-    queryFn: () => MonitoringSourcesService.getMonitoringSourcesByUser(),
+    queryFn: () => getMonitoringSourcesByUser(),
   });
 
   useEffect(() => {
@@ -42,10 +39,10 @@ export const MonitorListWindow: React.FC = () => {
   }, [isError, error, t]);
 
   useEffect(() => {
-    if (fetchedSources) {
-      setSources(fetchedSources);
+    if (data?.data) {
+      setSources(data?.data);
     }
-  }, [fetchedSources, setSources]);
+  }, [data, setSources]);
 
   const updateSource = (data: MonitoringSourceMainData) => {
     if (!sourceToCreate) return;
@@ -57,69 +54,76 @@ export const MonitorListWindow: React.FC = () => {
 
   const createSource = async () => {
     if (!sourceToCreate) return;
-    try {
-      const source = await MonitoringSourcesService.createMonitoringSource(sourceToCreate);
-      setSources([...sources, source]);
-      setSourceToCreate(undefined);
-      console.log('Created source', source);
-    } catch (error) {
+
+    const { data, error } = await createMonitoringSource({
+      body: sourceToCreate,
+    });
+    if (error) {
       console.error('Error creating source', error);
       notifications.show({
         title: t('common.error'),
         message: t('monitoring.create.error'),
         color: 'red',
       });
+    } else {
+      setSources([...sources, data]);
+      setSourceToCreate(undefined);
+      console.log('Created source', data);
     }
   };
 
-  if (sources.length === 0) {
+  if (isLoading) {
     return (
-      <Box pos="relative" h="100%" w="100%">
-        {isLoading ? (
-          <Text>{t('common.loading')}</Text>
-        ) : (
-          <Box>
-            <Text>{t('monitoring.list.noSources')}</Text>
-            <Button onClick={() => setSourceToCreate({})}>{t('monitoring.create.title')}</Button>
-          </Box>
-        )}
-      </Box>
+      <Group justify="center" align="center" style={{ flex: 1 }}>
+        <Loader />
+      </Group>
     );
   }
 
   return (
-    <Box pos="relative" h="100%" w="100%">
-      <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars>
-        <Box p="lg">
-          <Button onClick={() => setSourceToCreate({})}>{t('monitoring.create.title')}</Button>
-          <SimpleGrid cols={3} spacing="xl" mt="md">
-            {sources.map((source) => (
-              <Box
-                key={source._id}
-                onClick={() => {
-                  setSelected(source);
-                  setActiveWindowByName('Monitor');
-                }}
-              >
-                <MonitoringSourceForm source={source} />
-              </Box>
-            ))}
-          </SimpleGrid>
-        </Box>
-      </ScrollArea>
-      <Modal
-        opened={!!sourceToCreate}
-        onClose={() => setSourceToCreate(undefined)}
-        title={t('monitoring.create.title')}
-      >
-        {sourceToCreate && (
-          <MonitoringSourceForm
-            source={sourceToCreate as MonitoringSource}
-            onUpdate={updateSource}
-          />
-        )}
-        <Button onClick={createSource}>{t('monitoring.create.submit')}</Button>
-      </Modal>
+    <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars>
+      <Box p="lg" pt="sm">
+        <Stack>
+          {sources.map((source) => (
+            <Box
+              key={source._id}
+              onClick={() => {
+                setSelected(source);
+                setActiveWindowByName('Monitor');
+              }}
+            >
+              <MonitoringSourceForm source={source} />
+            </Box>
+          ))}
+          {sourceToCreate ? (
+            <InputWindow
+              title={t('monitoring.create.title')}
+              cancel={t('common.cancel')}
+              submit={t('common.create')}
+              onClose={() => setSourceToCreate(undefined)}
+              onSubmit={createSource}
+            >
+              <MonitoringSourceForm source={sourceToCreate} />
+            </InputWindow>
+          ) : (
+            <Button onClick={() => setSourceToCreate({ owner: user?.id || '' })}>
+              {t('monitoring.create.title')}
+            </Button>
+          )}
+        </Stack>
+      </Box>
+    </ScrollArea>
+  );
+};
+
+export const MonitorListWindow: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
+      <Box p="lg" pb={0}>
+        <Title order={3}>{t('monitoring.list.title')}</Title>
+      </Box>
+      <MonitorListWindowContent />
     </Box>
   );
 };

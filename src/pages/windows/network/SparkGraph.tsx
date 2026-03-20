@@ -8,7 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../provider/AuthContext';
 import { EntityCreationModal, type Entity } from '../../../components/forms/entityForm';
-import { DeleteService } from 'omni-osint-crud-client';
+import { deleteEntity, deleteRelation } from 'omni-osint-crud-client';
 import { Box } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 
@@ -94,21 +94,28 @@ export const SparkGraph: React.FC = () => {
   }, [initialNodes, initialEdges]);
 
   const handleRemove = async (ids: string[], isEdge: boolean) => {
-    try {
+    for (const id of ids) {
       if (isEdge) {
-        await Promise.all(ids.map((id) => DeleteService.deleteRelation(id)));
+        const { error } = await deleteRelation({ path: { id } });
+        if (error) {
+          notifications.show({
+            message: t('network.spark.deleteEdgeError'),
+            color: 'red',
+          });
+        }
       } else {
-        await Promise.all(ids.map((id) => DeleteService.deleteEntity(id)));
+        const { error } = await deleteEntity({ path: { id } });
+        if (error) {
+          notifications.show({
+            message: t('network.spark.deleteEntityError'),
+            color: 'red',
+          });
+        }
       }
-      queries.forEach((q) => {
-        queryClient.invalidateQueries({ queryKey: q });
-      });
-    } catch (error) {
-      notifications.show({
-        message: t('network.spark.deleteError'),
-        color: 'red',
-      });
     }
+    queries.forEach((q) => {
+      queryClient.invalidateQueries({ queryKey: q });
+    });
   };
 
   return (

@@ -1,24 +1,16 @@
 import React from 'react';
-import { Box, ScrollArea, SimpleGrid, Text } from '@mantine/core';
+import { Box, ScrollArea, SimpleGrid, Text, Title } from '@mantine/core';
 import { useEntityDataStore } from '../network/entityData';
 import { useEntitySelectionActions } from './entitySelection';
 import { EventForm } from '../../../components/forms';
 import { useTranslation } from 'react-i18next';
 import { useWindowManager } from '../WindowManager';
 
-export const EntityListWindow: React.FC = () => {
+export const EntityListWindowContent: React.FC = () => {
   const { t } = useTranslation();
   const { events } = useEntityDataStore();
   const { setActiveWindowByName } = useWindowManager();
   const { setSelections } = useEntitySelectionActions();
-
-  if (events.length === 0) {
-    return (
-      <Box pos="relative" h="100%" w="100%">
-        <Text>{t('data.entity.list.noEvents')}</Text>
-      </Box>
-    );
-  }
 
   return (
     <Box pos="relative" h="100%" w="100%">
@@ -39,6 +31,18 @@ export const EntityListWindow: React.FC = () => {
           </SimpleGrid>
         </Box>
       </ScrollArea>
+    </Box>
+  );
+};
+
+export const EntityListWindow: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
+      <Box p="lg" pb={0}>
+        <Title order={3}>{t('data.entity.list.title')}</Title>
+      </Box>
+      <EntityListWindowContent />
     </Box>
   );
 };

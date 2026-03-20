@@ -4,7 +4,7 @@ import { EntityGraph } from '../../../components/graph/Graph';
 import { Anchor, Box, Breadcrumbs, Paper, Text } from '@mantine/core';
 import { getTimelineLayout } from '../../../components/graph/layout';
 import { useQuery } from '@tanstack/react-query';
-import { QueryService } from 'omni-osint-query-client';
+import { queryEvents } from 'omni-osint-query-client';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 
@@ -19,14 +19,13 @@ export const GlobalEventTimelineGraph: React.FC = () => {
   end.setHours(23, 59, 59, 999);
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['recommendation-query', start, end],
-    queryFn: async () => {
-      const res = await QueryService.queryEvents({
-        date_start: Math.floor(start.getTime() / 1000),
-        date_end: Math.floor(end.getTime() / 1000),
-      });
-      console.debug('Queried recommendation data', res.events, res.relations);
-      return res;
-    },
+    queryFn: async () =>
+      await queryEvents({
+        body: {
+          date_start: Math.floor(start.getTime() / 1000),
+          date_end: Math.floor(end.getTime() / 1000),
+        },
+      }),
     enabled: !!start && !!end,
     staleTime: 5 * 60 * 1000,
     retry: 1,
@@ -45,14 +44,14 @@ export const GlobalEventTimelineGraph: React.FC = () => {
 
   const date = new Date();
   useEffect(() => {
-    if (data && data.events) {
-      const [nodes, edges] = getTimelineLayout(data.events, date, viewMode);
+    if (data?.data?.events) {
+      const [nodes, edges] = getTimelineLayout(data.data.events, date, viewMode);
       setNodes(nodes);
       setEdges(edges);
     }
-  }, [data, date, viewMode]);
+  }, [date, viewMode]);
 
-  if (!data || !data.events || data.events.length === 0) {
+  if (isLoading) {
     return (
       <Box pos="relative" h="100%" w="100%">
         {!isLoading ? (
