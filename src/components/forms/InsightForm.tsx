@@ -1,15 +1,14 @@
-import React from 'react';
+import React, { type PropsWithChildren } from 'react';
 import { Paper, Stack, Text } from '@mantine/core';
 import type { OsintView, OsintViewMainData } from 'omni-osint-crud-client';
 import { EditableTextarea, EditableTitle } from '../fields';
 import { useTranslation } from 'react-i18next';
 
-interface InsightFormProps {
+interface InsightFormProps extends PropsWithChildren {
   insight: OsintView;
   useLabel: boolean;
   useInput: boolean;
   onUpdate?: (data: OsintViewMainData) => void;
-  onClick?: () => void;
 }
 
 export const InsightForm: React.FC<InsightFormProps> = ({
@@ -17,22 +16,16 @@ export const InsightForm: React.FC<InsightFormProps> = ({
   useLabel,
   useInput,
   onUpdate,
-  onClick,
+  children,
 }) => {
   const { t } = useTranslation();
 
   return (
-    <Paper
-      p="md"
-      shadow="sm"
-      withBorder
-      onClick={onClick}
-      style={{ cursor: onClick ? 'pointer' : 'default' }}
-    >
+    <Paper pos="relative" p="md" shadow="sm" withBorder>
       <Stack>
         {useLabel && (
           <Text size="sm" fw={500}>
-            {t('components.insightForm.title')}
+            {t('placeholder.title')}
           </Text>
         )}
         <EditableTitle
@@ -46,7 +39,7 @@ export const InsightForm: React.FC<InsightFormProps> = ({
 
         {useLabel && (
           <Text size="sm" fw={500}>
-            {t('components.insightForm.description')}
+            {t('placeholder.description')}
           </Text>
         )}
         <EditableTextarea
@@ -57,6 +50,7 @@ export const InsightForm: React.FC<InsightFormProps> = ({
           placeholder={t('placeholder.description')}
         />
       </Stack>
+      {children}
     </Paper>
   );
 };

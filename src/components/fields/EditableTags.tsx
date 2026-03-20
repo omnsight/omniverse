@@ -18,17 +18,20 @@ export const EditableTags: React.FC<EditableTagsProps> = ({
 }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
+  const [tempValue, setTempValue] = useState(value || []);
   const ref = useClickOutside(() => setIsEditing(false));
 
   const handleDoubleClick = (e: React.MouseEvent) => {
     if (canEdit) {
       e.stopPropagation();
+      setTempValue(value || []);
       setIsEditing(true);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === 'Escape') {
+      onChange(tempValue);
       setIsEditing(false);
     }
   };
@@ -38,8 +41,8 @@ export const EditableTags: React.FC<EditableTagsProps> = ({
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <TagsInput
           autoFocus
-          value={value}
-          onChange={onChange}
+          value={tempValue}
+          onChange={setTempValue}
           onKeyDown={handleKeyDown}
           placeholder={`${t('placeholder.enter')}${placeholder}...`}
         />

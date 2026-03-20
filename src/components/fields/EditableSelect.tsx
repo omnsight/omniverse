@@ -19,17 +19,27 @@ export const EditableSelect: React.FC<EditableSelectProps> = ({
 }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
+  const [tempValue, setTempValue] = useState(value || '');
   const ref = useClickOutside(() => setIsEditing(false));
 
   const handleDoubleClick = (e: React.MouseEvent) => {
     if (canEdit) {
       e.stopPropagation();
+      setTempValue(value || '');
       setIsEditing(true);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
+      setIsEditing(false);
+    }
+  };
+
+  const handleChange = (val: string | null) => {
+    if (val) {
+      setTempValue(val);
+      onChange(val);
       setIsEditing(false);
     }
   };
@@ -55,8 +65,8 @@ export const EditableSelect: React.FC<EditableSelectProps> = ({
         <Select
           autoFocus
           defaultDropdownOpened
-          value={value || null}
-          onChange={(val) => val && onChange(val)}
+          value={tempValue}
+          onChange={handleChange}
           onKeyDown={handleKeyDown}
           data={data}
           placeholder={`${t('placeholder.enter')}${placeholder}...`}

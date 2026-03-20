@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Box, ScrollArea, SimpleGrid, Text } from '@mantine/core';
+import { Box, Group, Loader, ScrollArea, SimpleGrid } from '@mantine/core';
 import { EventForm } from '../../../components/forms';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
@@ -39,9 +39,9 @@ export const GlobalEventRecommendationWindow: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Box pos="relative" h="100%" w="100%">
-        <Text>{t('common.loading')}</Text>
-      </Box>
+      <Group justify="center" align="center" style={{ flex: 1 }}>
+        <Loader />
+      </Group>
     );
   }
 

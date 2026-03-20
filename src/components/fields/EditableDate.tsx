@@ -19,17 +19,22 @@ export const EditableDate: React.FC<EditableDateProps> = ({
 }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
+  const [tempValue, setTempValue] = useState<Date | null>(value ? new Date(value) : null);
   const ref = useClickOutside(() => setIsEditing(false));
 
   const handleDoubleClick = (e: React.MouseEvent) => {
     if (canEdit) {
       e.stopPropagation();
+      setTempValue(value ? new Date(value) : null);
       setIsEditing(true);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === 'Escape') {
+      if (tempValue) {
+        onChange(tempValue);
+      }
       setIsEditing(false);
     }
   };
@@ -39,8 +44,8 @@ export const EditableDate: React.FC<EditableDateProps> = ({
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <DateTimePicker
           autoFocus
-          value={value ? new Date(value) : null}
-          onChange={(date) => date && onChange(new Date(date))}
+          value={tempValue}
+          onChange={(date) => date && setTempValue(new Date(date))}
           onKeyDown={handleKeyDown}
           placeholder={`${t('placeholder.enter')}${placeholder}...`}
           valueFormat="YYYY-MM-DD HH:mm"

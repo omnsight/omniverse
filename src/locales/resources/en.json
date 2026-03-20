@@ -50,13 +50,20 @@
   },
   "common": {
     "error": "Error",
+    "save": "",
+    "cancel": "",
+    "edit": "",
     "delete": "Delete",
     "add": "Add",
     "notFound": "Not Found",
-    "loading": "Loading...",
-    "success": "Success"
+    "create": ""
   },
   "components": {
+    "MapTools": {
+      "start": "Start",
+      "normalMode": "Normal Mode",
+      "rulerMode": "Ruler Mode"
+    },
     "graph": {
       "remove": {
         "noPermission": "You do not have permission to perform this action."
@@ -94,13 +101,15 @@
         "name": "Name"
       }
     },
-    "MapTools": {
-      "start": "Start",
-      "normalMode": "Normal Mode",
-      "rulerMode": "Ruler Mode"
+    "attributes": {
+      "key": "Key",
+      "value": "Value",
+      "newKey": "New Key",
+      "newValue": "New Value"
     },
     "editor": {
       "sidebarTitle": "Editor",
+      "toggleSidebar": "",
       "tools": {
         "undo": "Undo",
         "redo": "Redo",
@@ -122,15 +131,11 @@
       "source": {
         "name": "Source Name"
       }
-    },
-    "attributes": {
-      "key": "Key",
-      "value": "Value",
-      "newKey": "New Key",
-      "newValue": "New Value"
     }
   },
   "placeholder": {
+    "enter": "Enter",
+    "unknown": "Unknown",
     "url": "URL",
     "description": "Description",
     "foundedDate": "Founded Date",
@@ -148,13 +153,12 @@
       "type": "Source Type"
     },
     "lastReviewed": "Last Reviewed",
+    "title": "",
     "date": "Date",
     "address": "Address",
     "locality": "Locality",
     "administrativeArea": "Administrative Area",
     "country": "Country",
-    "enter": "Enter",
-    "unknown": "Unknown",
     "relation": "Relation",
     "createdDate": "Created Date",
     "updatedDate": "Updated Date"
@@ -164,7 +168,6 @@
       "title": "Event Title"
     },
     "update": {
-      "success": "Update successful",
       "error": "Update failed"
     },
     "create": {
@@ -175,7 +178,8 @@
   },
   "network": {
     "spark": {
-      "deleteError": "Error deleting spark"
+      "deleteEdgeError": "",
+      "deleteEntityError": ""
     },
     "comparison": {
       "selectAtLeastTwo": "Select at least two items to compare.",
@@ -186,33 +190,16 @@
   },
   "monitoring": {
     "single": {
-      "noSourceSelected": "No source selected."
+      "noSourceSelected": "No source selected.",
+      "title": ""
     },
     "list": {
       "getSourcesError": "Error retrieving sources.",
-      "noSources": "No sources found."
+      "title": ""
     },
     "create": {
       "error": "Creation failed.",
-      "title": "Create New",
-      "submit": "Submit"
-    }
-  },
-  "data": {
-    "entity": {
-      "single": {
-        "warning": "Warning",
-        "noEntitySelected": "No entity selected.",
-        "noInghtSelected": "No insight selected.",
-        "relatedOrganizations": "Related Organizations",
-        "relatedWebsites": "Related Websites",
-        "relatedEvents": "Related Events",
-        "relatedSources": "Related Sources",
-        "addNeighbors": "Add Neighbors"
-      },
-      "list": {
-        "noEvents": "No events found."
-      }
+      "title": "Create New"
     }
   },
   "insight": {
@@ -221,8 +208,8 @@
       "empty": "No insight found."
     },
     "list": {
+      "title": "",
       "queryError": "Error querying insights.",
-      "empty": "No insights found.",
       "create": {
         "new": "New Insight"
       }
@@ -230,13 +217,34 @@
     "create": {
       "error": "Failed to create insight.",
       "title": "Create New Insight",
-      "submit": "Submit"
+      "placeholder": ""
+    },
+    "update": {
+      "error": ""
+    }
+  },
+  "data": {
+    "entity": {
+      "single": {
+        "queryError": "",
+        "warning": "Warning",
+        "noEntitySelected": "No entity selected.",
+        "noInghtSelected": "No insight selected.",
+        "relatedOrganizations": "Related Organizations",
+        "relatedWebsites": "Related Websites",
+        "relatedEvents": "Related Events",
+        "relatedSources": "Related Sources",
+        "addNeighbors": "Add Neighbors",
+        "title": ""
+      },
+      "list": {
+        "title": ""
+      }
     }
   },
   "context": {
     "recommendation": {
-      "queryError": "Error querying recommendations.",
-      "noEvents": "No recommended events found."
+      "queryError": "Error querying recommendations."
     }
   },
   "editor": {

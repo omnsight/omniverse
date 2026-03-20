@@ -9,9 +9,9 @@ export const CustomSeparator: React.FC<Props> = ({ orientation }) => {
   return (
     <Separator
       style={{
-        backgroundColor: 'var(--mantine-color-gray-2)',
-        width: orientation === 'horizontal' ? '6px' : '100%',
-        height: orientation === 'vertical' ? '6px' : '100%',
+        backgroundColor: 'var(--mantine-color-default-border)',
+        width: orientation === 'horizontal' ? '2px' : '100%',
+        height: orientation === 'vertical' ? '2px' : '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -21,14 +21,14 @@ export const CustomSeparator: React.FC<Props> = ({ orientation }) => {
       {/* The visible line that appears on hover */}
       <Box
         style={{
-          backgroundColor: 'var(--mantine-color-blue-filled)',
-          borderRadius: 4,
+          backgroundColor: 'var(--mantine-color-primary-filled)',
+          borderRadius: 1,
           opacity: 0,
           transition: 'opacity 0.2s',
-          width: orientation === 'horizontal' ? '2px' : '30%',
-          height: orientation === 'vertical' ? '30%' : '2px',
-          '[data-separator]:hover &': { opacity: 0.5 },
-          '[data-separator][data-active] &': { opacity: 1 },
+          width: orientation === 'horizontal' ? '1px' : '30%',
+          height: orientation === 'vertical' ? '30%' : '1px',
+          '[dataSeparator]:hover &': { opacity: 0.5 },
+          '[dataSeparator][dataActive] &': { opacity: 1 },
         }}
       />
     </Separator>

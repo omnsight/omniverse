@@ -17,9 +17,6 @@ const localesRoot = path.join(srcRoot, 'locales', 'resources');
 const enPath = path.join(localesRoot, 'en.json');
 const zhPath = path.join(localesRoot, 'zh.json');
 
-const tempEnPath = path.join(localesRoot, 'en.temp.json');
-const tempZhPath = path.join(localesRoot, 'zh.temp.json');
-
 const getTranslationKeys = async () => {
   const files = await glob('**/*.{ts,tsx}', { cwd: srcRoot });
   const keys = new Set();
@@ -96,15 +93,15 @@ const run = async () => {
   const enTranslations = readJsonFile(enPath);
   const zhTranslations = readJsonFile(zhPath);
 
-  const tempEnTranslations = toNestedObject(usedKeys, enTranslations);
-  const tempZhTranslations = toNestedObject(usedKeys, zhTranslations);
+  const newEnTranslations = toNestedObject(usedKeys, enTranslations);
+  const newZhTranslations = toNestedObject(usedKeys, zhTranslations);
 
-  fs.writeFileSync(tempEnPath, JSON.stringify(tempEnTranslations, null, 2));
-  fs.writeFileSync(tempZhPath, JSON.stringify(tempZhTranslations, null, 2));
+  fs.writeFileSync(enPath, JSON.stringify(newEnTranslations, null, 2));
+  fs.writeFileSync(zhPath, JSON.stringify(newZhTranslations, null, 2));
 
-  console.log('Temporary translation files created at:');
-  console.log(tempEnPath);
-  console.log(tempZhPath);
+  console.log('Updated translation files:');
+  console.log(enPath);
+  console.log(zhPath);
 };
 
 run();

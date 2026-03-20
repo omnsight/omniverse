@@ -1,9 +1,8 @@
-import { NavLink, Menu, Avatar, rem, Switch, Select, useMantineColorScheme } from '@mantine/core';
+import { Menu, Avatar, rem, Switch, Select, useMantineColorScheme } from '@mantine/core';
 import {
   UserCircleIcon,
   ArrowUpCircleIcon,
   ArrowLeftCircleIcon,
-  ChevronUpIcon,
   SunIcon,
   MoonIcon,
   ComputerDesktopIcon,

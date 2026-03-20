@@ -1,8 +1,5 @@
 import { useDisclosure } from '@mantine/hooks';
 import { useEffect } from 'react';
-import { client as OsintQueryClient } from 'omni-osint-query-client/client';
-import { client as OsintCrudClient } from 'omni-osint-crud-client/client';
-import { client as MonitoringClient } from 'omni-monitoring-client/client';
 import { AppShell } from '@mantine/core';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppTopbar } from './pages/layouts/Topbar';
@@ -12,40 +9,9 @@ import { MonitorDashboard } from './pages/MonitorPanel';
 import { AdminDashboard } from './pages/AdminPanel';
 import { ErrorPage } from './pages/ErrorPage';
 import { useWindowStore } from './stores/windowStateStore';
-import { useAuth } from './provider/AuthContext';
 
 function App() {
   const [opened] = useDisclosure();
-  const { user } = useAuth();
-
-  useEffect(() => {
-    if (user) {
-      OsintCrudClient.setConfig({
-        baseURL: import.meta.env.VITE_OSINT_CRUD_API_BASE_URL,
-        withCredentials: true,
-      });
-      OsintCrudClient.instance.interceptors.request.use((config) => {
-        config.headers['Authorization'] = `Bearer ${user.token}`;
-        return config;
-      });
-      OsintQueryClient.setConfig({
-        baseURL: import.meta.env.VITE_OSINT_QUERY_API_BASE_URL,
-        withCredentials: true,
-      });
-      OsintQueryClient.instance.interceptors.request.use((config) => {
-        config.headers['Authorization'] = `Bearer ${user.token}`;
-        return config;
-      });
-      MonitoringClient.setConfig({
-        baseURL: import.meta.env.VITE_MONITORING_API_BASE_URL,
-        withCredentials: true,
-      });
-      MonitoringClient.instance.interceptors.request.use((config) => {
-        config.headers['Authorization'] = `Bearer ${user.token}`;
-        return config;
-      });
-    }
-  }, [user]);
 
   useEffect(() => {
     const handleGlobalDragEnd = () => {
@@ -80,7 +46,7 @@ function App() {
           }}
         >
           <Routes>
-            <Route path="/" element={<Navigate to="/geovision" replace />} />
+            <Route path="/" element={<Navigate to="/intelligence" replace />} />
             <Route path="/intelligence" element={<IntelDashboard />} />
             <Route path="/monitor" element={<MonitorDashboard />} />
             <Route path="/admin" element={<AdminDashboard />} />

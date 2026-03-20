@@ -20,17 +20,20 @@ export const EditableTextarea: React.FC<EditableTextareaProps> = ({
 }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
+  const [tempValue, setTempValue] = useState(value || '');
   const ref = useClickOutside(() => setIsEditing(false));
 
   const handleDoubleClick = (e: React.MouseEvent) => {
     if (canEdit) {
       e.stopPropagation();
+      setTempValue(value || '');
       setIsEditing(true);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === 'Escape') {
+      onChange(tempValue);
       setIsEditing(false);
     }
   };
@@ -40,8 +43,8 @@ export const EditableTextarea: React.FC<EditableTextareaProps> = ({
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <Textarea
           autoFocus
-          value={value || ''}
-          onChange={(e) => onChange(e.target.value)}
+          value={tempValue}
+          onChange={(e) => setTempValue(e.target.value)}
           onKeyDown={useInput ? undefined : handleKeyDown}
           placeholder={`${t('placeholder.enter')}${placeholder}...`}
           autosize

@@ -56,7 +56,7 @@ export const WindowManager: React.FC<WindowManagerProps> = ({ windows }) => {
               visibility: 'visible',
               pointerEvents: 'all',
             },
-            '.mantine-Box-root:hover &': {
+            '.mantineBoxRoot:hover &': {
               opacity: 1,
               visibility: 'visible',
               pointerEvents: 'all',
@@ -67,7 +67,6 @@ export const WindowManager: React.FC<WindowManagerProps> = ({ windows }) => {
             gap="xs"
             p="xs"
             style={{
-              background: 'rgba(255,255,255,0.8)',
               borderRadius: 100,
               backdropFilter: 'blur(4px)',
             }}

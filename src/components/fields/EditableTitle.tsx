@@ -25,6 +25,7 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
 }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
+  const [tempValue, setTempValue] = useState(value || '');
   const ref = useClickOutside(() => setIsEditing(false));
 
   const handleDoubleClick = (e: React.MouseEvent) => {
@@ -36,8 +37,13 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === 'Escape') {
+      onChange(tempValue);
       setIsEditing(false);
     }
+  };
+
+  const handleChange = (val: string) => {
+    setTempValue(val);
   };
 
   if (useInput || isEditing) {
@@ -45,8 +51,8 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <TextInput
           autoFocus
-          value={value || ''}
-          onChange={(e) => onChange(e.target.value)}
+          value={tempValue}
+          onChange={(e) => handleChange(e.target.value)}
           onKeyDown={useInput ? undefined : handleKeyDown}
           placeholder={`${t('placeholder.enter')}${placeholder}...`}
         />

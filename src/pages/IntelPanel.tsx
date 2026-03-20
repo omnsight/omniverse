@@ -15,7 +15,7 @@ import { GlobalEventTimelineGraph } from './windows/context/GlobalEventTimelineW
 
 export const IntelDashboard: React.FC = () => {
   return (
-    <Box h="100%" w="100%" bg="gray.1">
+    <Box h="100%" w="100%">
       <Group orientation="horizontal">
         <Panel defaultSize={20} minSize={10}>
           <Group orientation="vertical">

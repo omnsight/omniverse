@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { type Node, type Edge } from 'reactflow';
 import { EntityGraph } from '../../../components/graph/Graph';
-import { Anchor, Box, Breadcrumbs, Paper, Text } from '@mantine/core';
+import { Anchor, Box, Breadcrumbs, Group, Loader, Paper } from '@mantine/core';
 import { getTimelineLayout } from '../../../components/graph/layout';
 import { useQuery } from '@tanstack/react-query';
 import { queryEvents } from 'omni-osint-query-client';
@@ -53,13 +53,9 @@ export const GlobalEventTimelineGraph: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Box pos="relative" h="100%" w="100%">
-        {!isLoading ? (
-          <Text>{t('common.loading')}</Text>
-        ) : (
-          <Text>{t('context.recommendation.noEvents')}</Text>
-        )}
-      </Box>
+      <Group justify="center" align="center" style={{ flex: 1 }}>
+        <Loader />
+      </Group>
     );
   }
 

@@ -88,23 +88,25 @@ export const Editor: React.FC<Props> = ({ insight, entities, readonly }) => {
               top: 0,
               height: 'fit-content',
               borderLeft: opened ? '1px solid var(--mantine-color-default-border)' : 'none',
-              width: opened ? '200px' : '40px', // Shrinks but keeps toggle visible
+              width: opened ? '150px' : '40px', // Shrinks but keeps toggle visible
               transition: 'width 200ms ease',
               overflow: 'hidden',
               backgroundColor: 'var(--mantine-color-body)',
             }}
           >
-            <Box p="xs" w="200px">
+            <Box p="xs" w="100%">
               <Group justify="space-between" mb="sm" wrap="nowrap">
                 {opened && (
-                  <Text fw={700} size="xs" truncate>
-                    {t('components.editor.sidebarTitle')}
-                  </Text>
+                  <Tooltip label={t('components.editor.sidebarTitle')} withArrow>
+                    <Text fw={700} size="xs" truncate>
+                      {t('components.editor.sidebarTitle')}
+                    </Text>
+                  </Tooltip>
                 )}
 
                 <Group gap={4} wrap="nowrap">
                   {opened && (
-                    <Tooltip label="Restore" withArrow>
+                    <Tooltip label={t('components.editor.toggleSidebar')} withArrow>
                       <ActionIcon variant="subtle" color="gray" size="sm">
                         <ArrowPathIcon style={{ width: '14px' }} />
                       </ActionIcon>

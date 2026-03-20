@@ -18,17 +18,20 @@ export const EditableText: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
+  const [tempValue, setTempValue] = useState(value || '');
   const ref = useClickOutside(() => setIsEditing(false));
 
   const handleDoubleClick = (e: React.MouseEvent) => {
     if (canEdit) {
       e.stopPropagation();
+      setTempValue(value || '');
       setIsEditing(true);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === 'Escape') {
+      onChange(tempValue);
       setIsEditing(false);
     }
   };
@@ -38,8 +41,8 @@ export const EditableText: React.FC<Props> = ({
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <TextInput
           autoFocus
-          value={value || ''}
-          onChange={(e) => onChange(e.target.value)}
+          value={tempValue}
+          onChange={(e) => setTempValue(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={`${t('placeholder.enter')}${placeholder}...`}
         />

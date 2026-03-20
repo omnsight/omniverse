@@ -13,7 +13,7 @@ import { InsightWindow } from './windows/insight/InsightWindow';
 
 export const MonitorDashboard: React.FC = () => {
   return (
-    <Box h="100%" w="100%" bg="gray.1">
+    <Box h="100%" w="100%">
       {/* 1. MAIN HORIZONTAL GROUP */}
       <Group orientation="horizontal">
         {/* Monitor Window */}

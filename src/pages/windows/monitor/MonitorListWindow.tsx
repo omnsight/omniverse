@@ -103,7 +103,7 @@ const MonitorListWindowContent: React.FC = () => {
               onClose={() => setSourceToCreate(undefined)}
               onSubmit={createSource}
             >
-              <MonitoringSourceForm source={sourceToCreate} />
+              <MonitoringSourceForm source={sourceToCreate} onUpdate={updateSource} />
             </InputWindow>
           ) : (
             <Button onClick={() => setSourceToCreate({ owner: user?.id || '' })}>
