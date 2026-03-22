@@ -41,14 +41,24 @@ export const EditableDate: React.FC<EditableDateProps> = ({
     }
   };
 
+  const handleChange = (date: string) => {
+    if (date) {
+      if (useInput) {
+        onChange(new Date(date));
+      } else {
+        setTempValue(new Date(date));
+      }
+    }
+  };
+
   if (isEditing || useInput) {
     return (
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <DateTimePicker
           autoFocus
           value={tempValue}
-          onChange={(date) => date && setTempValue(new Date(date))}
-          onKeyDown={handleKeyDown}
+          onChange={(data) => data && handleChange(data)}
+          onKeyDown={useInput ? undefined : handleKeyDown}
           placeholder={`${t('placeholder.enter')}${placeholder}...`}
           valueFormat="YYYY-MM-DD HH:mm"
         />

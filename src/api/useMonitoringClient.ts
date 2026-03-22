@@ -20,5 +20,5 @@ export const useMonitoringClient = () => {
     }
   }, [user]);
 
-  return client;
+  return { monitoringClient: client, authed: !!user };
 };

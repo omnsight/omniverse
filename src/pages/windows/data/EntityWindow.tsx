@@ -49,7 +49,7 @@ const EntityWindowContent: React.FC = () => {
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['neighbors', lastSelection?.data._id],
-    queryFn: () => queryNeighbors({ body: { entity_id: lastSelection.data._id || '' } }),
+    queryFn: () => queryNeighbors({ path: { id: lastSelection.data._id || '' } }),
     enabled: !!lastSelection,
   });
 

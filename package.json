@@ -1,7 +1,10 @@
 {
   "name": "omniverse",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=24.0.0"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -47,6 +50,7 @@
     "@babel/parser": "^7.29.2",
     "@babel/traverse": "^7.29.0",
     "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.58.2",
     "@types/babel__traverse": "^7.28.0",
     "@types/glob": "^8.1.0",
     "@types/leaflet": "^1.9.21",

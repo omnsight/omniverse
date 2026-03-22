@@ -40,9 +40,12 @@ export const EditableSelect: React.FC<EditableSelectProps> = ({
 
   const handleChange = (val: string | null) => {
     if (val) {
-      setTempValue(val);
-      onChange(val);
-      setIsEditing(false);
+      if (useInput) {
+        onChange(val);
+      } else {
+        onChange(val);
+        setIsEditing(false);
+      }
     }
   };
 

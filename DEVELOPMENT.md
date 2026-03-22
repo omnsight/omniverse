@@ -30,8 +30,32 @@ npm run dev
 
 ## ✅ Running Unit Tests
 
+Log in gchr:
+
 ```bash
-npm test
+echo "your PAT password" | docker login ghcr.io -u "your username" --password-stdin
+docker pull --platform <platform> ghcr.io/omnsight/<image>:main
+docker tag ghcr.io/omnsight/<image>:main <image>:latest
+```
+
+Run the application:
+
+```bash
+docker-compose up -d --wait
+docker compose down
+# arango db dashboard can be accessed at http://localhost:8529
+```
+
+Debug:
+
+```bash
+docker system prune -a
+docker inspect <container name>
+docker logs <container name>
+```
+
+```bash
+npx playwright test
 ```
 
 ## 💅 Formatting Code

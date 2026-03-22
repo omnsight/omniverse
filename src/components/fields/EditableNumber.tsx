@@ -38,14 +38,22 @@ export const EditableNumber: React.FC<EditableNumberProps> = ({
     }
   };
 
+  const handleChange = (val: number | string) => {
+    if (useInput) {
+      onChange(val);
+    } else {
+      setTempValue(val);
+    }
+  };
+
   if (isEditing || useInput) {
     return (
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <NumberInput
           autoFocus
-          value={tempValue}
-          onChange={setTempValue}
-          onKeyDown={handleKeyDown}
+          value={useInput ? value : tempValue}
+          onChange={handleChange}
+          onKeyDown={useInput ? undefined : handleKeyDown}
           placeholder={`${t('placeholder.enter')}${placeholder}...`}
         />
       </div>

@@ -20,5 +20,5 @@ export const useQueryClient = () => {
     }
   }, [user]);
 
-  return client;
+  return { queryClient: client, authed: !!user };
 };

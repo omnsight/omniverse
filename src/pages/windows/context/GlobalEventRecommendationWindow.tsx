@@ -16,7 +16,7 @@ export const GlobalEventRecommendationWindow: React.FC = () => {
     queryKey: ['recommendation-query', start, end],
     queryFn: async () =>
       await queryEvents({
-        body: {
+        query: {
           date_start: Math.floor(start.getTime() / 1000),
           date_end: Math.floor(end.getTime() / 1000),
         },

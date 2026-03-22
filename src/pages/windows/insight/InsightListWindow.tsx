@@ -69,6 +69,7 @@ const CreationModal: React.FC<CreationModalProps> = ({ insight, setInsight }) =>
     return (
       <Button
         fullWidth
+        data-testid="add-insight-button"
         onClick={() =>
           setInsight({
             analysis: [

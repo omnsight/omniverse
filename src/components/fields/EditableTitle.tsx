@@ -31,6 +31,7 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
   const handleDoubleClick = (e: React.MouseEvent) => {
     if (canEdit) {
       e.stopPropagation();
+      setTempValue(value || '');
       setIsEditing(true);
     }
   };
@@ -43,7 +44,11 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
   };
 
   const handleChange = (val: string) => {
-    setTempValue(val);
+    if (useInput) {
+      onChange(val);
+    } else {
+      setTempValue(val);
+    }
   };
 
   if (useInput || isEditing) {
@@ -51,7 +56,7 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <TextInput
           autoFocus
-          value={tempValue}
+          value={(useInput ? value : tempValue) || ''}
           onChange={(e) => handleChange(e.target.value)}
           onKeyDown={useInput ? undefined : handleKeyDown}
           placeholder={`${t('placeholder.enter')}${placeholder}...`}

@@ -5,9 +5,6 @@ import {
   Switch,
   Select,
   useMantineColorScheme,
-  Group,
-  Text,
-  ActionIcon,
 } from '@mantine/core';
 import {
   UserCircleIcon,

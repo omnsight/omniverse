@@ -38,13 +38,21 @@ export const EditableTextarea: React.FC<EditableTextareaProps> = ({
     }
   };
 
+  const handleChange = (val: string) => {
+    if (useInput) {
+      onChange(val);
+    } else {
+      setTempValue(val);
+    }
+  };
+
   if (useInput || isEditing) {
     return (
       <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <Textarea
           autoFocus
-          value={tempValue}
-          onChange={(e) => setTempValue(e.target.value)}
+          value={(useInput ? value : tempValue) || ''}
+          onChange={(e) => handleChange(e.target.value)}
           onKeyDown={useInput ? undefined : handleKeyDown}
           placeholder={`${t('placeholder.enter')}${placeholder}...`}
           autosize

@@ -1,0 +1,99 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - button [ref=e8] [cursor=pointer]:
+            - img [ref=e10]
+          - textbox "Search" [ref=e14]
+          - button [ref=e15] [cursor=pointer]:
+            - img [ref=e17]
+        - button "3/22/2026 - 3/22/2026" [ref=e19] [cursor=pointer]:
+          - generic [ref=e20]:
+            - img [ref=e22]
+            - generic [ref=e25]: 3/22/2026 - 3/22/2026
+      - generic "User profile" [ref=e27] [cursor=pointer]: M
+  - navigation [ref=e28]:
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - img [ref=e31]
+        - generic [ref=e33]:
+          - paragraph [ref=e34]: Nexus
+          - paragraph [ref=e35]: Intelligence Platform
+      - separator [ref=e36]
+    - generic [ref=e37]:
+      - generic [ref=e38] [cursor=pointer]:
+        - img [ref=e40]
+        - generic [ref=e43]: Intelligence Panel
+      - generic [ref=e44] [cursor=pointer]:
+        - img [ref=e46]
+        - generic [ref=e49]: Monitor Panel
+      - generic [ref=e50] [cursor=pointer]:
+        - img [ref=e52]
+        - generic [ref=e54]: Admin Panel
+  - main [ref=e55]:
+    - generic [ref=e57]:
+      - generic [ref=e60]:
+        - separator [ref=e69]
+        - generic [ref=e74]:
+          - heading "Insight Column" [level=3] [ref=e76]
+          - generic [ref=e82]:
+            - generic [ref=e83]:
+              - paragraph [ref=e84]: Create New Insight
+              - button [ref=e85] [cursor=pointer]:
+                - img [ref=e86]
+            - generic [ref=e90]:
+              - paragraph [ref=e91]: "?"
+              - textbox "Enter?..." [ref=e95]
+              - paragraph [ref=e96]: Description
+              - textbox "EnterShort summary of the insight (theme, event, important discoveries, etc.)..." [active] [ref=e100]
+            - generic [ref=e101]:
+              - button "?" [ref=e102] [cursor=pointer]:
+                - generic [ref=e104]: "?"
+              - button "?" [ref=e105] [cursor=pointer]:
+                - generic [ref=e107]: "?"
+      - separator [ref=e108]
+      - generic [ref=e114]:
+        - generic [ref=e115]:
+          - link "Leaflet" [ref=e116] [cursor=pointer]:
+            - /url: https://leafletjs.com
+            - img [ref=e117]
+            - text: Leaflet
+          - text: "| ©"
+          - link "OpenStreetMap" [ref=e121] [cursor=pointer]:
+            - /url: https://www.openstreetmap.org/copyright
+          - text: contributors
+        - generic [ref=e124]:
+          - button [ref=e125] [cursor=pointer]:
+            - img [ref=e127]
+          - button [ref=e129] [cursor=pointer]:
+            - img [ref=e131]
+        - paragraph [ref=e135]: "--º --' --. --'' N --º --' --. --'' E"
+      - separator [ref=e136]
+      - generic [ref=e140]:
+        - generic [ref=e146]:
+          - generic [ref=e148]:
+            - generic:
+              - img
+          - img [ref=e149]
+          - generic [ref=e151]:
+            - button "zoom in" [ref=e152] [cursor=pointer]:
+              - img [ref=e153]
+            - button "zoom out" [ref=e155] [cursor=pointer]:
+              - img [ref=e156]
+            - button "fit view" [ref=e158] [cursor=pointer]:
+              - img [ref=e159]
+            - button "toggle interactivity" [ref=e161] [cursor=pointer]:
+              - img [ref=e162]
+          - link "React Flow attribution" [ref=e165] [cursor=pointer]:
+            - /url: https://reactflow.dev
+            - text: React Flow
+        - separator [ref=e167]
+        - generic [ref=e172]:
+          - heading "Related Events" [level=3] [ref=e174]
+          - button [ref=e181] [cursor=pointer]:
+            - img [ref=e184]
+```

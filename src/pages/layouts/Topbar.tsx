@@ -25,9 +25,11 @@ import { useEntityDataActions } from '../windows/network/entityData';
 import { CountrySelect } from './CountrySelect';
 import { RangeDatePicker } from './RangeDatePicker';
 import { UserMenu } from './UserMenu';
+import { useQueryClient } from '../../api/useQueryClient';
 
 export const AppTopbar: React.FC = () => {
   const { t } = useTranslation();
+  const { queryClient } = useQueryClient();
   const { setEntities } = useEntityDataActions();
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [dateRange, setDateRange] = useState<[Date | undefined, Date | undefined]>(() => {
@@ -44,7 +46,8 @@ export const AppTopbar: React.FC = () => {
     queryKey: ['global-search-entities', dateRange, country || '', searchInput],
     queryFn: async () => {
       const { data, error } = await queryEvents({
-        body: {
+        client: queryClient,
+        query: {
           date_start: Math.floor(dateRange[0]!.getTime() / 1000),
           date_end: Math.floor(dateRange[1]!.getTime() / 1000),
           country_code: country,

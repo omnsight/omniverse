@@ -31,6 +31,14 @@ export const EditableTags: React.FC<EditableTagsProps> = ({
     }
   };
 
+  const handleChange = (val: string[]) => {
+    if (useInput) {
+      onChange(val);
+    } else {
+      setTempValue(val);
+    }
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === 'Escape') {
       onChange(tempValue);
@@ -44,7 +52,7 @@ export const EditableTags: React.FC<EditableTagsProps> = ({
         <TagsInput
           autoFocus
           value={tempValue}
-          onChange={setTempValue}
+          onChange={handleChange}
           onKeyDown={handleKeyDown}
           placeholder={`${t('placeholder.enter')}${placeholder}...`}
         />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, ScrollArea, SimpleGrid, Stack, Title } from '@mantine/core';
+import { Box, Button, ScrollArea, Stack, Title } from '@mantine/core';
 import { useEntityDataStore } from '../network/entityData';
 import { useEntitySelectionActions } from './entitySelection';
 import { EventForm } from '../../../components/forms';
