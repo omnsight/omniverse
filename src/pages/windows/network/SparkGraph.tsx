@@ -7,7 +7,8 @@ import { EntityGraph } from '../../../components/graph/Graph';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../provider/AuthContext';
-import { EntityCreationModal, type Entity } from '../../../components/forms/entityForm';
+import { EntityCreationModal } from '../../../components/entity/CreationModal';
+import { type Entity } from '../../../components/entity/entity';
 import { deleteEntity, deleteRelation } from 'omni-osint-crud-client';
 import { Box } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
@@ -99,7 +100,7 @@ export const SparkGraph: React.FC = () => {
         const { error } = await deleteRelation({ path: { id } });
         if (error) {
           notifications.show({
-            message: t('pages.windows.network.SparkGraph.deleteEdgeError'),
+            message: t('pages.windows.network.SparkGraph.deleteEdgeError', '?'),
             color: 'red',
           });
         }
@@ -107,7 +108,7 @@ export const SparkGraph: React.FC = () => {
         const { error } = await deleteEntity({ path: { id } });
         if (error) {
           notifications.show({
-            message: t('pages.windows.network.SparkGraph.deleteEntityError'),
+            message: t('pages.windows.network.SparkGraph.deleteEntityError', '?'),
             color: 'red',
           });
         }

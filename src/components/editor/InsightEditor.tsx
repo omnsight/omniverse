@@ -27,7 +27,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
 import { WindowAnchor } from './extensions/WindowAnchor';
 import { WindowDndExtension } from './extensions/WindowDndExtension';
-import { EntityFormRenderer } from '../forms/entityForm';
+import { EntityFormRenderer } from '../entity/FormRenderer';
 import { useTranslation } from 'react-i18next';
 import { TextSpecialToolbar } from './tools/TextSpecialTools';
 import { UnredoToolbar } from './tools/UnredoTools';
@@ -37,7 +37,7 @@ import { ListToolbar } from './tools/ListTools';
 import { useCrudClient } from '../../api/useCrudyClient';
 import type { OsintView } from 'omni-osint-crud-client/types';
 import { updateView } from 'omni-osint-crud-client/sdk';
-import type { Entity } from '../forms/entityForm/entity';
+import type { Entity } from '../entity/entity';
 import { useInsightStore } from '../../pages/windows/insight/insightData';
 
 interface CarouselProps {

@@ -22,7 +22,7 @@
       },
       "Topbar": {
         "queryEntitiesError": "Failed to query entities",
-        "selectDateRange": "?",
+        "selectDateRange": "",
         "searchPlaceholder": "Search",
         "searchFilters": "Search Filters",
         "country": "Country"
@@ -51,66 +51,64 @@
     "windows": {
       "network": {
         "SparkGraph": {
-          "deleteEdgeError": "?",
-          "deleteEntityError": "?"
+          "deleteEdgeError": "",
+          "deleteEntityError": ""
         },
         "ComparsionView": {
-          "selectAtLeastTwo": "?",
-          "selectSameType": "?",
-          "showAttributes": "?",
-          "showMainData": "?"
+          "selectAtLeastTwo": "",
+          "selectSameType": "",
+          "showAttributes": "",
+          "showMainData": ""
         }
       },
       "monitor": {
         "MonitorWindow": {
-          "noSourceSelected": "?",
-          "title": "?"
+          "noSourceSelected": "",
+          "title": ""
         },
         "MonitorListWindow": {
-          "getSourcesError": "?",
-          "error": "?",
-          "title": "?"
+          "getSourcesError": "",
+          "error": "",
+          "title": ""
         }
       },
       "data": {
         "EntityWindow": {
-          "queryError": "?",
-          "warning": "?",
-          "noEntitySelected": "?",
-          "noInghtSelected": "?",
-          "relatedOrganizations": "?",
-          "relatedWebsites": "?",
-          "relatedEvents": "?",
-          "relatedSources": "?",
-          "addNeighbors": "?",
-          "title": "?"
+          "queryError": "",
+          "warning": "",
+          "noEntitySelected": "",
+          "noInghtSelected": "",
+          "relatedOrganizations": "",
+          "relatedWebsites": "",
+          "relatedEvents": "",
+          "relatedSources": "",
+          "addNeighbors": "",
+          "title": ""
         },
         "EntityListWindow": {
           "error": "Failed to create event",
-          "createEventTitle": "Create Event",
           "title": "Related Events"
         }
       },
       "insight": {
         "InsightWindow": {
-          "queryError": "?",
+          "queryError": "",
           "empty": "No selected article",
           "InsightWindowTitle": "Insight Analysis"
         },
         "InsightListWindow": {
-          "createError": "Failed to create insight, please try again later.",
-          "createTitle": "Create New Insight",
           "queryError": "Failed to query insights, please try again later.",
+          "createError": "Failed to create insight, please try again later.",
           "error": "Failed to update content, please check your input.",
           "title": "Insight Column"
         }
       },
       "context": {
         "GlobalEventTimelineWindow": {
-          "queryError": "?"
+          "queryError": ""
         },
         "GlobalEventRecommendationWindow": {
-          "queryError": "?"
+          "queryError": ""
         }
       }
     }
@@ -119,99 +117,96 @@
     "error": "Error",
     "reset": "Reset",
     "apply": "Apply",
-    "save": "?",
-    "cancel": "?",
-    "edit": "?",
-    "delete": "Delete",
-    "text": "text",
-    "number": "number",
-    "date": "date",
-    "insert": "Insert New",
     "notFound": "Not Found",
-    "create": "?"
+    "required": "This field is required",
+    "remove": "",
+    "add": "Add Attribute",
+    "confirm": "Confirm",
+    "cancel": "",
+    "save": ""
   },
   "components": {
     "graph": {
       "Graph": {
-        "noPermission": "?"
+        "noPermission": ""
       },
       "ContextMenu": {
-        "create": "?",
-        "type": "?"
-      },
-      "nodes": {
-        "WebsiteNode": {
-          "name": "?"
-        },
-        "SourceNode": {
-          "name": "?"
-        },
-        "PersonNode": {
-          "name": "?"
-        },
-        "OrganizationNode": {
-          "name": "?"
-        },
-        "EventNode": {
-          "title": "?"
-        }
+        "create": "",
+        "type": ""
       },
       "edges": {
         "RelationEdge": {
-          "name": "?"
+          "name": ""
+        }
+      },
+      "nodes": {
+        "WebsiteNode": {
+          "name": ""
+        },
+        "SourceNode": {
+          "name": ""
+        },
+        "PersonNode": {
+          "name": ""
+        },
+        "OrganizationNode": {
+          "name": ""
+        },
+        "EventNode": {
+          "title": ""
         }
       }
     },
     "map": {
       "MapTools": {
-        "start": "?",
-        "normalMode": "?",
-        "rulerMode": "?"
+        "start": "",
+        "normalMode": "",
+        "rulerMode": ""
+      }
+    },
+    "entity": {
+      "FormRenderer": {
+        "error": ""
+      },
+      "CreationModal": {
+        "error": ""
       }
     },
     "forms": {
       "WebsiteForm": {
-        "title": "?"
+        "title": ""
       },
       "SourceForm": {
-        "title": "?"
+        "title": ""
       },
       "RelationForm": {
-        "label": "?"
+        "label": ""
       },
       "PersonForm": {
-        "name": "?"
+        "name": ""
       },
       "OrganizationForm": {
-        "name": "?"
+        "name": ""
       },
       "MonitoringSourceForm": {
-        "name": "?"
+        "name": ""
       },
       "InsightForm": {
-        "insightDescriptionPlaceholder": "Short summary of the insight (theme, event, important discoveries, etc.)"
+        "edittingTitle": "Edit Insight"
       },
       "EventForm": {
+        "editingTitle": "Edit Event",
         "title": "Event Title",
+        "titleRequired": "Title is required",
+        "minLatitude-90-90": "Latitude cannot be less than ",
+        "maxLatitude": "Latitude cannot be greater than 90",
+        "minLongitude-180-180": "Longitude cannot be less than ",
+        "maxLongitude": "Longitude cannot be greater than 180",
         "eventDescription": "event description"
       },
-      "entityForm": {
-        "FormRenderer": {
-          "error": "?"
-        },
-        "CreationModal": {
-          "error": "?",
-          "title": "?",
-          "submit": "?"
-        }
-      }
-    },
-    "fields": {
-      "EditableAttributes": {
-        "key": "Attribute",
-        "value": "Value",
-        "newKey": "New Attribute",
-        "newValue": "New Value"
+      "BaseForm": {
+        "discardChanges": "Discard Changes And Exit",
+        "unsavedChangesWarning": "Are you sure you want to discard the changes?"
       }
     },
     "editor": {
@@ -254,6 +249,10 @@
     }
   },
   "placeholder": {
+    "relation": "Relation",
+    "confidence": "Confidence",
+    "createdDate": "Created Date",
+    "updatedDate": "Updated Date",
     "url": "URL",
     "description": "Description",
     "foundedDate": "Founded Date",
@@ -262,7 +261,6 @@
     "attributes": "Attributes",
     "reliability": "Reliability",
     "name": "Name",
-    "confidence": "Confidence",
     "role": "Role",
     "nationality": "Nationality",
     "birthDate": "Birth Date",
@@ -271,18 +269,21 @@
       "type": "Source Type"
     },
     "lastReviewed": "Last Reviewed",
-    "title": "?",
+    "title": "",
+    "enter": "Enter",
     "date": "Date",
     "location": "Location",
     "address": "Address",
     "locality": "Locality",
-    "administrativeArea": "Administrative Area",
+    "subLocality": "Sub Locality",
+    "adminArea": "Administrative Area",
+    "subAdminArea": "Sub Administrative Area",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
     "country": "Country",
-    "enter": "Enter",
-    "unknown": "Unknown",
-    "select": "Select ",
-    "relation": "Relation",
-    "createdDate": "Created Date",
-    "updatedDate": "Updated Date"
+    "postalCode": "Postal Code",
+    "key": "",
+    "value": "",
+    "unknown": "Unknown"
   }
 }

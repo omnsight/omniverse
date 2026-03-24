@@ -90,7 +90,7 @@ export const AppTopbar: React.FC = () => {
   }, [error, t]);
 
   const formatDateRange = (range: [Date | undefined, Date | undefined]) => {
-    if (!range[0]) return t('pages.layouts.Topbar.selectDateRange');
+    if (!range[0]) return t('pages.layouts.Topbar.selectDateRange', '?');
     const startStr = range[0].toLocaleDateString();
     const endStr = range[1] ? range[1].toLocaleDateString() : '...';
     return `${startStr} - ${endStr}`;

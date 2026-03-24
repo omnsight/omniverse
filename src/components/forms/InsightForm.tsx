@@ -1,56 +1,109 @@
-import React, { type PropsWithChildren } from 'react';
-import { Paper, Stack, Text } from '@mantine/core';
-import type { OsintView, OsintViewMainData } from 'omni-osint-crud-client';
-import { EditableTextarea, EditableTitle } from '../fields';
+import React, { useState } from 'react';
+import { Stack, Text, Textarea, TextInput } from '@mantine/core';
+import type { OsintView } from 'omni-osint-crud-client';
 import { useTranslation } from 'react-i18next';
+import { Controller } from 'react-hook-form';
+import { BaseForm } from './BaseForm';
 
-interface InsightFormProps extends PropsWithChildren {
+interface InsightFormProps {
   insight: OsintView;
-  useLabel: boolean;
-  useInput: boolean;
-  onUpdate?: (data: OsintViewMainData) => void;
+  useInput?: boolean;
+  onSubmit?: (data: OsintView) => void;
+  onUpdate?: (data: Partial<OsintView>) => void;
+  onClose: () => void;
+  exitButton?: React.ReactNode;
 }
 
 export const InsightForm: React.FC<InsightFormProps> = ({
   insight,
-  useLabel,
-  useInput,
+  useInput = false,
+  onSubmit,
   onUpdate,
-  children,
+  onClose,
+  exitButton,
 }) => {
   const { t } = useTranslation();
+  const [isEditing, setIsEditing] = useState(useInput || false);
+
+  const handlClose = () => {
+    if (!useInput) {
+      setIsEditing(false);
+    }
+    onClose();
+  };
+
+  const handleDoubleClick = () => {
+    if (!useInput) {
+      setIsEditing(true);
+    }
+  };
 
   return (
-    <Paper pos="relative" p="md" shadow="sm" withBorder>
-      <Stack>
-        {useLabel && (
-          <Text size="sm" fw={500}>
-            {t('placeholder.title')}
-          </Text>
-        )}
-        <EditableTitle
-          value={insight.name || ''}
-          onChange={(val) => onUpdate?.({ name: val })}
-          useInput={useInput}
-          canEdit={!!onUpdate}
-          placeholder={t('placeholder.title')}
-          order={4}
-        />
+    <BaseForm<OsintView>
+      title={
+        isEditing
+          ? t('components.forms.InsightForm.edittingTitle')
+          : insight.name || t('placeholder.title')
+      }
+      isEditing={isEditing}
+      onClose={handlClose}
+      defaultValues={insight}
+      onSubmit={onSubmit}
+      onUpdate={onUpdate}
+      exitButton={exitButton}
+    >
+      {({ control }) => (
+        <Stack onDoubleClick={handleDoubleClick}>
+          {isEditing && (
+            <Text size="sm" fw={500}>
+              {t('placeholder.title')}
+            </Text>
+          )}
+          {isEditing && (
+            <Controller
+              name="name"
+              control={control}
+              render={({ field }) => (
+                <TextInput
+                  {...field}
+                  autoFocus
+                  value={field.value || ''}
+                  placeholder={`${t('placeholder.enter')}${t('placeholder.title')}...`}
+                />
+              )}
+            />
+          )}
 
-        {useLabel && (
-          <Text size="sm" fw={500}>
-            {t('placeholder.description')}
-          </Text>
-        )}
-        <EditableTextarea
-          value={insight.description || ''}
-          onChange={(val) => onUpdate?.({ description: val })}
-          useInput={useInput}
-          canEdit={!!onUpdate}
-          placeholder={t('components.forms.InsightForm.insightDescriptionPlaceholder')}
-        />
-      </Stack>
-      {children}
-    </Paper>
+          {isEditing && <Text size="sm">{t('placeholder.description')}</Text>}
+          {isEditing ? (
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <Textarea
+                  {...field}
+                  autosize
+                  autoFocus
+                  value={field.value || ''}
+                  placeholder={`${t('placeholder.enter')}${t('placeholder.description')}...`}
+                />
+              )}
+            />
+          ) : (
+            <Text
+              size="sm"
+              style={{
+                color: insight.description
+                  ? 'var(--mantine-color-text)'
+                  : 'var(--mantine-color-dimmed)',
+                fontStyle: insight.description ? 'normal' : 'italic',
+              }}
+            >
+              {insight.description || t('placeholder.description')}
+            </Text>
+          )}
+        </Stack>
+      )}
+    </BaseForm>
   );
 };

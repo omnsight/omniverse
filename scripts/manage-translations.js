@@ -6,15 +6,14 @@ import _traverse from '@babel/traverse';
 const traverse = _traverse.default;
 import { fileURLToPath } from 'url';
 
-// Replicate __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 const projectRoot = path.resolve(__dirname, '..');
 const srcRoot = path.join(projectRoot, 'src');
+const localesRoot = path.join(srcRoot, 'locales', 'resources');
 
 const getArgs = () => {
-  const args = {};
+  const args = { n: [], langs: ['en', 'zh'] };
   process.argv.slice(2).forEach((arg, index, arr) => {
     if (arg.startsWith('-')) {
       const key = arg.substring(1);
@@ -29,162 +28,134 @@ const getArgs = () => {
   return args;
 };
 
-const getTranslationKeys = async () => {
-  const files = await glob('**/*.{ts,tsx}', { cwd: srcRoot });
-  const keys = [];
-
-  for (const file of files) {
-    const filePath = path.join(srcRoot, file);
-    const code = fs.readFileSync(filePath, 'utf-8');
-
-    try {
-      const ast = parser.parse(code, {
-        sourceType: 'module',
-        plugins: ['jsx', 'typescript'],
-      });
-
-      traverse(ast, {
-        CallExpression(path) {
-          if (path.node.callee.type === 'Identifier' && path.node.callee.name === 't') {
-            const arg = path.node.arguments[0];
-            if (arg && arg.type === 'StringLiteral') {
-              keys.push({ key: arg.value, file });
-            }
-          }
-        },
-      });
-    } catch (error) {
-      console.error(`Error parsing file: ${filePath}`);
-      console.error(error);
-    }
-  }
-
-  return keys;
-};
-
-const processKeys = (keys, preservedNames, langs) => {
-  const processedKeys = new Map();
-
-  for (const { key, file } of keys) {
-    let newKey = key;
-    const values = {};
-
-    const preserve = preservedNames.some((name) => key.startsWith(name));
-
-    // Parse values
-    const regex = new RegExp(`-(${langs.join('|')})\\:(.*?)(?=-|$)`, 'g');
-    let match;
-    let strippedKey = key;
-    while ((match = regex.exec(key)) !== null) {
-      values[match[1]] = match[2];
-      strippedKey = strippedKey.replace(match[0], '');
-    }
-
-    if (!preserve) {
-      const parts = path.parse(file);
-      const dirParts = parts.dir.split(path.sep);
-      const fileName = parts.name;
-      const keyParts = strippedKey.split('.');
-      const lastPart = keyParts[keyParts.length - 1];
-
-      newKey = [...dirParts, fileName, lastPart].join('.');
-    } else {
-      newKey = strippedKey;
-    }
-
-    processedKeys.set(newKey, { values, originalKey: key, file });
-  }
-
-  return processedKeys;
-};
-
-const localesRoot = path.join(srcRoot, 'locales', 'resources');
-
 const readJsonFile = (filePath) => {
   if (fs.existsSync(filePath)) {
-    const content = fs.readFileSync(filePath, 'utf-8');
-    return JSON.parse(content);
+    try {
+      return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    } catch (e) {
+      return {};
+    }
   }
   return {};
 };
 
-const toNestedObject = (keys, existingTranslations, lang) => {
-  const result = {};
-
-  keys.forEach((data, key) => {
-    const keyParts = key.split('.');
-    let current = result;
-    let existing = existingTranslations;
-
-    keyParts.forEach((part, index) => {
-      if (existing) {
-        existing = existing[part];
-      }
-      if (index === keyParts.length - 1) {
-        current[part] = data.values[lang] || (existing && existing) || '?';
-      } else {
-        if (!current[part]) {
-          current[part] = {};
-        }
-        current = current[part];
-      }
-    });
-  });
-
-  return result;
-};
-
-const updateSourceFiles = async (processedKeys) => {
-  const changesByFile = new Map();
-
-  // Group changes by file
-  for (const [newKey, { originalKey, file }] of processedKeys.entries()) {
-    if (newKey !== originalKey) {
-      if (!changesByFile.has(file)) {
-        changesByFile.set(file, []);
-      }
-      changesByFile.get(file).push({ originalKey, newKey });
-    }
-  }
-
-  // Apply changes to each file
-  for (const [file, changes] of changesByFile.entries()) {
-    const filePath = path.join(srcRoot, file);
-    try {
-      let content = fs.readFileSync(filePath, 'utf-8');
-      for (const { originalKey, newKey } of changes) {
-        const escapedOriginalKey = originalKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const searchRegex = new RegExp(`t\\((['\"\`])(${escapedOriginalKey})\\1\\)`, 'g');
-        content = content.replace(searchRegex, `t('${newKey}')`);
-      }
-      fs.writeFileSync(filePath, content, 'utf-8');
-      console.log(`Updated translation keys in: ${file}`);
-    } catch (error) {
-      console.error(`Error updating file: ${filePath}`, error);
-    }
-  }
+// Helper to get nested value from JSON object
+const getNestedValue = (obj, pathStr) => {
+  return pathStr.split('.').reduce((acc, part) => acc && acc[part], obj);
 };
 
 const run = async () => {
-  const args = getArgs();
-  const preservedNames = args.n || [];
-  const langs = args.langs || ['en', 'zh'];
+  const { n: preservedNames, langs } = getArgs();
+  const files = await glob('**/*.{ts,tsx}', { cwd: srcRoot, ignore: 'node_modules/**' });
+  
+  // 1. Load existing translations from JSON files
+  const existingStore = {};
+  langs.forEach(lang => {
+    existingStore[lang] = readJsonFile(path.join(localesRoot, `${lang}.json`));
+  });
 
-  console.log('Running with preserved names:', preservedNames);
-  console.log('Running with languages:', langs);
+  const allFoundKeys = new Map(); // Map<newKey, {originalKey, file, values}>
+  const fileChanges = new Map();  // Map<file, Array<{originalKey, newKey, hasValue}>>
 
-  const usedKeys = await getTranslationKeys();
-  const processedKeys = processKeys(usedKeys, preservedNames, langs);
+  // 2. Parse all files to find keys and annotations
+  for (const file of files) {
+    const filePath = path.join(srcRoot, file);
+    const code = fs.readFileSync(filePath, 'utf-8');
+    const changes = [];
 
-  await updateSourceFiles(processedKeys);
+    try {
+      const ast = parser.parse(code, { sourceType: 'module', plugins: ['jsx', 'typescript'] });
 
-  for (const lang of langs) {
-    const langPath = path.join(localesRoot, `${lang}.json`);
-    const existingTranslations = readJsonFile(langPath);
-    const newTranslations = toNestedObject(processedKeys, existingTranslations, lang);
-    fs.writeFileSync(langPath, JSON.stringify(newTranslations, null, 2));
-    console.log(`Updated translation file: ${langPath}`);
+      traverse(ast, {
+        CallExpression(p) {
+          if (p.node.callee.name === 't') {
+            const arg = p.node.arguments[0];
+            if (arg && arg.type === 'StringLiteral') {
+              const rawKey = arg.value;
+              
+              // Extract annotations: -en:Value-zh:Value
+              const valuesFromAnnotation = {};
+              const regex = new RegExp(`-(${langs.join('|')})\\:(.*?)(?=-|$)`, 'g');
+              let strippedKey = rawKey;
+              let match;
+              while ((match = regex.exec(rawKey)) !== null) {
+                valuesFromAnnotation[match[1]] = match[2];
+                strippedKey = strippedKey.replace(match[0], '');
+              }
+
+              // Determine final key name
+              let finalKey = strippedKey;
+              const isPreserved = preservedNames.some(p => strippedKey.startsWith(p));
+              if (!isPreserved) {
+                const parts = path.parse(file);
+                const dirParts = parts.dir.split(path.sep).filter(Boolean);
+                const keyParts = strippedKey.split('.');
+                finalKey = [...dirParts, parts.name, keyParts[keyParts.length - 1]].join('.');
+              }
+
+              // Merge logic: Annotation > Existing JSON
+              const mergedValues = {};
+              let hasAnyValue = false;
+
+              langs.forEach(lang => {
+                const val = valuesFromAnnotation[lang] || getNestedValue(existingStore[lang], finalKey);
+                if (val && val !== '?') {
+                  mergedValues[lang] = val;
+                  hasAnyValue = true;
+                }
+              });
+
+              allFoundKeys.set(finalKey, { values: mergedValues });
+              changes.push({ originalKey: rawKey, newKey: finalKey, hasValue: hasAnyValue });
+            }
+          }
+        },
+      });
+
+      if (changes.length > 0) fileChanges.set(file, changes);
+    } catch (e) {
+      console.error(`Error parsing ${file}:`, e.message);
+    }
   }
+
+  // 3. Update Source Files (Apply '?' if no value found)
+  for (const [file, changes] of fileChanges.entries()) {
+    const filePath = path.join(srcRoot, file);
+    let content = fs.readFileSync(filePath, 'utf-8');
+
+    for (const { originalKey, newKey, hasValue } of changes) {
+      const escapedKey = originalKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      // Match t('key') or t('key', 'default')
+      const regex = new RegExp(`t\\((['"\`])${escapedKey}\\1(,\\s*['"\`].*?['"\`])?\\)`, 'g');
+      
+      const replacement = hasValue ? `t('${newKey}')` : `t('${newKey}', '?')`;
+      content = content.replace(regex, replacement);
+    }
+    fs.writeFileSync(filePath, content, 'utf-8');
+    console.log(`Cleaned source: ${file}`);
+  }
+
+  // 4. Write merged results to JSON
+  langs.forEach(lang => {
+    const result = {};
+    for (const [fullKey, data] of allFoundKeys.entries()) {
+      const parts = fullKey.split('.');
+      let current = result;
+      parts.forEach((part, i) => {
+        if (i === parts.length - 1) {
+          current[part] = data.values[lang] || ""; // No '?' in JSON
+        } else {
+          current[part] = current[part] || {};
+          current = current[part];
+        }
+      });
+    }
+
+    const langPath = path.join(localesRoot, `${lang}.json`);
+    fs.mkdirSync(path.dirname(langPath), { recursive: true });
+    fs.writeFileSync(langPath, JSON.stringify(result, null, 2), 'utf-8');
+    console.log(`Updated resources: ${lang}.json`);
+  });
 };
 
-run();
+run().catch(console.error);

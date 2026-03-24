@@ -10,11 +10,10 @@ import {
   Switch,
   Group,
 } from '@mantine/core';
-import { getEntityTitle } from '../../../components/forms/entityForm/entity';
 import { useSelectedEntities } from '../data/entitySelection';
 import { useTranslation } from 'react-i18next';
-import { EntityFormRenderer } from '../../../components/forms/entityForm/FormRenderer';
-import type { Entity } from '../../../components/forms/entityForm/entity';
+import { EntityFormRenderer } from '../../../components/entity/FormRenderer';
+import { type Entity, getEntityTitle } from '../../../components/entity/entity';
 
 const renderAttributes = (
   attributes: Record<string, any>,
@@ -58,7 +57,7 @@ export const ComparisonView: React.FC = () => {
         w="100%"
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
-        <Text>{t('pages.windows.network.ComparsionView.selectAtLeastTwo')}</Text>
+        <Text>{t('pages.windows.network.ComparsionView.selectAtLeastTwo', '?')}</Text>
       </Box>
     );
   }
@@ -74,7 +73,7 @@ export const ComparisonView: React.FC = () => {
         w="100%"
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
-        <Text>{t('pages.windows.network.ComparsionView.selectSameType')}</Text>
+        <Text>{t('pages.windows.network.ComparsionView.selectSameType', '?')}</Text>
       </Box>
     );
   }
@@ -106,8 +105,8 @@ export const ComparisonView: React.FC = () => {
           onChange={(event) => setShowAttributes(event.currentTarget.checked)}
           label={
             showAttributes
-              ? t('pages.windows.network.ComparsionView.showAttributes')
-              : t('pages.windows.network.ComparsionView.showMainData')
+              ? t('pages.windows.network.ComparsionView.showAttributes', '?')
+              : t('pages.windows.network.ComparsionView.showMainData', '?')
           }
         />
       </Box>

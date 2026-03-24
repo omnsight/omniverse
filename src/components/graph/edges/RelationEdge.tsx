@@ -93,7 +93,7 @@ export const RelationEdge: React.FC<EdgeProps<Relation>> = memo(
               color={badgeColor}
               style={{ cursor: 'pointer', fontSize: 5, height: 8, padding: '0 4px' }}
             >
-              {data?.label || t('placeholder.unknown') + t('components.graph.edges.RelationEdge.name')}
+              {data?.label || t('placeholder.unknown') + t('components.graph.edges.RelationEdge.name', '?')}
             </Badge>
           </div>
         </EdgeLabelRenderer>

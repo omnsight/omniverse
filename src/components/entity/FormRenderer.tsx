@@ -10,20 +10,24 @@ import {
   updateWebsite,
 } from 'omni-osint-crud-client';
 import type { Entities, Entity, EntityMainData } from './entity';
-import { EventForm, OrganizationForm, PersonForm, RelationForm, SourceForm, WebsiteForm } from '..';
+import {
+  EventForm,
+  OrganizationForm,
+  PersonForm,
+  RelationForm,
+  SourceForm,
+  WebsiteForm,
+} from '../forms';
 
 interface Props {
   entity: Entity;
-  onUpdated?: (entities: Entities) => void;
-  onUpdate?: (data: EntityMainData) => void;
-  useLabel?: boolean;
-  useInput?: boolean;
+  onUpdate?: (entities: Entities) => void;
 }
 
-export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdate, useLabel, useInput }) => {
+export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdate }) => {
   const { t } = useTranslation();
 
-  const handleUpdate = async (patch: EntityMainData) => {
+  const handleUpdate = async (patch: Partial<EntityMainData>) => {
     if (!entity.data._id) {
       console.warn('Entity does not have an ID, cannot update');
       return;
@@ -42,7 +46,7 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdat
         if (error) {
           notifications.show({
             title: t('common.error'),
-            message: t('components.forms.entityForm.FormRenderer.error'),
+            message: t('components.entity.FormRenderer.error', '?'),
             color: 'red',
           });
           return;
@@ -60,7 +64,7 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdat
         if (organizationError) {
           notifications.show({
             title: t('common.error'),
-            message: t('components.forms.entityForm.FormRenderer.error'),
+            message: t('components.entity.FormRenderer.error', '?'),
             color: 'red',
           });
           return;
@@ -78,7 +82,7 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdat
         if (personError) {
           notifications.show({
             title: t('common.error'),
-            message: t('components.forms.entityForm.FormRenderer.error'),
+            message: t('components.entity.FormRenderer.error', '?'),
             color: 'red',
           });
           return;
@@ -96,7 +100,7 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdat
         if (relationError) {
           notifications.show({
             title: t('common.error'),
-            message: t('components.forms.entityForm.FormRenderer.error'),
+            message: t('components.entity.FormRenderer.error', '?'),
             color: 'red',
           });
           return;
@@ -114,7 +118,7 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdat
         if (sourceError) {
           notifications.show({
             title: t('common.error'),
-            message: t('components.forms.entityForm.FormRenderer.error'),
+            message: t('components.entity.FormRenderer.error', '?'),
             color: 'red',
           });
           return;
@@ -132,7 +136,7 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdat
         if (websiteError) {
           notifications.show({
             title: t('common.error'),
-            message: t('components.forms.entityForm.FormRenderer.error'),
+            message: t('components.entity.FormRenderer.error', '?'),
             color: 'red',
           });
           return;
@@ -141,29 +145,24 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdated, onUpdat
         }
         break;
     }
-    onUpdated?.(entities);
+    onUpdate?.(entities);
   };
 
   switch (entity.type) {
     case 'Event':
-      return <EventForm event={entity.data} onUpdate={onUpdated ? handleUpdate : onUpdate} useLabel={useLabel} useInput={useInput} />;
+      return <EventForm event={entity.data} onUpdate={handleUpdate} onClose={() => {}} />;
     case 'Organization':
       return (
-        <OrganizationForm
-          organization={entity.data}
-          onUpdate={onUpdated ? handleUpdate : onUpdate}
-          useLabel={useLabel}
-          useInput={useInput}
-        />
+        <OrganizationForm organization={entity.data} onUpdate={handleUpdate} onClose={() => {}} />
       );
     case 'Person':
-      return <PersonForm person={entity.data} onUpdate={onUpdated ? handleUpdate : onUpdate} useLabel={useLabel} useInput={useInput} />;
+      return <PersonForm person={entity.data} onUpdate={handleUpdate} onClose={() => {}} />;
     case 'Relation':
-      return <RelationForm relation={entity.data} onUpdate={onUpdated ? handleUpdate : onUpdate} useLabel={useLabel} useInput={useInput} />;
+      return <RelationForm relation={entity.data} onUpdate={handleUpdate} onClose={() => {}} />;
     case 'Source':
-      return <SourceForm source={entity.data} onUpdate={onUpdated ? handleUpdate : onUpdate} useLabel={useLabel} useInput={useInput} />;
+      return <SourceForm source={entity.data} onUpdate={handleUpdate} onClose={() => {}} />;
     case 'Website':
-      return <WebsiteForm website={entity.data} onUpdate={onUpdated ? handleUpdate : onUpdate} useLabel={useLabel} useInput={useInput} />;
+      return <WebsiteForm website={entity.data} onUpdate={handleUpdate} onClose={() => {}} />;
     default:
       return null;
   }

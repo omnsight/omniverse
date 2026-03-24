@@ -8,141 +8,239 @@ import {
   UnstyledButton,
   Collapse,
   Title,
+  TextInput,
+  Textarea,
+  TagsInput,
 } from '@mantine/core';
+import { DatePickerInput } from '@mantine/dates';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
-import { type Website, type WebsiteMainData } from 'omni-osint-crud-client';
-import {
-  EditableDate,
-  EditableTags,
-  EditableTitle,
-  EditableText,
-  EditableTextarea,
-  EditableAttributes,
-} from '../fields';
+import { type Website } from 'omni-osint-crud-client';
+import { EditableAttributes } from './EditableAttributes';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { Controller } from 'react-hook-form';
+import { BaseForm } from './BaseForm';
 
 interface Props {
   website: Website;
-  onUpdate?: (data: WebsiteMainData) => void;
+  onSubmit?: (data: Website) => void;
+  onUpdate?: (data: Partial<Website>) => void;
+  onClose: () => void;
   onClick?: () => void;
-  useLabel?: boolean;
   useInput?: boolean;
 }
 
-export const WebsiteForm: React.FC<Props> = ({ website, onUpdate, onClick, useLabel, useInput }) => {
+export const WebsiteForm: React.FC<Props> = ({
+  website,
+  onSubmit,
+  onUpdate,
+  onClose,
+  onClick,
+  useInput,
+}) => {
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(useInput || false);
+
+  const handlClose = () => {
+    if (!useInput) {
+      setIsEditing(false);
+    }
+    onClose();
+  };
+
+  const handleDoubleClick = () => {
+    if (!useInput) {
+      setIsEditing(true);
+    }
+  };
 
   return (
-    <Stack
-      gap="xs"
-      style={{ position: 'relative', cursor: onClick ? 'pointer' : 'default' }}
-      onClick={onClick}
+    <BaseForm<Website>
+      title={website.title || t('components.forms.WebsiteForm.title', '?')}
+      isEditing={isEditing || false}
+      onClose={handlClose}
+      defaultValues={website}
+      onSubmit={onSubmit}
+      onUpdate={onUpdate}
     >
-      <Group gap="xs">
-        {useLabel && <Text size="sm" fw={500}>{t('components.forms.WebsiteForm.title')}</Text>}
-        <EditableTitle
-          value={website.title || ''}
-          onChange={(val) => onUpdate?.({ title: val })}
-          canEdit={!!onUpdate}
-          useInput={useInput}
-          placeholder={t('components.forms.WebsiteForm.title')}
-          order={4}
-          style={{ flex: 'initial' }}
-        />
-        {website.url && (
-          <ActionIcon component="a" href={website.url} target="_blank" variant="subtle" size="sm">
-            <ArrowTopRightOnSquareIcon style={{ width: '70%', height: '70%' }} />
-          </ActionIcon>
-        )}
-      </Group>
+      {({ control }) => (
+        <Stack
+          gap="xs"
+          style={{ position: 'relative', cursor: onClick ? 'pointer' : 'default' }}
+          onClick={onClick}
+          onDoubleClick={handleDoubleClick}
+        >
+          <Group gap="xs">
+            {isEditing && (
+              <Text size="sm" fw={500}>
+                {t('components.forms.WebsiteForm.title', '?')}
+              </Text>
+            )}
+            {isEditing && (
+              <Controller
+                name="title"
+                control={control}
+                render={({ field }) => (
+                  <TextInput
+                    {...field}
+                    value={field.value || ''}
+                    placeholder={t('components.forms.WebsiteForm.title', '?')}
+                    style={{ flex: 'initial' }}
+                  />
+                )}
+              />
+            )}
+            {website.url && (
+              <ActionIcon
+                component="a"
+                href={website.url}
+                target="_blank"
+                variant="subtle"
+                size="sm"
+              >
+                <ArrowTopRightOnSquareIcon style={{ width: '70%', height: '70%' }} />
+              </ActionIcon>
+            )}
+          </Group>
 
-      <Group gap={4}>
-        <Text>{t('placeholder.url')}:</Text>
-        <EditableText
-          value={website.url ?? ''}
-          onChange={(val) => onUpdate?.({ url: val })}
-          canEdit={!!onUpdate}
-          useInput={useInput}
-          placeholder={t('placeholder.url')}
-        />
-      </Group>
+          <Group gap={4}>
+            <Text>{t('placeholder.url')}:</Text>
+            {isEditing ? (
+              <Controller
+                name="url"
+                control={control}
+                render={({ field }) => (
+                  <TextInput
+                    {...field}
+                    value={field.value ?? ''}
+                    placeholder={t('placeholder.url')}
+                  />
+                )}
+              />
+            ) : (
+              <Text>{website.url}</Text>
+            )}
+          </Group>
 
-      {useLabel && <Text size="sm" fw={500}>{t('placeholder.description')}</Text>}
-      <EditableTextarea
-        value={website.description || ''}
-        onChange={(val) => onUpdate?.({ description: val })}
-        canEdit={!!onUpdate}
-        useInput={useInput}
-        placeholder={t('placeholder.description')}
-      />
+          {isEditing ? (
+            <>
+              <Text size="sm" fw={500}>
+                {t('placeholder.description')}
+              </Text>
+              <Controller
+                name="description"
+                control={control}
+                render={({ field }) => (
+                  <Textarea
+                    {...field}
+                    value={field.value || ''}
+                    placeholder={t('placeholder.description')}
+                  />
+                )}
+              />
+            </>
+          ) : (
+            <Text>{website.description || t('placeholder.description')}</Text>
+          )}
 
-      <Group gap={4}>
-        <Text size="sm" c="dimmed">
-          {t('placeholder.foundedDate')}:
-        </Text>
-        <EditableDate
-          value={(website.founded_at || 0) * 1000}
-          onChange={(date) =>
-            onUpdate?.({
-              founded_at: date.getTime() / 1000,
-            })
-          }
-          canEdit={!!onUpdate}
-          useInput={useInput}
-          placeholder={t('placeholder.foundedDate')}
-        />
-      </Group>
+          <Group gap={4}>
+            <Text size="sm" c="dimmed">
+              {t('placeholder.foundedDate')}:
+            </Text>
+            {isEditing ? (
+              <Controller
+                name="founded_at"
+                control={control}
+                render={({ field }) => (
+                  <DatePickerInput
+                    value={field.value ? new Date(field.value * 1000) : null}
+                    onChange={(date) => field.onChange(date ? new Date(date).getTime() / 1000 : 0)}
+                    placeholder={t('placeholder.foundedDate')}
+                  />
+                )}
+              />
+            ) : (
+              <Text size="sm">
+                {website.founded_at
+                  ? new Date(website.founded_at * 1000).toLocaleDateString()
+                  : t('placeholder.foundedDate')}
+              </Text>
+            )}
+          </Group>
 
-      <Group gap={4}>
-        <Text size="sm" c="dimmed">
-          {t('placeholder.discoveredDate')}:
-        </Text>
-        <EditableDate
-          value={(website.discovered_at || 0) * 1000}
-          onChange={(date) =>
-            onUpdate?.({
-              discovered_at: date.getTime() / 1000,
-            })
-          }
-          canEdit={!!onUpdate}
-          useInput={useInput}
-          placeholder={t('placeholder.discoveredDate')}
-        />
-      </Group>
+          <Group gap={4}>
+            <Text size="sm" c="dimmed">
+              {t('placeholder.discoveredDate')}:
+            </Text>
+            {isEditing ? (
+              <Controller
+                name="discovered_at"
+                control={control}
+                render={({ field }) => (
+                  <DatePickerInput
+                    value={field.value ? new Date(field.value * 1000) : null}
+                    onChange={(date) => field.onChange(date ? new Date(date).getTime() / 1000 : 0)}
+                    placeholder={t('placeholder.discoveredDate')}
+                  />
+                )}
+              />
+            ) : (
+              <Text size="sm">
+                {website.discovered_at
+                  ? new Date(website.discovered_at * 1000).toLocaleDateString()
+                  : t('placeholder.discoveredDate')}
+              </Text>
+            )}
+          </Group>
 
-      {useLabel && <Text size="sm" fw={500}>{t('placeholder.tags')}</Text>}
-      <EditableTags
-        value={website.tags || []}
-        onChange={(tags) => onUpdate?.({ tags })}
-        canEdit={!!onUpdate}
-        useInput={useInput}
-        placeholder={t('placeholder.tags')}
-      />
+          {isEditing ? (
+            <>
+              <Text size="sm" fw={500}>
+                {t('placeholder.tags')}
+              </Text>
+              <Controller
+                name="tags"
+                control={control}
+                render={({ field }) => (
+                  <TagsInput
+                    {...field}
+                    value={field.value || []}
+                    placeholder={t('placeholder.tags')}
+                  />
+                )}
+              />
+            </>
+          ) : (
+            <Text size="sm">{(website.tags || []).join(', ')}</Text>
+          )}
 
-      <Divider my="sm" />
+          <Divider my="sm" />
 
-      <UnstyledButton onClick={() => setAttributesOpen((o) => !o)}>
-        <Group justify="space-between">
-          <Title order={5}>{t('placeholder.attributes')}</Title>
-          <ChevronDownIcon
-            style={{
-              width: 16,
-              transform: attributesOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-              transition: 'transform 200ms ease',
-            }}
-          />
-        </Group>
-      </UnstyledButton>
+          <UnstyledButton onClick={() => setAttributesOpen((o) => !o)}>
+            <Group justify="space-between">
+              <Title order={5}>{t('placeholder.attributes')}</Title>
+              <ChevronDownIcon
+                style={{
+                  width: 16,
+                  transform: attributesOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 200ms ease',
+                }}
+              />
+            </Group>
+          </UnstyledButton>
 
-      <Collapse in={attributesOpen}>
-        <EditableAttributes
-          value={website.attributes || {}}
-          onChange={(val: Record<string, any>) => onUpdate?.({ attributes: val })}
-          canEdit={!!onUpdate}
-        />
-      </Collapse>
-    </Stack>
+          <Collapse in={attributesOpen}>
+            <Controller
+              name="attributes"
+              control={control}
+              render={({ field }) => (
+                <EditableAttributes {...field} value={field.value || {}} isEditing={isEditing} />
+              )}
+            />
+          </Collapse>
+        </Stack>
+      )}
+    </BaseForm>
   );
 };

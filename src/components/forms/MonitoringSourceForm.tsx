@@ -1,117 +1,216 @@
 import React, { useState } from 'react';
-import { Paper, Stack, Group, Text, Divider, Title, Collapse, UnstyledButton } from '@mantine/core';
-import { type MonitoringSource, type MonitoringSourceMainData } from 'omni-monitoring-client';
-import { useTranslation } from 'react-i18next';
 import {
-  EditableTitle,
-  EditableText,
-  EditableTextarea,
-  EditableSelect,
-  EditableNumber,
-  EditableDate,
-  EditableAttributes,
-} from '../fields';
+  Stack,
+  Group,
+  Text,
+  Divider,
+  Title,
+  Collapse,
+  UnstyledButton,
+  TextInput,
+  Textarea,
+  Select,
+  NumberInput,
+} from '@mantine/core';
+import { DatePickerInput } from '@mantine/dates';
+import { type MonitoringSource } from 'omni-monitoring-client';
+import { useTranslation } from 'react-i18next';
+import { EditableAttributes } from './EditableAttributes';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
+import { Controller } from 'react-hook-form';
+import { BaseForm } from './BaseForm';
 
 interface Props {
   source: MonitoringSource;
-  useLabel?: boolean;
   useInput?: boolean;
-  onUpdate?: (data: MonitoringSourceMainData) => void;
+  onSubmit?: (data: MonitoringSource) => void;
+  onUpdate?: (data: Partial<MonitoringSource>) => void;
+  onClose: () => void;
 }
 
-export const MonitoringSourceForm: React.FC<Props> = ({ source, useLabel, useInput, onUpdate }) => {
+export const MonitoringSourceForm: React.FC<Props> = ({
+  source,
+  useInput,
+  onSubmit,
+  onUpdate,
+  onClose,
+}) => {
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(useInput || false);
+
+  const handlClose = () => {
+    if (!useInput) {
+      setIsEditing(false);
+    }
+    onClose();
+  };
+
+  const handleDoubleClick = () => {
+    if (!useInput) {
+      setIsEditing(true);
+    }
+  };
 
   return (
-    <Paper withBorder p="md" radius="md">
-      <Stack>
-        {useLabel && <Text size="sm" fw={500}>{t('components.forms.MonitoringSourceForm.name')}</Text>}
-        <EditableTitle
-          value={source.name || ''}
-          onChange={(val) => onUpdate?.({ name: val })}
-          canEdit={!!onUpdate}
-          useInput={useInput}
-          placeholder={t('components.forms.MonitoringSourceForm.name')}
-          order={4}
-        />
-
-        {useLabel && <Text size="sm" fw={500}>{t('placeholder.description')}</Text>}
-        <EditableTextarea
-          value={source.description || ''}
-          onChange={(val) => onUpdate?.({ description: val })}
-          canEdit={!!onUpdate}
-          useInput={useInput}
-          placeholder={t('placeholder.description')}
-        />
-
-        <Group>
-          <Text>{t('placeholder.source.type')}:</Text>
-          <EditableSelect
-            value={source.type || ''}
-            onChange={(val) => onUpdate?.({ type: val as any })}
-            canEdit={!!onUpdate}
-            useInput={useInput}
-            data={['website', 'twitter', 'telegram']}
-            placeholder={t('placeholder.source.type')}
-          />
-        </Group>
-        <Group>
-          <Text>{t('placeholder.url')}:</Text>
-          <EditableText
-            value={source.url || ''}
-            onChange={(val) => onUpdate?.({ url: val })}
-            canEdit={!!onUpdate}
-            useInput={useInput}
-            placeholder={t('placeholder.url')}
-          />
-        </Group>
-
-        <Group>
-          <Text>{t('placeholder.reliability')}:</Text>
-          <EditableNumber
-            value={source.reliability || 0}
-            onChange={(val) => onUpdate?.({ reliability: Number(val) })}
-            canEdit={!!onUpdate}
-            useInput={useInput}
-            placeholder={t('placeholder.reliability')}
-          />
-        </Group>
-        <Group>
-          <Text>{t('placeholder.lastReviewed')}:</Text>
-          <EditableDate
-            value={(source.last_reviewed || 0) * 1000}
-            onChange={(date) => onUpdate?.({ last_reviewed: date.getTime() / 1000 })}
-            canEdit={!!onUpdate}
-            useInput={useInput}
-            placeholder={t('placeholder.lastReviewed')}
-          />
-        </Group>
-
-        <Divider my="sm" />
-
-        <UnstyledButton onClick={() => setAttributesOpen((o) => !o)}>
-          <Group justify="space-between">
-            <Title order={5}>{t('placeholder.attributes')}</Title>
-            <ChevronDownIcon
-              style={{
-                width: 16,
-                transform: attributesOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                transition: 'transform 200ms ease',
-              }}
+    <BaseForm<MonitoringSource>
+      title={source.name || t('components.forms.MonitoringSourceForm.name', '?')}
+      isEditing={isEditing}
+      onClose={handlClose}
+      defaultValues={source}
+      onSubmit={onSubmit}
+      onUpdate={onUpdate}
+    >
+      {({ control }) => (
+        <Stack onDoubleClick={handleDoubleClick}>
+          {isEditing && (
+            <Text size="sm" fw={500}>
+              {t('components.forms.MonitoringSourceForm.name', '?')}
+            </Text>
+          )}
+          {isEditing && (
+            <Controller
+              name="name"
+              control={control}
+              render={({ field }) => (
+                <TextInput
+                  {...field}
+                  value={field.value || ''}
+                  placeholder={t('components.forms.MonitoringSourceForm.name', '?')}
+                />
+              )}
             />
-          </Group>
-        </UnstyledButton>
+          )}
 
-        <Collapse in={attributesOpen}>
-          <EditableAttributes
-            value={source.attributes || {}}
-            onChange={(val: Record<string, any>) => onUpdate?.({ attributes: val })}
-            canEdit={!!onUpdate}
-          />
-        </Collapse>
-      </Stack>
-    </Paper>
+          {isEditing ? (
+            <>
+              <Text size="sm" fw={500}>
+                {t('placeholder.description')}
+              </Text>
+              <Controller
+                name="description"
+                control={control}
+                render={({ field }) => (
+                  <Textarea
+                    {...field}
+                    value={field.value || ''}
+                    placeholder={t('placeholder.description')}
+                  />
+                )}
+              />
+            </>
+          ) : (
+            <Text>{source.description || t('placeholder.description')}</Text>
+          )}
+
+          <Group>
+            <Text>{t('placeholder.source.type')}:</Text>
+            {isEditing ? (
+              <Controller
+                name="type"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    value={field.value || ''}
+                    data={['website', 'twitter', 'telegram'].map((type) => ({
+                      value: type,
+                      label: type,
+                    }))}
+                    placeholder={t('placeholder.source.type')}
+                  />
+                )}
+              />
+            ) : (
+              <Text>{source.type}</Text>
+            )}
+          </Group>
+          <Group>
+            <Text>{t('placeholder.url')}:</Text>
+            {isEditing ? (
+              <Controller
+                name="url"
+                control={control}
+                render={({ field }) => (
+                  <TextInput
+                    {...field}
+                    value={field.value || ''}
+                    placeholder={t('placeholder.url')}
+                  />
+                )}
+              />
+            ) : (
+              <Text>{source.url}</Text>
+            )}
+          </Group>
+
+          <Group>
+            <Text>{t('placeholder.reliability')}:</Text>
+            {isEditing ? (
+              <Controller
+                name="reliability"
+                control={control}
+                render={({ field }) => (
+                  <NumberInput
+                    {...field}
+                    value={field.value || 0}
+                    placeholder={t('placeholder.reliability')}
+                  />
+                )}
+              />
+            ) : (
+              <Text>{source.reliability}</Text>
+            )}
+          </Group>
+          <Group>
+            <Text>{t('placeholder.lastReviewed')}:</Text>
+            {isEditing ? (
+              <Controller
+                name="last_reviewed"
+                control={control}
+                render={({ field }) => (
+                  <DatePickerInput
+                    value={field.value ? new Date(field.value * 1000) : null}
+                    onChange={(date) => field.onChange(date ? new Date(date).getTime() / 1000 : 0)}
+                    placeholder={t('placeholder.lastReviewed')}
+                  />
+                )}
+              />
+            ) : (
+              <Text>
+                {source.last_reviewed
+                  ? new Date(source.last_reviewed * 1000).toLocaleDateString()
+                  : ''}
+              </Text>
+            )}
+          </Group>
+
+          <Divider my="sm" />
+
+          <UnstyledButton onClick={() => setAttributesOpen((o) => !o)}>
+            <Group justify="space-between">
+              <Title order={5}>{t('placeholder.attributes')}</Title>
+              <ChevronDownIcon
+                style={{
+                  width: 16,
+                  transform: attributesOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 200ms ease',
+                }}
+              />
+            </Group>
+          </UnstyledButton>
+
+          <Collapse in={attributesOpen}>
+            <Controller
+              name="attributes"
+              control={control}
+              render={({ field }) => (
+                <EditableAttributes {...field} value={field.value || {}} isEditing={isEditing} />
+              )}
+            />
+          </Collapse>
+        </Stack>
+      )}
+    </BaseForm>
   );
 };

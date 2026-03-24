@@ -16,7 +16,7 @@ import {
 import { InsightEditor } from '../../../components/editor/InsightEditor';
 import { getViewEntities } from 'omni-osint-crud-client';
 import { useInsightStore } from './insightData';
-import { transformEntities } from '../../../components/forms/entityForm/entity';
+import { transformEntities } from '../../../components/entity/entity';
 import { useAuth } from '../../../provider/AuthContext';
 import { useWindowManager } from '../WindowManager';
 import { useCrudClient } from '../../../api/useCrudyClient';
@@ -44,7 +44,7 @@ const InsightWindowContent: React.FC = () => {
     if (isError) {
       notifications.show({
         title: t('common.error'),
-        message: t('pages.windows.insight.InsightWindow.queryError'),
+        message: t('pages.windows.insight.InsightWindow.queryError', '?'),
         color: 'red',
       });
     }

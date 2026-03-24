@@ -8,7 +8,7 @@ import {
   GlobeAltIcon,
   DocumentTextIcon,
 } from '@heroicons/react/24/solid';
-import type { Entity } from '../forms/entityForm/entity';
+import type { Entity } from '../entity/entity';
 
 interface GraphContextMenuProps {
   x: number;
@@ -50,7 +50,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
         </Menu.Target>
 
         <Menu.Dropdown>
-          {hasWritePermission && <Menu.Label>{t('components.graph.ContextMenu.create')}</Menu.Label>}
+          {hasWritePermission && <Menu.Label>{t('components.graph.ContextMenu.create', '?')}</Menu.Label>}
 
           {hasWritePermission && (
             <Menu.Item
@@ -61,7 +61,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('components.entity.person.type')}
+              {t('components.graph.ContextMenu.type', '?')}
             </Menu.Item>
           )}
 
@@ -74,7 +74,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('components.entity.organization.type')}
+              {t('components.graph.ContextMenu.type', '?')}
             </Menu.Item>
           )}
 
@@ -87,7 +87,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('components.entity.event.type')}
+              {t('components.graph.ContextMenu.type', '?')}
             </Menu.Item>
           )}
 
@@ -100,7 +100,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('components.entity.website.type')}
+              {t('components.graph.ContextMenu.type', '?')}
             </Menu.Item>
           )}
 
@@ -113,7 +113,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('components.graph.ContextMenu.type')}
+              {t('components.graph.ContextMenu.type', '?')}
             </Menu.Item>
           )}
         </Menu.Dropdown>

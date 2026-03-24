@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, Group, Loader, ScrollArea, Stack, Title } from '@mantine/core';
 import {
   type MonitoringSource,
-  type MonitoringSourceMainData,
   getMonitoringSourcesByUser,
   createMonitoringSource,
 } from 'omni-monitoring-client';
@@ -12,7 +11,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useWindowManager } from '../WindowManager';
 import { notifications } from '@mantine/notifications';
-import { InputWindow } from '../../../components/modals/InputWindow';
 import { useAuth } from '../../../provider/AuthContext';
 
 const MonitorListWindowContent: React.FC = () => {
@@ -20,7 +18,7 @@ const MonitorListWindowContent: React.FC = () => {
   const { user } = useAuth();
   const { sources, setSources, setSelected } = useMonitorStore();
   const { setActiveWindowByName } = useWindowManager();
-  const [sourceToCreate, setSourceToCreate] = useState<MonitoringSource | undefined>(undefined);
+  const [creating, setCreating] = useState(false);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['monitoring-sources'],
@@ -32,7 +30,7 @@ const MonitorListWindowContent: React.FC = () => {
       console.error('Error fetching sources data', error);
       notifications.show({
         title: t('common.error'),
-        message: t('pages.windows.monitor.MonitorListWindow.getSourcesError'),
+        message: t('pages.windows.monitor.MonitorListWindow.getSourcesError', '?'),
         color: 'red',
       });
     }
@@ -44,30 +42,22 @@ const MonitorListWindowContent: React.FC = () => {
     }
   }, [data, setSources]);
 
-  const updateSource = (data: MonitoringSourceMainData) => {
-    if (!sourceToCreate) return;
-    setSourceToCreate({
-      ...sourceToCreate,
-      ...data,
-    });
-  };
-
-  const createSource = async () => {
-    if (!sourceToCreate) return;
+  const createSource = async (source: MonitoringSource) => {
+    if (!source) return;
 
     const { data, error } = await createMonitoringSource({
-      body: sourceToCreate,
+      body: source,
     });
     if (error) {
       console.error('Error creating source', error);
       notifications.show({
         title: t('common.error'),
-        message: t('pages.windows.monitor.MonitorListWindow.error'),
+        message: t('pages.windows.monitor.MonitorListWindow.error', '?'),
         color: 'red',
       });
     } else {
       setSources([...sources, data]);
-      setSourceToCreate(undefined);
+      setCreating(false);
       console.log('Created source', data);
     }
   };
@@ -92,23 +82,18 @@ const MonitorListWindowContent: React.FC = () => {
                 setActiveWindowByName('Monitor');
               }}
             >
-              <MonitoringSourceForm source={source} />
+              <MonitoringSourceForm source={source} onClose={() => {}} />
             </Box>
           ))}
-          {sourceToCreate ? (
-            <InputWindow
-              title={t('monitoring.create.title')}
-              cancel={t('common.cancel')}
-              submit={t('common.create')}
-              onClose={() => setSourceToCreate(undefined)}
+          {creating ? (
+            <MonitoringSourceForm
+              source={{ owner: user?.id || '' }}
+              useInput={true}
               onSubmit={createSource}
-            >
-              <MonitoringSourceForm source={sourceToCreate} onUpdate={updateSource} />
-            </InputWindow>
+              onClose={() => setCreating(false)}
+            />
           ) : (
-            <Button onClick={() => setSourceToCreate({ owner: user?.id || '' })}>
-              {t('monitoring.create.title')}
-            </Button>
+            <Button onClick={() => setCreating(true)}>{t('pages.windows.monitor.MonitorListWindow.title', '?')}</Button>
           )}
         </Stack>
       </Box>
@@ -121,7 +106,7 @@ export const MonitorListWindow: React.FC = () => {
   return (
     <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
       <Box p="lg" pb={0}>
-        <Title order={3}>{t('pages.windows.monitor.MonitorListWindow.title')}</Title>
+        <Title order={3}>{t('pages.windows.monitor.MonitorListWindow.title', '?')}</Title>
       </Box>
       <MonitorListWindowContent />
     </Box>

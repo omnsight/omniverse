@@ -11,10 +11,11 @@ import { AppAuthProvider } from './provider/AuthProvider.tsx';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './locales/index.ts';
 import { Notifications } from '@mantine/notifications';
+import { ModalsProvider } from '@mantine/modals';
 
 const theme = createTheme({
   primaryColor: 'blue',
-  autoContrast: true, // Automatically adjusts text color based on background
+  autoContrast: true,
   components: {
     Modal: Modal.extend({
       defaultProps: { zIndex: 1200 },
@@ -35,11 +36,13 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <MantineProvider theme={theme} defaultColorScheme="light">
         <Notifications zIndex={2000} />
-        <I18nextProvider i18n={i18n}>
-          <AppAuthProvider>
-            <App />
-          </AppAuthProvider>
-        </I18nextProvider>
+        <ModalsProvider modalProps={{ zIndex: 1200 }}>
+          <I18nextProvider i18n={i18n}>
+            <AppAuthProvider>
+              <App />
+            </AppAuthProvider>
+          </I18nextProvider>
+        </ModalsProvider>
       </MantineProvider>
     </QueryClientProvider>
   </StrictMode>,
