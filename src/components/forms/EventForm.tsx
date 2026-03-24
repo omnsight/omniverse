@@ -15,7 +15,7 @@ import {
   TagsInput,
   NumberInput,
 } from '@mantine/core';
-import { DatePickerInput } from '@mantine/dates';
+import { DateTimePicker } from '@mantine/dates';
 import { type Event } from 'omni-osint-crud-client';
 import { useTranslation } from 'react-i18next';
 import countries from 'i18n-iso-countries';
@@ -89,7 +89,14 @@ export const EventForm: React.FC<Props> = ({
       }
       isEditing={isEditing}
       onClose={handlClose}
-      defaultValues={event}
+      defaultValues={{
+        ...event,
+        location: {
+          ...event.location,
+          sub_locality: event?.location?.sub_locality || '',
+          sub_administrative_area: event?.location?.sub_administrative_area || '',
+        }
+      }}
       onSubmit={onSubmit}
       onUpdate={onUpdate}
     >
@@ -109,7 +116,7 @@ export const EventForm: React.FC<Props> = ({
             <Controller
               name="title"
               control={control}
-              rules={{ required: t('components.forms.EventForm.titleRequired') }}
+              rules={{ required: t('common.required') }}
               render={({ field }) => (
                 <TextInput
                   {...field}
@@ -132,13 +139,19 @@ export const EventForm: React.FC<Props> = ({
               <Controller
                 name="happened_at"
                 control={control}
+                rules={{ required: t('common.required') }}
                 render={({ field }) => (
-                  <DatePickerInput
+                  <DateTimePicker
                     {...field}
                     value={field.value ? new Date(field.value * 1000) : null}
-                    onChange={(date) =>
-                      field.onChange(date ? new Date(date).getTime() / 1000 : undefined)
-                    }
+                    onChange={(date) => {
+                        const newDate = date ? new Date(date) : null;
+                        if (newDate && !isNaN(newDate.getTime())) {
+                          field.onChange(newDate.getTime() / 1000);
+                        } else {
+                          field.onChange(undefined);
+                        }
+                      }}
                     placeholder={t('placeholder.date')}
                   />
                 )}
@@ -177,54 +190,58 @@ export const EventForm: React.FC<Props> = ({
                       />
                     )}
                   />
-                  <Controller
-                    name="location.locality"
-                    control={control}
-                    rules={{ required: t('common.required') }}
-                    render={({ field }) => (
-                      <TextInput
-                        {...field}
-                        value={field.value || ''}
-                        placeholder={t('placeholder.locality')}
-                        error={errors.location?.locality?.message}
-                      />
-                    )}
-                  />
-                  <Controller
-                    name="location.sub_locality"
-                    control={control}
-                    render={({ field }) => (
-                      <TextInput
-                        {...field}
-                        value={field.value}
-                        placeholder={t('placeholder.subLocality')}
-                      />
-                    )}
-                  />
-                  <Controller
-                    name="location.administrative_area"
-                    control={control}
-                    rules={{ required: t('common.required') }}
-                    render={({ field }) => (
-                      <TextInput
-                        {...field}
-                        value={field.value || ''}
-                        placeholder={t('placeholder.adminArea')}
-                        error={errors.location?.administrative_area?.message}
-                      />
-                    )}
-                  />
-                  <Controller
-                    name="location.sub_administrative_area"
-                    control={control}
-                    render={({ field }) => (
-                      <TextInput
-                        {...field}
-                        value={field.value}
-                        placeholder={t('placeholder.subAdminArea')}
-                      />
-                    )}
-                  />
+                  <Group grow>
+                    <Controller
+                      name="location.locality"
+                      control={control}
+                      rules={{ required: t('common.required') }}
+                      render={({ field }) => (
+                        <TextInput
+                          {...field}
+                          value={field.value || ''}
+                          placeholder={t('placeholder.locality')}
+                          error={errors.location?.locality?.message}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="location.sub_locality"
+                      control={control}
+                      render={({ field }) => (
+                        <TextInput
+                          {...field}
+                          value={field.value || ''}
+                          placeholder={t('placeholder.subLocality')}
+                        />
+                      )}
+                    />
+                  </Group>
+                  <Group grow>
+                    <Controller
+                      name="location.administrative_area"
+                      control={control}
+                      rules={{ required: t('common.required') }}
+                      render={({ field }) => (
+                        <TextInput
+                          {...field}
+                          value={field.value || ''}
+                          placeholder={t('placeholder.adminArea')}
+                          error={errors.location?.administrative_area?.message}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="location.sub_administrative_area"
+                      control={control}
+                      render={({ field }) => (
+                        <TextInput
+                          {...field}
+                          value={field.value || ''}
+                          placeholder={t('placeholder.subAdminArea')}
+                        />
+                      )}
+                    />
+                  </Group>
                   <Group grow>
                     <Controller
                       name="location.latitude"

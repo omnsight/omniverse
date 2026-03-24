@@ -17,7 +17,7 @@ import {
   type Edge,
   useOnSelectionChange,
 } from 'reactflow';
-import type { Entity } from '../forms/entityForm/entity';
+import type { Entity } from '../entity/entity';
 import { GraphContextMenu } from './ContextMenu';
 import { PersonNode } from './nodes/PersonNode';
 import { OrganizationNode } from './nodes/OrganizationNode';

@@ -22,6 +22,7 @@ export const IntelDashboard: React.FC = () => {
             {/* Context Window */}
             <Panel minSize={10}>
               <WindowManager
+                name="context"
                 windows={[
                   { name: 'GlobalEventRecommendation', component: GlobalEventRecommendationWindow },
                   { name: 'GlobalEventTimeline', component: GlobalEventTimelineGraph },
@@ -32,6 +33,7 @@ export const IntelDashboard: React.FC = () => {
             {/* Insight Analysis Window */}
             <Panel minSize={10}>
               <WindowManager
+                name="insight"
                 windows={[
                   { name: 'InsightList', component: InsightListWindow },
                   { name: 'Insight', component: InsightWindow },
@@ -46,6 +48,7 @@ export const IntelDashboard: React.FC = () => {
         {/* Main Window */}
         <Panel defaultSize={60} minSize={30}>
           <WindowManager
+            name="main"
             windows={[
               { name: 'Map', component: MapWindow },
               { name: 'Spark', component: SparkGraph },
@@ -60,6 +63,7 @@ export const IntelDashboard: React.FC = () => {
             {/* Network Window */}
             <Panel minSize={10}>
               <WindowManager
+                name="network"
                 windows={[
                   { name: 'Spark', component: SparkGraph },
                   { name: 'Timeline', component: TimelineGraph },
@@ -71,6 +75,7 @@ export const IntelDashboard: React.FC = () => {
             {/* Raw Data Window */}
             <Panel minSize={10}>
               <WindowManager
+                name="data"
                 windows={[
                   { name: 'EntityList', component: EntityListWindow },
                   { name: 'Entity', component: EntityWindow },

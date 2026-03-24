@@ -1,5 +1,6 @@
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo } from 'react';
 import { Box, Group } from '@mantine/core';
+import { useMultiWindowStore } from '../../stores/multiWindowState';
 
 interface WindowManagerContextType {
   setActiveWindowByName: (name: string) => void;
@@ -16,23 +17,40 @@ export const useWindowManager = () => {
 };
 
 interface WindowManagerProps {
+  name: string; // The new name prop
   windows: { name: string; component: React.FC }[];
 }
 
-export const WindowManager: React.FC<WindowManagerProps> = ({ windows }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+export const WindowManager: React.FC<WindowManagerProps> = ({ name, windows }) => {
+  const windowStates = useMultiWindowStore((s) => s.windowStates);
+  const { registerManager, setActiveWindow } = useMultiWindowStore((s) => s.actions);
+
+  useEffect(() => {
+    if (windows.length > 0) {
+      registerManager(name, windows[0].name);
+    }
+  }, [name, registerManager, windows]);
+
+  const activeWindowName = windowStates[name] || (windows.length > 0 ? windows[0].name : undefined);
+
+  const activeIndex = useMemo(() => {
+    if (!activeWindowName) return 0;
+    const index = windows.findIndex((w) => w.name === activeWindowName);
+    return index !== -1 ? index : 0;
+  }, [activeWindowName, windows]);
 
   const setActiveWindowByName = useCallback(
-    (name: string) => {
-      const index = windows.findIndex((w) => w.name === name);
-      if (index !== -1) {
-        setActiveIndex(index);
-      }
+    (windowName: string) => {
+      setActiveWindow(name, windowName);
     },
-    [windows],
+    [name, setActiveWindow],
   );
 
-  const ActiveComponent = windows[activeIndex].component;
+  const ActiveComponent = windows[activeIndex]?.component;
+
+  if (!ActiveComponent) {
+    return null; // Or some fallback UI
+  }
 
   return (
     <WindowManagerContext.Provider value={{ setActiveWindowByName }}>
@@ -51,12 +69,7 @@ export const WindowManager: React.FC<WindowManagerProps> = ({ windows }) => {
             opacity: 0,
             transition: 'opacity 0.2s ease, visibility 0.2s',
             pointerEvents: 'none',
-            ':parent:hover &': {
-              opacity: 1,
-              visibility: 'visible',
-              pointerEvents: 'all',
-            },
-            '.mantineBoxRoot:hover &': {
+            ':hover > & ': {
               opacity: 1,
               visibility: 'visible',
               pointerEvents: 'all',
@@ -74,7 +87,7 @@ export const WindowManager: React.FC<WindowManagerProps> = ({ windows }) => {
             {windows.map((win, idx) => (
               <Box
                 key={win.name}
-                onClick={() => setActiveIndex(idx)}
+                onClick={() => setActiveWindow(name, win.name)}
                 style={{
                   width: activeIndex === idx ? 20 : 8, // Active dot is wider
                   height: 8,

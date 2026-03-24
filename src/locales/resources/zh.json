@@ -90,6 +90,14 @@
           "title": "相关事件"
         }
       },
+      "context": {
+        "GlobalEventTimelineWindow": {
+          "queryError": ""
+        },
+        "GlobalEventRecommendationWindow": {
+          "queryError": ""
+        }
+      },
       "insight": {
         "InsightWindow": {
           "queryError": "",
@@ -102,14 +110,6 @@
           "error": "无法更新内容，请检查输入。",
           "title": "分析专栏"
         }
-      },
-      "context": {
-        "GlobalEventTimelineWindow": {
-          "queryError": ""
-        },
-        "GlobalEventRecommendationWindow": {
-          "queryError": ""
-        }
       }
     }
   },
@@ -117,15 +117,22 @@
     "error": "错误",
     "reset": "重置",
     "apply": "应用",
-    "notFound": "未找到",
     "required": "此项为必填项",
     "remove": "",
     "add": "添加属性",
     "confirm": "确认",
     "cancel": "取消",
-    "save": "保存"
+    "save": "保存",
+    "notFound": "未找到"
   },
   "components": {
+    "map": {
+      "MapTools": {
+        "start": "",
+        "normalMode": "",
+        "rulerMode": ""
+      }
+    },
     "graph": {
       "Graph": {
         "noPermission": ""
@@ -133,11 +140,6 @@
       "ContextMenu": {
         "create": "",
         "type": ""
-      },
-      "edges": {
-        "RelationEdge": {
-          "name": ""
-        }
       },
       "nodes": {
         "WebsiteNode": {
@@ -155,13 +157,11 @@
         "EventNode": {
           "title": ""
         }
-      }
-    },
-    "map": {
-      "MapTools": {
-        "start": "",
-        "normalMode": "",
-        "rulerMode": ""
+      },
+      "edges": {
+        "RelationEdge": {
+          "name": ""
+        }
       }
     },
     "entity": {
@@ -197,7 +197,6 @@
       "EventForm": {
         "editingTitle": "编辑事件",
         "title": "事件标题",
-        "titleRequired": "标题为必填项",
         "minLatitude-90-90": "纬度不能小于",
         "maxLatitude": "纬度不能大于90",
         "minLongitude-180-180": "经度不能小于",
@@ -249,10 +248,6 @@
     }
   },
   "placeholder": {
-    "relation": "关系",
-    "confidence": "置信度",
-    "createdDate": "创建日期",
-    "updatedDate": "更新日期",
     "url": "链接",
     "description": "描述",
     "foundedDate": "成立日期",
@@ -261,6 +256,7 @@
     "attributes": "属性",
     "reliability": "可靠性",
     "name": "名称",
+    "confidence": "置信度",
     "role": "角色",
     "nationality": "国籍",
     "birthDate": "出生日期",
@@ -275,15 +271,18 @@
     "location": "位置",
     "address": "地址",
     "locality": "城市",
-    "subLocality": "次级区域",
+    "subLocality": "次级区域（可选）",
     "adminArea": "行政区域",
-    "subAdminArea": "次级行政区域",
+    "subAdminArea": "次级行政区域（可选）",
     "latitude": "纬度",
     "longitude": "经度",
     "country": "国家",
     "postalCode": "邮政编码",
     "key": "",
     "value": "",
+    "relation": "关系",
+    "createdDate": "创建日期",
+    "updatedDate": "更新日期",
     "unknown": "未知"
   }
 }

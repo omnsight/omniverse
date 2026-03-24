@@ -14,13 +14,16 @@ export const GlobalEventRecommendationWindow: React.FC = () => {
   end.setHours(23, 59, 59, 999);
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['recommendation-query', start, end],
-    queryFn: async () =>
-      await queryEvents({
+    queryFn: async () => {
+      const response = await queryEvents({
         query: {
           date_start: Math.floor(start.getTime() / 1000),
           date_end: Math.floor(end.getTime() / 1000),
         },
-      }),
+      });
+      console.debug('Recommendation data', response.data);
+      return response.data;
+    },
     enabled: !!start && !!end,
     staleTime: 5 * 60 * 1000,
     retry: 1,
@@ -50,9 +53,9 @@ export const GlobalEventRecommendationWindow: React.FC = () => {
       <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars>
         <Box p="lg">
           <SimpleGrid cols={3} spacing="xl">
-            {data?.data?.events?.map((entity) => (
+            {data?.events?.map((entity) => (
               <Box key={entity._id}>
-                <EventForm event={entity} />
+                <EventForm event={entity} onClose={() => {}} />
               </Box>
             ))}
           </SimpleGrid>

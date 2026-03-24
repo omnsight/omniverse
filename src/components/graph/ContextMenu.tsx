@@ -56,7 +56,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
             <Menu.Item
               leftSection={<UserIcon style={{ width: rem(16), height: rem(16) }} />}
               onClick={() => {
-                onCreate?.({ type: 'Person', data: {} });
+                onCreate?.({ type: 'Person', data: { tags: [] } });
                 onClose();
               }}
               disabled={!onCreate}
@@ -69,7 +69,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
             <Menu.Item
               leftSection={<BuildingOfficeIcon style={{ width: rem(16), height: rem(16) }} />}
               onClick={() => {
-                onCreate?.({ type: 'Organization', data: {} });
+                onCreate?.({ type: 'Organization', data: { tags: [] } });
                 onClose();
               }}
               disabled={!onCreate}
@@ -82,7 +82,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
             <Menu.Item
               leftSection={<CalendarDaysIcon style={{ width: rem(16), height: rem(16) }} />}
               onClick={() => {
-                onCreate?.({ type: 'Event', data: {} });
+                onCreate?.({ type: 'Event', data: { tags: [] } });
                 onClose();
               }}
               disabled={!onCreate}
@@ -95,7 +95,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
             <Menu.Item
               leftSection={<GlobeAltIcon style={{ width: rem(16), height: rem(16) }} />}
               onClick={() => {
-                onCreate?.({ type: 'Website', data: {} });
+                onCreate?.({ type: 'Website', data: { tags: [] } });
                 onClose();
               }}
               disabled={!onCreate}
@@ -108,7 +108,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
             <Menu.Item
               leftSection={<DocumentTextIcon style={{ width: rem(16), height: rem(16) }} />}
               onClick={() => {
-                onCreate?.({ type: 'Source', data: {} });
+                onCreate?.({ type: 'Source', data: { tags: [] } });
                 onClose();
               }}
               disabled={!onCreate}

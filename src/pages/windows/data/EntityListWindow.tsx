@@ -40,35 +40,38 @@ export const EntityListWindowContent: React.FC = () => {
   };
 
   return (
-    <Box pos="relative" h="100%" w="100%">
-      <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars>
-        <Box p="lg">
-          <Stack>
-            {events.map((entity) => (
-              <Box key={entity._id}>
-                <EventForm
-                  event={entity}
-                  useInput={false}
-                  onClick={() => {
-                    setSelections([entity._id || '']);
-                    setActiveWindowByName('Entity');
-                  }}
-                  onClose={() => {}}
-                />
-              </Box>
+    <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars>
+      <Box p="lg" pt="sm">
+        <Stack>
+          {events.map((entity) => (
+            <Box key={entity._id}>
+              <EventForm
+                event={entity}
+                useInput={false}
+                onClick={() => {
+                  setSelections([entity._id || '']);
+                  setActiveWindowByName('Entity');
+                }}
+                onClose={() => {}}
+              />
+            </Box>
+          ))}
+          {authed &&
+            (creating ? (
+              <EventForm
+                event={{}}
+                useInput={true}
+                onSubmit={submitNewEvent}
+                onClose={() => setCreating(false)}
+              />
+            ) : (
+              <Button fullWidth onClick={() => setCreating(true)}>
+                <PlusIcon style={{ width: 20, height: 20 }} />
+              </Button>
             ))}
-            {authed &&
-              (creating ? (
-                <EventForm event={{}} useInput={true} onSubmit={submitNewEvent} onClose={() => setCreating(false)} />
-              ) : (
-                <Button fullWidth onClick={() => setCreating(true)}>
-                  <PlusIcon style={{ width: 20, height: 20 }} />
-                </Button>
-              ))}
-          </Stack>
-        </Box>
-      </ScrollArea>
-    </Box>
+        </Stack>
+      </Box>
+    </ScrollArea>
   );
 };
 
