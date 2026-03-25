@@ -61,7 +61,7 @@ export const WebsiteForm: React.FC<Props> = ({
   return (
     <BaseForm<Website>
       style={style}
-      title={website.title || t('components.forms.WebsiteForm.title', '?')}
+      title={website.title || t('components.forms.WebsiteForm.title')}
       isEditing={isEditing || false}
       onClose={handlClose}
       defaultValues={website}
@@ -78,7 +78,7 @@ export const WebsiteForm: React.FC<Props> = ({
           <Group gap="xs">
             {isEditing && (
               <Text size="sm" fw={500}>
-                {t('components.forms.WebsiteForm.title', '?')}
+                {t('placeholder.title')}
               </Text>
             )}
             {isEditing && (
@@ -90,7 +90,7 @@ export const WebsiteForm: React.FC<Props> = ({
                   <TextInput
                     {...field}
                     value={field.value || ''}
-                    placeholder={t('components.forms.WebsiteForm.title', '?')}
+                    placeholder={t('placeholder.title')}
                     style={{ flex: 'initial' }}
                     error={errors.title?.message}
                   />

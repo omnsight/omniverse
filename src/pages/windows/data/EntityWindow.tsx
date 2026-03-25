@@ -52,7 +52,11 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['neighbors', selectedEntity?.data._id],
-    queryFn: () => queryNeighbors({ path: { id: selectedEntity?.data._id || '' } }),
+    queryFn: async () => {
+      const response = await queryNeighbors({ path: { id: selectedEntity?.data._id || '' } });
+      console.debug('queryNeighbors response', response);
+      return response.data || {};
+    },
     enabled: !!selectedEntity,
   });
 
@@ -100,11 +104,11 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
           <Stack gap="xs">
             <Text fw={600}>{t('pages.windows.data.EntityWindow.relatedOrganizations')}</Text>
             <AvatarSpan>
-              {data?.data?.organizations?.map((entity: any) => (
+              {data?.organizations?.map((entity: any) => (
                 <OrganizationAvatar
                   key={entity._id}
                   data={entity}
-                  relation={data?.data?.relations?.find((r: any) => r._to === entity._id)}
+                  relation={data?.relations?.find((r: any) => r._to === entity._id)}
                 />
               )) || []}
               <EmptyAvatar />
@@ -115,11 +119,11 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
           <Stack gap="xs">
             <Text fw={600}>{t('pages.windows.data.EntityWindow.relatedWebsites')}</Text>
             <AvatarSpan>
-              {data?.data?.websites?.map((entity: any) => (
+              {data?.websites?.map((entity: any) => (
                 <WebsiteAvatar
                   key={entity._id}
                   data={entity}
-                  relation={data?.data?.relations?.find((r: any) => r._to === entity._id)}
+                  relation={data?.relations?.find((r: any) => r._to === entity._id)}
                 />
               )) || []}
               <EmptyAvatar />
@@ -130,11 +134,11 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
           <Stack gap="xs">
             <Text fw={600}>{t('pages.windows.data.EntityWindow.relatedEvents')}</Text>
             <AvatarSpan>
-              {data?.data?.events?.map((entity: any) => (
+              {data?.events?.map((entity: any) => (
                 <EventAvatar
                   key={entity._id}
                   data={entity}
-                  relation={data?.data?.relations?.find((r: any) => r._to === entity._id)}
+                  relation={data?.relations?.find((r: any) => r._to === entity._id)}
                 />
               )) || []}
             </AvatarSpan>
@@ -145,12 +149,12 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
         <Stack gap="xs" mt="md">
           <Text fw={600}>{t('pages.windows.data.EntityWindow.relatedSources')}</Text>
           <AvatarRowList>
-            {data?.data?.sources?.map((source: any) => (
+            {data?.sources?.map((source: any) => (
               <SourceAvatarRow
                 width={400}
                 key={source._id}
                 data={source}
-                relation={data?.data?.relations?.find((r: any) => r._to === source._id)}
+                relation={data?.relations?.find((r: any) => r._to === source._id)}
               />
             )) || []}
           </AvatarRowList>
@@ -160,11 +164,11 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
       {/* STICKY BOTTOM LEFT: PERSONS */}
       <Box style={{ position: 'absolute', bottom: 15, left: 15, zIndex: 10 }}>
         <AvatarSpan>
-          {data?.data?.persons?.map((person: any) => (
+          {data?.persons?.map((person: any) => (
             <PersonAvatar
               key={person._id}
               data={person}
-              relation={data?.data?.relations?.find((r: any) => r._to === person._id)}
+              relation={data?.relations?.find((r: any) => r._to === person._id)}
             />
           )) || []}
           <EmptyAvatar />
@@ -178,15 +182,15 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
             <Group gap="sm">
               <Button
                 onClick={() => {
-                  if (data?.data) {
+                  if (data) {
                     addEntities(
                       {
-                        events: data?.data?.events,
-                        organizations: data?.data?.organizations,
-                        people: data?.data?.persons,
-                        sources: data?.data?.sources,
-                        websites: data?.data?.websites,
-                        relations: data?.data?.relations,
+                        events: data?.events,
+                        organizations: data?.organizations,
+                        people: data?.persons,
+                        sources: data?.sources,
+                        websites: data?.websites,
+                        relations: data?.relations,
                       },
                       ['neighbors', selectedEntity?.data._id],
                     );

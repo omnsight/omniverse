@@ -1,14 +1,23 @@
+import { truncate } from 'lodash';
 import React from 'react';
-import { Box, Group, ScrollArea, Text, Title } from '@mantine/core';
+import {
+  Box,
+  ScrollArea,
+  Text,
+  Group,
+  Breadcrumbs,
+  Tooltip,
+  Anchor,
+} from '@mantine/core';
 import { useMonitorStore } from './monitorData';
 import { MonitoringSourceForm } from '../../../components/forms/MonitoringSourceForm';
 import { updateMonitoringSource } from 'omni-monitoring-client';
 import { useTranslation } from 'react-i18next';
 import { useDataOwner } from '../../../provider/AuthContext';
+import { useWindowManager } from '../WindowManager';
 
-const MonitorWindowContent: React.FC = () => {
+const MonitorWindowContent: React.FC<{ selected: any }> = ({ selected }) => {
   const { t } = useTranslation();
-  const { selected } = useMonitorStore();
   const isOwner = useDataOwner(selected);
 
   const handleUpdate = (data: any) => {
@@ -42,12 +51,30 @@ const MonitorWindowContent: React.FC = () => {
 
 export const MonitorWindow: React.FC = () => {
   const { t } = useTranslation();
+  const { selected } = useMonitorStore();
+  const { setActiveWindowByName } = useWindowManager();
+
+  const breadcrumbs = [
+    <Anchor href="#" onClick={() => setActiveWindowByName('MonitorList')} key="1">
+      {t('pages.windows.monitor.MonitorWindow.title')}
+    </Anchor>,
+  ];
+  if (selected) {
+    breadcrumbs.push(
+      <Tooltip label={selected.name} withArrow>
+        <Text key="2" truncate="end" style={{ maxWidth: 200 }}>
+          {truncate(selected.name || '', { length: 20 })}
+        </Text>
+      </Tooltip>
+    );
+  }
+
   return (
     <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
       <Box p="lg" pb={0}>
-        <Title order={3}>{t('pages.windows.monitor.MonitorWindow.title', '?')}</Title>
+        <Breadcrumbs>{breadcrumbs}</Breadcrumbs>
       </Box>
-      <MonitorWindowContent />
+      <MonitorWindowContent selected={selected} />
     </Box>
   );
 };

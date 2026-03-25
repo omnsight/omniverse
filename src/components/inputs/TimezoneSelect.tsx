@@ -14,7 +14,7 @@ export const TimezoneSelectComponent: React.FC<Props> = ({ timezone, setTimezone
     <TimezoneSelect
       value={timezone}
       onChange={(tz) => setTimezone(tz.value)}
-      placeholder={t('pages.layouts.TimezoneSelect.select')}
+      placeholder={t('components.inputs.TimezoneSelect.select', '?')}
     />
   );
 };

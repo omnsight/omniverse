@@ -77,7 +77,7 @@ export const SourceForm: React.FC<Props> = ({
           <Group gap="xs">
             {isEditing && (
               <Text size="sm" fw={500}>
-                {t('components.forms.SourceForm.title')}
+                {t('placeholder.title')}
               </Text>
             )}
             {isEditing && (
@@ -89,7 +89,7 @@ export const SourceForm: React.FC<Props> = ({
                   <TextInput
                     {...field}
                     value={field.value || source.url || ''}
-                    placeholder={t('components.forms.SourceForm.title')}
+                    placeholder={t('placeholder.title')}
                     style={{ flex: 'initial' }}
                     error={errors.name?.message}
                   />

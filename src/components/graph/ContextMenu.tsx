@@ -50,7 +50,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
         </Menu.Target>
 
         <Menu.Dropdown>
-          {hasWritePermission && <Menu.Label>{t('components.graph.ContextMenu.create', '?')}</Menu.Label>}
+          {hasWritePermission && <Menu.Label>{t('common.create')}</Menu.Label>}
 
           {hasWritePermission && (
             <Menu.Item
@@ -61,7 +61,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('components.graph.ContextMenu.type', '?')}
+              {t('common.entity.Person')}
             </Menu.Item>
           )}
 
@@ -74,7 +74,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('components.graph.ContextMenu.type', '?')}
+              {t('common.entity.Organization')}
             </Menu.Item>
           )}
 
@@ -87,7 +87,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('components.graph.ContextMenu.type', '?')}
+              {t('common.entity.Event')}
             </Menu.Item>
           )}
 
@@ -100,7 +100,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('components.graph.ContextMenu.type', '?')}
+              {t('common.entity.Website')}
             </Menu.Item>
           )}
 
@@ -113,7 +113,7 @@ export const GraphContextMenu: React.FC<GraphContextMenuProps> = ({
               }}
               disabled={!onCreate}
             >
-              {t('components.graph.ContextMenu.type', '?')}
+              {t('common.entity.Source')}
             </Menu.Item>
           )}
         </Menu.Dropdown>

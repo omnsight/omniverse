@@ -43,7 +43,7 @@ export const InsightForm: React.FC<InsightFormProps> = ({
     <BaseForm<OsintView>
       title={
         isEditing
-          ? t('components.forms.InsightForm.edittingTitle')
+          ? t('components.forms.InsightForm.title')
           : insight.name || t('placeholder.title')
       }
       isEditing={isEditing}

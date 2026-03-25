@@ -8,7 +8,7 @@ import ReactFlow, {
   applyEdgeChanges,
 } from 'reactflow';
 import { Box } from '@mantine/core';
-import { useCallback, useEffect, useState, type PropsWithChildren } from 'react';
+import { useCallback, useEffect, useMemo, useState, type PropsWithChildren } from 'react';
 import {
   type NodeChange,
   type EdgeChange,
@@ -70,6 +70,12 @@ const EntityGraphContent: React.FC<EntityGraphProps> = ({
   const { fitView } = useReactFlow();
   const [menuPosition, setMenuPosition] = useState<{ x: number; y: number } | null>(null);
 
+  const nodeEdgeIds = useMemo(() => {
+    const nodeIds = nodes.map((n) => n.id).sort();
+    const edgeIds = edges.map((e) => e.id).sort();
+    return [...nodeIds, ...edgeIds].join(',');
+  }, [nodes, edges]);
+
   const onPaneContextMenu = useCallback((event: React.MouseEvent) => {
     event.preventDefault();
     const containerBounds = event.currentTarget.getBoundingClientRect();
@@ -88,11 +94,11 @@ const EntityGraphContent: React.FC<EntityGraphProps> = ({
 
   useEffect(() => {
     fitView();
-  }, [nodes, edges, fitView]);
+  }, [nodeEdgeIds, fitView]);
 
   const handleNodeChanges = (changes: NodeChange[]) => {
     const otherChanges = changes.filter(
-      (c) => c.type !== 'select' && c.type !== 'remove' && c.type !== 'add',
+      (c) => c.type !== 'remove' && c.type !== 'add',
     );
     if (allowOperations.includes('move')) {
       setNodes(applyNodeChanges(otherChanges, nodes));
@@ -116,7 +122,7 @@ const EntityGraphContent: React.FC<EntityGraphProps> = ({
 
   const handleEdgeChanges = (changes: EdgeChange[]) => {
     const otherChanges = changes.filter(
-      (c) => c.type !== 'select' && c.type !== 'remove' && c.type !== 'add',
+      (c) => c.type !== 'remove' && c.type !== 'add',
     );
     if (allowOperations.includes('move')) {
       setEdges(applyEdgeChanges(otherChanges, edges));

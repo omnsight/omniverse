@@ -57,7 +57,7 @@ export const RelationForm: React.FC<Props> = ({
   return (
     <BaseForm<Relation>
       style={style}
-      title={relation.label || t('components.forms.RelationForm.label')}
+      title={relation.label || t('components.forms.RelationForm.title')}
       isEditing={isEditing || false}
       onClose={handlClose}
       defaultValues={relation}
@@ -71,26 +71,28 @@ export const RelationForm: React.FC<Props> = ({
           style={{ cursor: canEdit ? (isEditing ? 'default' : 'pointer') : 'default' }}
           onDoubleClick={handleDoubleClick}
         >
-          {isEditing && (
-            <Text size="sm" fw={500}>
-              {t('components.forms.RelationForm.label')}
-            </Text>
-          )}
-          {isEditing && (
-            <Controller
-              name="label"
-              control={control}
-              rules={{ required: t('common.required') }}
-              render={({ field }) => (
-                <TextInput
-                  {...field}
-                  value={field.value || ''}
-                  placeholder={t('components.forms.RelationForm.label')}
-                  error={errors.label?.message}
-                />
-              )}
-            />
-          )}
+          <Group gap={4}>
+            {isEditing && (
+              <Text size="sm" fw={500}>
+                {t('placeholder.label')}:
+              </Text>
+            )}
+            {isEditing && (
+              <Controller
+                name="label"
+                control={control}
+                rules={{ required: t('common.required') }}
+                render={({ field }) => (
+                  <TextInput
+                    {...field}
+                    value={field.value || ''}
+                    placeholder={t('placeholder.label')}
+                    error={errors.label?.message}
+                  />
+                )}
+              />
+            )}
+          </Group>
 
           <Group gap={4}>
             <Text size="sm">{t('placeholder.name')}:</Text>

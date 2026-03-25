@@ -1,16 +1,7 @@
 {
-  "pages": {
-    "windows": {
-      "data": {
-        "EntityWindow": {
-          "titleEvent": "Event Details",
-          "titleOrganization": "Organization Details",
-          "titlePerson": "Person Details",
-          "titleSource": "Source Details",
-          "titleWebsite": "Website Details",
-          "titleRelation": "Relation Details"
-        }
-      }
+  "common": {
+    "entity": {
+      "Relation": "Relation"
     }
   }
 }

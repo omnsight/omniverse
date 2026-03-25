@@ -55,7 +55,7 @@ export const MonitoringSourceForm: React.FC<Props> = ({
 
   return (
     <BaseForm<MonitoringSource>
-      title={source.name || t('components.forms.MonitoringSourceForm.name')}
+      title={source.name || t('components.forms.MonitoringSourceForm.title')}
       isEditing={isEditing}
       onClose={handlClose}
       defaultValues={source}

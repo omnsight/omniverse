@@ -88,8 +88,8 @@ export const EventForm: React.FC<Props> = ({
       style={style}
       title={
         isEditing
-          ? t('components.forms.EventForm.editingTitle')
-          : event.title || t('components.forms.EventForm.title')
+          ? t('components.forms.EventForm.title')
+          : event.title || t('placeholder.title')
       }
       isEditing={isEditing}
       onClose={handlClose}

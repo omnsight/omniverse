@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, Group, Loader, ScrollArea, Stack, Title } from '@mantine/core';
-import {
-  type MonitoringSource,
-  getMonitoringSourcesByUser,
-  createMonitoringSource,
-} from 'omni-monitoring-client';
+import React, { useEffect } from 'react';
+import { ActionIcon, Box, Group, Loader, ScrollArea, Stack, Title } from '@mantine/core';
+import { type MonitoringSource, getMonitoringSourcesByUser } from 'omni-monitoring-client';
 import { useMonitorStore } from './monitorData';
-import { MonitoringSourceForm } from '../../../components/forms';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useWindowManager } from '../WindowManager';
 import { notifications } from '@mantine/notifications';
-import { useAuth } from '../../../provider/AuthContext';
 import { useMonitoringClient } from '../../../api/useMonitoringClient';
+import { MonitoringSourceSummaryCard } from '../../../components/cards/MonitoringSourceSummaryCard';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 const MonitorListWindowContent: React.FC = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
   const { monitoringClient } = useMonitoringClient();
   const { sources, setSources, setSelected } = useMonitorStore();
   const { setActiveWindowByName } = useWindowManager();
-  const [creating, setCreating] = useState(false);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['monitoring-sources'],
@@ -50,27 +44,6 @@ const MonitorListWindowContent: React.FC = () => {
     }
   }, [data, setSources]);
 
-  const createSource = async (source: MonitoringSource) => {
-    if (!source) return;
-
-    const { data, error } = await createMonitoringSource({
-      body: source,
-      client: monitoringClient,
-    });
-    if (error) {
-      console.error('Error creating source', error);
-      notifications.show({
-        title: t('common.error'),
-        message: t('pages.windows.monitor.MonitorListWindow.error', '?'),
-        color: 'red',
-      });
-    } else {
-      setSources([...sources, data]);
-      setCreating(false);
-      console.log('Created source', data);
-    }
-  };
-
   if (isLoading) {
     return (
       <Group justify="center" align="center" style={{ flex: 1 }}>
@@ -84,28 +57,23 @@ const MonitorListWindowContent: React.FC = () => {
       <Box p="lg" pt="sm">
         <Stack>
           {sources.map((source) => (
-            <Box
-              key={source._id}
-              onClick={() => {
-                setSelected(source);
-                setActiveWindowByName('Monitor');
-              }}
-            >
-              <MonitoringSourceForm source={source} onClose={() => {}} />
-            </Box>
-          ))}
-          {creating ? (
-            <MonitoringSourceForm
-              source={{ owner: user?.id || '' }}
-              useInput={true}
-              onSubmit={createSource}
-              onClose={() => setCreating(false)}
+            <MonitoringSourceSummaryCard
+              source={source}
+              action={
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelected(source);
+                    setActiveWindowByName('Monitor');
+                  }}
+                >
+                  <ArrowRightIcon style={{ width: 18, height: 18 }} />
+                </ActionIcon>
+              }
             />
-          ) : (
-            <Button onClick={() => setCreating(true)}>
-              {t('pages.windows.monitor.MonitorListWindow.title')}
-            </Button>
-          )}
+          ))}
         </Stack>
       </Box>
     </ScrollArea>

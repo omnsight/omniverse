@@ -28,28 +28,12 @@
         "country": "Country",
         "timezone": "Timezone"
       },
-      "TimezoneSelect": {
-        "select": "Select Timezone"
-      },
       "Sidebar": {
         "logo": "Nexus",
         "subtitle": "Intelligence Platform",
         "intelligence": "Intelligence Panel",
         "monitor": "Monitor Panel",
         "admin": "Admin Panel"
-      },
-      "RangeDatePicker": {
-        "dateLimitExceeded": "Date range exceeds upper limit",
-        "dateLimitMessage": "Date range cannot exceed one month",
-        "presets": "Preset Date Ranges",
-        "today": "Today",
-        "yesterday": "Yesterday",
-        "lastWeek": "Last Week",
-        "lastMonth": "Last Month",
-        "selectDateRange": "Select Date Range"
-      },
-      "CountrySelect": {
-        "select": "Select Country/Region"
       }
     },
     "windows": {
@@ -68,12 +52,11 @@
       "monitor": {
         "MonitorWindow": {
           "noSourceSelected": "",
-          "title": ""
+          "title": "Monitoring Sources"
         },
         "MonitorListWindow": {
           "getSourcesError": "",
-          "error": "",
-          "title": "Create Monitoring Source"
+          "title": "Monitoring Sources"
         }
       },
       "insight": {
@@ -87,6 +70,15 @@
           "createError": "Failed to create insight, please try again later.",
           "error": "Failed to update content, please check your input.",
           "title": "Insight Column"
+        }
+      },
+      "context": {
+        "GlobalEventTimelineWindow": {
+          "queryError": ""
+        },
+        "GlobalEventRecommendationWindow": {
+          "queryError": "",
+          "title": "Recommendations"
         }
       },
       "data": {
@@ -106,15 +98,6 @@
           "error": "Failed to create event",
           "title": "Related Entities"
         }
-      },
-      "context": {
-        "GlobalEventTimelineWindow": {
-          "queryError": ""
-        },
-        "GlobalEventRecommendationWindow": {
-          "queryError": "",
-          "title": "Recommendations"
-        }
       }
     }
   },
@@ -122,6 +105,14 @@
     "error": "Error",
     "reset": "Reset",
     "apply": "Apply",
+    "create": "Create",
+    "entity": {
+      "Person": "Person",
+      "Organization": "Organization",
+      "Event": "Event",
+      "Website": "Website",
+      "Source": "Source"
+    },
     "required": "This field is required",
     "types": {
       "text": "text",
@@ -131,12 +122,30 @@
     "remove": "Remove",
     "add": "Add Attribute",
     "confirm": "Confirm",
-    "cancel": "",
-    "save": "",
+    "cancel": "Cancel",
+    "save": "Save",
     "notFound": "Not Found",
     "warning": "Warning"
   },
   "components": {
+    "inputs": {
+      "TimezoneSelect": {
+        "select": ""
+      },
+      "RangeDatePicker": {
+        "dateLimitExceeded": "Date range exceeds limit",
+        "dateLimitMessage": "Date range exceeds limit, max 1 month",
+        "dateRange": "Date Range",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "lastWeek": "Last Week",
+        "lastMonth": "Last Month",
+        "selectDateRange": "Select Date Range"
+      },
+      "CountrySelect": {
+        "select": "Select a country"
+      }
+    },
     "map": {
       "MapTools": {
         "start": "",
@@ -147,15 +156,6 @@
     "graph": {
       "Graph": {
         "noPermission": ""
-      },
-      "ContextMenu": {
-        "create": "",
-        "type": ""
-      },
-      "edges": {
-        "RelationEdge": {
-          "name": ""
-        }
       },
       "nodes": {
         "WebsiteNode": {
@@ -173,32 +173,39 @@
         "EventNode": {
           "title": ""
         }
+      },
+      "edges": {
+        "RelationEdge": {
+          "name": ""
+        }
       }
     },
     "forms": {
       "WebsiteForm": {
-        "title": ""
+        "title": "Edit Website"
       },
       "SourceForm": {
         "title": "Source Title"
       },
       "RelationForm": {
-        "label": "Label"
+        "title": "Edit Relation"
       },
       "PersonForm": {
+        "title": "Edit Person",
         "name": "Name"
       },
       "OrganizationForm": {
+        "title": "Edit Organization",
         "name": "Organization Name"
       },
       "MonitoringSourceForm": {
+        "title": "Edit Monitoring Source",
         "name": "Source Name"
       },
       "InsightForm": {
-        "edittingTitle": "Edit Insight"
+        "title": "Edit Insight"
       },
       "EventForm": {
-        "editingTitle": "Edit Event",
         "title": "Event Title",
         "minLatitude-90-90": "Latitude cannot be less than ",
         "maxLatitude": "Latitude cannot be greater than 90",
@@ -216,11 +223,6 @@
         "noRelatedEntities": "No related events, people, and etc.",
         "updateInsightError": "Failed to update insight, please try again later.",
         "openGallery": "Related Events, People, and etc."
-      },
-      "extensions": {
-        "WindowAnchor": {
-          "restore": "Restore Window"
-        }
       },
       "tools": {
         "UnredoTools": {
@@ -247,6 +249,16 @@
           "h2": "H2 Heading",
           "h3": "H3 Heading"
         }
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "Restore Window"
+        }
+      }
+    },
+    "cards": {
+      "MonitoringSourceSummaryCard": {
+        "title": ""
       }
     },
     "entity": {
@@ -259,6 +271,7 @@
     }
   },
   "placeholder": {
+    "title": "",
     "url": "URL",
     "description": "Description",
     "foundedDate": "Founded Date",
@@ -266,6 +279,7 @@
     "tags": "Tags",
     "attributes": "Attributes",
     "reliability": "Reliability",
+    "label": "Label",
     "name": "Name",
     "confidence": "Confidence",
     "role": "Role",
@@ -276,7 +290,6 @@
       "type": "Source Type"
     },
     "lastReviewed": "Last Reviewed",
-    "title": "",
     "enter": "Enter",
     "date": "Date",
     "location": "Location",

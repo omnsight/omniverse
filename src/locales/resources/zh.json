@@ -28,28 +28,12 @@
         "country": "国家",
         "timezone": "时区"
       },
-      "TimezoneSelect": {
-        "select": "请选择时区"
-      },
       "Sidebar": {
         "logo": "Nexus",
         "subtitle": "信息情报可视化平台",
         "intelligence": "信息综合",
         "monitor": "信源监控",
         "admin": "管理员面板"
-      },
-      "RangeDatePicker": {
-        "dateLimitExceeded": "日期范围超出上限",
-        "dateLimitMessage": "日期范围不能超过一个月",
-        "presets": "预设日期范围",
-        "today": "今天",
-        "yesterday": "昨天",
-        "lastWeek": "上一周",
-        "lastMonth": "上一个月",
-        "selectDateRange": "选择日期范围"
-      },
-      "CountrySelect": {
-        "select": "请选择国家/地区"
       }
     },
     "windows": {
@@ -68,12 +52,11 @@
       "monitor": {
         "MonitorWindow": {
           "noSourceSelected": "",
-          "title": ""
+          "title": "监控信源列表"
         },
         "MonitorListWindow": {
           "getSourcesError": "",
-          "error": "",
-          "title": "创建监控信源"
+          "title": "监控信源列表"
         }
       },
       "insight": {
@@ -87,6 +70,15 @@
           "createError": "发表新专栏失败，请稍后尝试",
           "error": "无法更新内容，请检查输入。",
           "title": "分析专栏"
+        }
+      },
+      "context": {
+        "GlobalEventTimelineWindow": {
+          "queryError": ""
+        },
+        "GlobalEventRecommendationWindow": {
+          "queryError": "",
+          "title": "重要事件推荐"
         }
       },
       "data": {
@@ -106,15 +98,6 @@
           "error": "无法创建事件，请稍后再试。",
           "title": "相关实体"
         }
-      },
-      "context": {
-        "GlobalEventTimelineWindow": {
-          "queryError": ""
-        },
-        "GlobalEventRecommendationWindow": {
-          "queryError": "",
-          "title": "重要事件推荐"
-        }
       }
     }
   },
@@ -122,6 +105,14 @@
     "error": "错误",
     "reset": "重置",
     "apply": "应用",
+    "create": "创建",
+    "entity": {
+      "Person": "个人",
+      "Organization": "组织",
+      "Event": "事件",
+      "Website": "网站",
+      "Source": "信源"
+    },
     "required": "此项为必填项",
     "types": {
       "text": "文本",
@@ -129,7 +120,7 @@
       "toggle": "开关"
     },
     "remove": "删除",
-    "add": "添加属性",
+    "add": "添加",
     "confirm": "确认",
     "cancel": "取消",
     "save": "保存",
@@ -137,6 +128,24 @@
     "warning": "警告"
   },
   "components": {
+    "inputs": {
+      "TimezoneSelect": {
+        "select": ""
+      },
+      "RangeDatePicker": {
+        "dateLimitExceeded": "日期范围超出限制",
+        "dateLimitMessage": "日期范围超出限制，最多选择一个月",
+        "dateRange": "日期范围",
+        "today": "今天",
+        "yesterday": "昨天",
+        "lastWeek": "上周",
+        "lastMonth": "上个月",
+        "selectDateRange": "选择日期范围"
+      },
+      "CountrySelect": {
+        "select": "请选择国家"
+      }
+    },
     "map": {
       "MapTools": {
         "start": "",
@@ -147,15 +156,6 @@
     "graph": {
       "Graph": {
         "noPermission": ""
-      },
-      "ContextMenu": {
-        "create": "",
-        "type": ""
-      },
-      "edges": {
-        "RelationEdge": {
-          "name": ""
-        }
       },
       "nodes": {
         "WebsiteNode": {
@@ -173,32 +173,39 @@
         "EventNode": {
           "title": ""
         }
+      },
+      "edges": {
+        "RelationEdge": {
+          "name": ""
+        }
       }
     },
     "forms": {
       "WebsiteForm": {
-        "title": ""
+        "title": "编辑网站消息"
       },
       "SourceForm": {
-        "title": "信源标题"
+        "title": "编辑信源"
       },
       "RelationForm": {
-        "label": "标签"
+        "title": "编辑关系"
       },
       "PersonForm": {
+        "title": "编辑个人信息",
         "name": "姓名"
       },
       "OrganizationForm": {
+        "title": "编辑组织信息",
         "name": "组织名称"
       },
       "MonitoringSourceForm": {
+        "title": "编辑监控信源",
         "name": "信源名称"
       },
       "InsightForm": {
-        "edittingTitle": "编辑专栏"
+        "title": "编辑专栏"
       },
       "EventForm": {
-        "editingTitle": "编辑事件",
         "title": "事件标题",
         "minLatitude-90-90": "纬度不能小于",
         "maxLatitude": "纬度不能大于90",
@@ -216,11 +223,6 @@
         "noRelatedEntities": "暂无相关事件、人物、组织等",
         "updateInsightError": "无法更新专栏，请稍后再试",
         "openGallery": "相关事件、人物、组织等"
-      },
-      "extensions": {
-        "WindowAnchor": {
-          "restore": "恢复视图"
-        }
       },
       "tools": {
         "UnredoTools": {
@@ -247,6 +249,16 @@
           "h2": "二级标题",
           "h3": "三级标题"
         }
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "恢复视图"
+        }
+      }
+    },
+    "cards": {
+      "MonitoringSourceSummaryCard": {
+        "title": ""
       }
     },
     "entity": {
@@ -259,6 +271,7 @@
     }
   },
   "placeholder": {
+    "title": "标题",
     "url": "链接",
     "description": "描述",
     "foundedDate": "成立日期",
@@ -266,6 +279,7 @@
     "tags": "标签",
     "attributes": "其它属性",
     "reliability": "可靠性",
+    "label": "标签",
     "name": "名称",
     "confidence": "置信度",
     "role": "角色",
@@ -276,7 +290,6 @@
       "type": "信源类型"
     },
     "lastReviewed": "上次检查",
-    "title": "标题",
     "enter": "输入",
     "date": "日期",
     "location": "位置",

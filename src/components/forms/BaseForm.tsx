@@ -73,6 +73,7 @@ export function BaseForm<T extends FieldValues>({
         children: <Text size="sm">{t('components.forms.BaseForm.unsavedChangesWarning')}</Text>,
         labels: { confirm: t('common.confirm'), cancel: t('common.cancel') },
         confirmProps: { color: 'red' },
+        zIndex: 10001,
         onConfirm: () => {
           reset();
           onClose();

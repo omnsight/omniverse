@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { useEntityDataStore } from '../network/entityData';
-import type { Entity } from '../../../components/forms/entityForm/entity';
+import type { Entity } from '../../../components/entity/entity';
 
 interface EntitySelectionState {
   selectedIds: string[];

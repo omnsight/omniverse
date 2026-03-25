@@ -58,7 +58,7 @@ export const OrganizationForm: React.FC<Props> = ({
   return (
     <BaseForm<Organization>
       style={style}
-      title={organization.name || t('components.forms.OrganizationForm.name')}
+      title={organization.name || t('components.forms.OrganizationForm.title')}
       isEditing={isEditing || false}
       onClose={handlClose}
       defaultValues={organization}
@@ -72,26 +72,28 @@ export const OrganizationForm: React.FC<Props> = ({
           style={{ cursor: canEdit ? (isEditing ? 'default' : 'pointer') : 'default' }}
           onDoubleClick={handleDoubleClick}
         >
-          {isEditing && (
-            <Text size="sm" fw={500}>
-              {t('components.forms.OrganizationForm.name')}
-            </Text>
-          )}
-          {isEditing && (
-            <Controller
-              name="name"
-              control={control}
-              rules={{ required: t('common.required') }}
-              render={({ field }) => (
-                <TextInput
-                  {...field}
-                  value={field.value || ''}
-                  placeholder={t('components.forms.OrganizationForm.name')}
-                  error={errors.name?.message}
-                />
-              )}
-            />
-          )}
+          <Group gap={4}>
+            {isEditing && (
+              <Text size="sm" fw={500}>
+                {t('placeholder.name')}
+              </Text>
+            )}
+            {isEditing && (
+              <Controller
+                name="name"
+                control={control}
+                rules={{ required: t('common.required') }}
+                render={({ field }) => (
+                  <TextInput
+                    {...field}
+                    value={field.value || ''}
+                    placeholder={t('components.forms.OrganizationForm.name')}
+                    error={errors.name?.message}
+                  />
+                )}
+              />
+            )}
+          </Group>
 
           <Group gap={4}>
             <Text size="sm" c="dimmed">

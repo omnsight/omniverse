@@ -1,3 +1,4 @@
+import { Modal, ScrollArea } from '@mantine/core';
 import React from 'react';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
@@ -116,66 +117,80 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
     setEntity(undefined);
   };
 
-  if (!entity) {
-    return null;
-  }
-
-  switch (entity.type) {
-    case 'Event':
-      return (
-        <EventForm
-          event={entity.data}
-          onSubmit={createEntity}
-          useInput={true}
-          onClose={() => setEntity(undefined)}
-        />
-      );
-    case 'Organization':
-      return (
-        <OrganizationForm
-          organization={entity.data}
-          onSubmit={createEntity}
-          useInput={true}
-          onClose={() => setEntity(undefined)}
-        />
-      );
-    case 'Person':
-      return (
-        <PersonForm
-          person={entity.data}
-          onSubmit={createEntity}
-          useInput={true}
-          onClose={() => setEntity(undefined)}
-        />
-      );
-    case 'Relation':
-      return (
-        <RelationForm
-          relation={entity.data}
-          onSubmit={createEntity}
-          useInput={true}
-          onClose={() => setEntity(undefined)}
-        />
-      );
-    case 'Source':
-      return (
-        <SourceForm
-          source={entity.data}
-          onSubmit={createEntity}
-          useInput={true}
-          onClose={() => setEntity(undefined)}
-        />
-      );
-    case 'Website':
-      return (
-        <WebsiteForm
-          website={entity.data}
-          onSubmit={createEntity}
-          useInput={true}
-          onClose={() => setEntity(undefined)}
-        />
-      );
-    default:
+  const renderForm = () => {
+    if (!entity) {
       return null;
-  }
+    }
+    switch (entity.type) {
+      case 'Event':
+        return (
+          <EventForm
+            event={entity.data}
+            onSubmit={createEntity}
+            useInput={true}
+            onClose={() => setEntity(undefined)}
+          />
+        );
+      case 'Organization':
+        return (
+          <OrganizationForm
+            organization={entity.data}
+            onSubmit={createEntity}
+            useInput={true}
+            onClose={() => setEntity(undefined)}
+          />
+        );
+      case 'Person':
+        return (
+          <PersonForm
+            person={entity.data}
+            onSubmit={createEntity}
+            useInput={true}
+            onClose={() => setEntity(undefined)}
+          />
+        );
+      case 'Relation':
+        return (
+          <RelationForm
+            relation={entity.data}
+            onSubmit={createEntity}
+            useInput={true}
+            onClose={() => setEntity(undefined)}
+          />
+        );
+      case 'Source':
+        return (
+          <SourceForm
+            source={entity.data}
+            onSubmit={createEntity}
+            useInput={true}
+            onClose={() => setEntity(undefined)}
+          />
+        );
+      case 'Website':
+        return (
+          <WebsiteForm
+            website={entity.data}
+            onSubmit={createEntity}
+            useInput={true}
+            onClose={() => setEntity(undefined)}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <Modal
+      opened={!!entity}
+      onClose={() => setEntity(undefined)}
+      title={
+        entity?.type ? t('common.create') + t(`common.entity.${entity.type}`) : t('common.create')
+      }
+      centered
+    >
+      <ScrollArea.Autosize mah="40vh">{renderForm()}</ScrollArea.Autosize>
+    </Modal>
+  );
 };

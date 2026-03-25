@@ -56,7 +56,7 @@ const runElkLayout = async (
 export const getStressLayout = async (nodes: Node[], edges: Edge[]) => {
   const layoutOptions: Record<string, any> = {
     'elk.algorithm': 'stress',
-    'elk.stress.desiredEdgeLength': '130.0',
+    'elk.stress.desiredEdgeLength': '100.0',
   };
   return runElkLayout(nodes, edges, layoutOptions);
 };

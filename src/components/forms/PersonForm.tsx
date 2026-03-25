@@ -58,7 +58,7 @@ export const PersonForm: React.FC<Props> = ({
   return (
     <BaseForm<Person>
       style={style}
-      title={person.name || t('components.forms.PersonForm.name')}
+      title={person.name || t('components.forms.PersonForm.title')}
       isEditing={isEditing || false}
       onClose={handlClose}
       defaultValues={person}
