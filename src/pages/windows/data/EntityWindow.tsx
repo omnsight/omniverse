@@ -113,21 +113,18 @@ const EntityWindowContent: React.FC = () => {
   }
 
   return (
-    <Box pos="relative" h="100%" w="100%">
-      <Group justify="flex-start" mb="sm">
-        <ActionIcon
-          draggable
-          onDragStart={handleDragStart}
-          onDragEnd={() => setDragging(undefined)}
-        >
-          <PlusCircleIcon />
-        </ActionIcon>
-      </Group>
-      <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
-      <EntityFormRenderer
-        entity={lastSelection}
-        onUpdate={hasWritePermission ? (entities) => addEntities(entities, undefined) : undefined}
-      />
+    <EntityFormRenderer
+      entity={lastSelection}
+      onUpdate={hasWritePermission ? (entities) => addEntities(entities, undefined) : undefined}
+    >
+      <ActionIcon
+        draggable
+        onDragStart={handleDragStart}
+        onDragEnd={() => setDragging(undefined)}
+        style={{ position: 'absolute', top: 15, left: 15, zIndex: 10 }}
+      >
+        <PlusCircleIcon />
+      </ActionIcon>
 
       <Divider my="sm" />
 
@@ -239,7 +236,7 @@ const EntityWindowContent: React.FC = () => {
           )}
         </Stack>
       </Box>
-    </Box>
+    </EntityFormRenderer>
   );
 };
 

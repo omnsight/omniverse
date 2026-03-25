@@ -10,7 +10,7 @@ import {
   TextInput,
   Textarea,
   Select,
-  NumberInput,
+  Slider,
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import { type MonitoringSource } from 'omni-monitoring-client';
@@ -54,29 +54,31 @@ export const MonitoringSourceForm: React.FC<Props> = ({
 
   return (
     <BaseForm<MonitoringSource>
-      title={source.name || t('components.forms.MonitoringSourceForm.name', '?')}
+      title={source.name || t('components.forms.MonitoringSourceForm.name')}
       isEditing={isEditing}
       onClose={handlClose}
       defaultValues={source}
       onSubmit={onSubmit}
       onUpdate={onUpdate}
     >
-      {({ control }) => (
+      {({ control, formState: { errors } }) => (
         <Stack onDoubleClick={handleDoubleClick}>
           {isEditing && (
             <Text size="sm" fw={500}>
-              {t('components.forms.MonitoringSourceForm.name', '?')}
+              {t('components.forms.MonitoringSourceForm.name')}
             </Text>
           )}
           {isEditing && (
             <Controller
               name="name"
               control={control}
+              rules={{ required: t('common.required') }}
               render={({ field }) => (
                 <TextInput
                   {...field}
                   value={field.value || ''}
-                  placeholder={t('components.forms.MonitoringSourceForm.name', '?')}
+                  placeholder={t('components.forms.MonitoringSourceForm.name')}
+                  error={errors.name?.message}
                 />
               )}
             />
@@ -90,11 +92,13 @@ export const MonitoringSourceForm: React.FC<Props> = ({
               <Controller
                 name="description"
                 control={control}
+                rules={{ required: t('common.required') }}
                 render={({ field }) => (
                   <Textarea
                     {...field}
                     value={field.value || ''}
                     placeholder={t('placeholder.description')}
+                    error={errors.description?.message}
                   />
                 )}
               />
@@ -109,6 +113,7 @@ export const MonitoringSourceForm: React.FC<Props> = ({
               <Controller
                 name="type"
                 control={control}
+                rules={{ required: t('common.required') }}
                 render={({ field }) => (
                   <Select
                     {...field}
@@ -118,6 +123,7 @@ export const MonitoringSourceForm: React.FC<Props> = ({
                       label: type,
                     }))}
                     placeholder={t('placeholder.source.type')}
+                    error={errors.type?.message}
                   />
                 )}
               />
@@ -131,11 +137,13 @@ export const MonitoringSourceForm: React.FC<Props> = ({
               <Controller
                 name="url"
                 control={control}
+                rules={{ required: t('common.required') }}
                 render={({ field }) => (
                   <TextInput
                     {...field}
                     value={field.value || ''}
                     placeholder={t('placeholder.url')}
+                    error={errors.url?.message}
                   />
                 )}
               />
@@ -150,11 +158,15 @@ export const MonitoringSourceForm: React.FC<Props> = ({
               <Controller
                 name="reliability"
                 control={control}
+                rules={{ required: t('common.required') }}
                 render={({ field }) => (
-                  <NumberInput
+                  <Slider
                     {...field}
                     value={field.value || 0}
-                    placeholder={t('placeholder.reliability')}
+                    min={0}
+                    max={100}
+                    style={{ flex: 1 }}
+                    label={(value) => `${value}%`}
                   />
                 )}
               />
@@ -168,11 +180,13 @@ export const MonitoringSourceForm: React.FC<Props> = ({
               <Controller
                 name="last_reviewed"
                 control={control}
+                rules={{ required: t('common.required') }}
                 render={({ field }) => (
                   <DatePickerInput
                     value={field.value ? new Date(field.value * 1000) : null}
                     onChange={(date) => field.onChange(date ? new Date(date).getTime() / 1000 : 0)}
                     placeholder={t('placeholder.lastReviewed')}
+                    error={errors.last_reviewed?.message}
                   />
                 )}
               />

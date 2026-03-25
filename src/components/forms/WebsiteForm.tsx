@@ -28,6 +28,7 @@ interface Props {
   onClose: () => void;
   onClick?: () => void;
   useInput?: boolean;
+  children?: React.ReactNode;
 }
 
 export const WebsiteForm: React.FC<Props> = ({
@@ -37,6 +38,7 @@ export const WebsiteForm: React.FC<Props> = ({
   onClose,
   onClick,
   useInput,
+  children,
 }) => {
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
@@ -214,6 +216,8 @@ export const WebsiteForm: React.FC<Props> = ({
           ) : (
             <Text size="sm">{(website.tags || []).join(', ')}</Text>
           )}
+
+          {children}
 
           <Divider my="sm" />
 

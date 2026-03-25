@@ -25,6 +25,7 @@ interface Props {
   onClose: () => void;
   onClick?: () => void;
   useInput?: boolean;
+  children?: React.ReactNode;
 }
 
 export const OrganizationForm: React.FC<Props> = ({
@@ -34,6 +35,7 @@ export const OrganizationForm: React.FC<Props> = ({
   onClose,
   onClick,
   useInput,
+  children,
 }) => {
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
@@ -179,6 +181,8 @@ export const OrganizationForm: React.FC<Props> = ({
           ) : (
             <Text size="sm">{(organization.tags || []).join(', ')}</Text>
           )}
+
+          {children}
 
           <Divider my="sm" />
 

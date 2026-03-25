@@ -69,7 +69,28 @@
         "MonitorListWindow": {
           "getSourcesError": "",
           "error": "",
-          "title": ""
+          "title": "Create Monitoring Source"
+        }
+      },
+      "insight": {
+        "InsightWindow": {
+          "queryError": "",
+          "empty": "No selected article",
+          "InsightWindowTitle": "Insight Analysis"
+        },
+        "InsightListWindow": {
+          "queryError": "Failed to query insights, please try again later.",
+          "createError": "Failed to create insight, please try again later.",
+          "error": "Failed to update content, please check your input.",
+          "title": "Insight Column"
+        }
+      },
+      "context": {
+        "GlobalEventTimelineWindow": {
+          "queryError": ""
+        },
+        "GlobalEventRecommendationWindow": {
+          "queryError": ""
         }
       },
       "data": {
@@ -89,27 +110,6 @@
           "error": "Failed to create event",
           "title": "Related Events"
         }
-      },
-      "context": {
-        "GlobalEventTimelineWindow": {
-          "queryError": ""
-        },
-        "GlobalEventRecommendationWindow": {
-          "queryError": ""
-        }
-      },
-      "insight": {
-        "InsightWindow": {
-          "queryError": "",
-          "empty": "No selected article",
-          "InsightWindowTitle": "Insight Analysis"
-        },
-        "InsightListWindow": {
-          "queryError": "Failed to query insights, please try again later.",
-          "createError": "Failed to create insight, please try again later.",
-          "error": "Failed to update content, please check your input.",
-          "title": "Insight Column"
-        }
       }
     }
   },
@@ -117,12 +117,12 @@
     "error": "Error",
     "reset": "Reset",
     "apply": "Apply",
+    "save": "",
     "required": "This field is required",
     "remove": "",
     "add": "Add Attribute",
     "confirm": "Confirm",
     "cancel": "",
-    "save": "",
     "notFound": "Not Found"
   },
   "components": {
@@ -164,50 +164,6 @@
         }
       }
     },
-    "entity": {
-      "FormRenderer": {
-        "error": ""
-      },
-      "CreationModal": {
-        "error": ""
-      }
-    },
-    "forms": {
-      "WebsiteForm": {
-        "title": ""
-      },
-      "SourceForm": {
-        "title": ""
-      },
-      "RelationForm": {
-        "label": ""
-      },
-      "PersonForm": {
-        "name": ""
-      },
-      "OrganizationForm": {
-        "name": ""
-      },
-      "MonitoringSourceForm": {
-        "name": ""
-      },
-      "InsightForm": {
-        "edittingTitle": "Edit Insight"
-      },
-      "EventForm": {
-        "editingTitle": "Edit Event",
-        "title": "Event Title",
-        "minLatitude-90-90": "Latitude cannot be less than ",
-        "maxLatitude": "Latitude cannot be greater than 90",
-        "minLongitude-180-180": "Longitude cannot be less than ",
-        "maxLongitude": "Longitude cannot be greater than 180",
-        "eventDescription": "event description"
-      },
-      "BaseForm": {
-        "discardChanges": "Discard Changes And Exit",
-        "unsavedChangesWarning": "Are you sure you want to discard the changes?"
-      }
-    },
     "editor": {
       "InsightEditor": {
         "noRelatedEntities": "No related events, people, and etc.",
@@ -244,6 +200,50 @@
         "WindowAnchor": {
           "restore": "Restore Window"
         }
+      }
+    },
+    "forms": {
+      "WebsiteForm": {
+        "title": ""
+      },
+      "SourceForm": {
+        "title": ""
+      },
+      "RelationForm": {
+        "label": ""
+      },
+      "PersonForm": {
+        "name": ""
+      },
+      "OrganizationForm": {
+        "name": ""
+      },
+      "MonitoringSourceForm": {
+        "name": "Source Name"
+      },
+      "InsightForm": {
+        "edittingTitle": "Edit Insight"
+      },
+      "EventForm": {
+        "editingTitle": "Edit Event",
+        "title": "Event Title",
+        "minLatitude-90-90": "Latitude cannot be less than ",
+        "maxLatitude": "Latitude cannot be greater than 90",
+        "minLongitude-180-180": "Longitude cannot be less than ",
+        "maxLongitude": "Longitude cannot be greater than 180",
+        "eventDescription": "event description"
+      },
+      "BaseForm": {
+        "discardChanges": "Discard Changes And Exit",
+        "unsavedChangesWarning": "Are you sure you want to discard the changes?"
+      }
+    },
+    "entity": {
+      "FormRenderer": {
+        "error": ""
+      },
+      "CreationModal": {
+        "error": ""
       }
     }
   },

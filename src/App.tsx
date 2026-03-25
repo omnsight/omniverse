@@ -1,4 +1,4 @@
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useEffect } from 'react';
 import { AppShell } from '@mantine/core';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
@@ -12,6 +12,7 @@ import { useWindowStore } from './stores/windowStateStore';
 
 function App() {
   const [opened] = useDisclosure();
+  const isTablet = useMediaQuery('(min-width: 780px)');
 
   useEffect(() => {
     const handleGlobalDragEnd = () => {
@@ -28,7 +29,7 @@ function App() {
         layout="alt"
         header={{ height: 60 }}
         navbar={{
-          width: 200,
+          width: isTablet ? 150 : 200,
           breakpoint: 'sm',
           collapsed: { mobile: !opened },
         }}

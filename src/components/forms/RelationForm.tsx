@@ -24,6 +24,7 @@ interface Props {
   onClose: () => void;
   onClick?: () => void;
   useInput?: boolean;
+  children?: React.ReactNode;
 }
 
 export const RelationForm: React.FC<Props> = ({
@@ -33,6 +34,7 @@ export const RelationForm: React.FC<Props> = ({
   onClose,
   onClick,
   useInput,
+  children,
 }) => {
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
@@ -123,6 +125,8 @@ export const RelationForm: React.FC<Props> = ({
               <Text size="sm">{relation.confidence}</Text>
             )}
           </Group>
+
+          {children}
 
           <Divider my="sm" />
 

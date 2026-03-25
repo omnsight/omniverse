@@ -31,7 +31,11 @@ const MonitorWindowContent: React.FC = () => {
 
   return (
     <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars p="md">
-      <MonitoringSourceForm source={selected} onUpdate={isOwner ? handleUpdate : undefined} />
+      <MonitoringSourceForm
+        source={selected}
+        onUpdate={isOwner ? handleUpdate : undefined}
+        onClose={() => {}}
+      />
     </ScrollArea>
   );
 };

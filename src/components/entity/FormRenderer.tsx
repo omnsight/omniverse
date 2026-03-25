@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type PropsWithChildren } from 'react';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import {
@@ -19,12 +19,12 @@ import {
   WebsiteForm,
 } from '../forms';
 
-interface Props {
+interface Props extends PropsWithChildren {
   entity: Entity;
   onUpdate?: (entities: Entities) => void;
 }
 
-export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdate }) => {
+export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdate, children }) => {
   const { t } = useTranslation();
 
   const handleUpdate = async (patch: Partial<EntityMainData>) => {
@@ -150,19 +150,41 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdate }) => {
 
   switch (entity.type) {
     case 'Event':
-      return <EventForm event={entity.data} onUpdate={handleUpdate} onClose={() => {}} />;
+      return (
+        <EventForm event={entity.data} onUpdate={handleUpdate} onClose={() => {}}>
+          {children}
+        </EventForm>
+      );
     case 'Organization':
       return (
-        <OrganizationForm organization={entity.data} onUpdate={handleUpdate} onClose={() => {}} />
+        <OrganizationForm organization={entity.data} onUpdate={handleUpdate} onClose={() => {}}>
+          {children}
+        </OrganizationForm>
       );
     case 'Person':
-      return <PersonForm person={entity.data} onUpdate={handleUpdate} onClose={() => {}} />;
+      return (
+        <PersonForm person={entity.data} onUpdate={handleUpdate} onClose={() => {}}>
+          {children}
+        </PersonForm>
+      );
     case 'Relation':
-      return <RelationForm relation={entity.data} onUpdate={handleUpdate} onClose={() => {}} />;
+      return (
+        <RelationForm relation={entity.data} onUpdate={handleUpdate} onClose={() => {}}>
+          {children}
+        </RelationForm>
+      );
     case 'Source':
-      return <SourceForm source={entity.data} onUpdate={handleUpdate} onClose={() => {}} />;
+      return (
+        <SourceForm source={entity.data} onUpdate={handleUpdate} onClose={() => {}}>
+          {children}
+        </SourceForm>
+      );
     case 'Website':
-      return <WebsiteForm website={entity.data} onUpdate={handleUpdate} onClose={() => {}} />;
+      return (
+        <WebsiteForm website={entity.data} onUpdate={handleUpdate} onClose={() => {}}>
+          {children}
+        </WebsiteForm>
+      );
     default:
       return null;
   }

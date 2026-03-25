@@ -52,7 +52,7 @@ export const InsightForm: React.FC<InsightFormProps> = ({
       onUpdate={onUpdate}
       exitButton={exitButton}
     >
-      {({ control }) => (
+      {({ control, formState: { errors } }) => (
         <Stack onDoubleClick={handleDoubleClick}>
           {isEditing && (
             <Text size="sm" fw={500}>
@@ -63,12 +63,14 @@ export const InsightForm: React.FC<InsightFormProps> = ({
             <Controller
               name="name"
               control={control}
+              rules={{ required: t('common.required') }}
               render={({ field }) => (
                 <TextInput
                   {...field}
                   autoFocus
                   value={field.value || ''}
                   placeholder={`${t('placeholder.enter')}${t('placeholder.title')}...`}
+                  error={errors.name?.message}
                 />
               )}
             />
@@ -79,6 +81,7 @@ export const InsightForm: React.FC<InsightFormProps> = ({
             <Controller
               name="description"
               control={control}
+              rules={{ required: t('common.required') }}
               render={({ field }) => (
                 <Textarea
                   {...field}
@@ -86,6 +89,7 @@ export const InsightForm: React.FC<InsightFormProps> = ({
                   autoFocus
                   value={field.value || ''}
                   placeholder={`${t('placeholder.enter')}${t('placeholder.description')}...`}
+                  error={errors.description?.message}
                 />
               )}
             />

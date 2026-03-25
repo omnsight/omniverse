@@ -12,17 +12,25 @@ import { useTranslation } from 'react-i18next';
 import { useWindowManager } from '../WindowManager';
 import { notifications } from '@mantine/notifications';
 import { useAuth } from '../../../provider/AuthContext';
+import { useMonitoringClient } from '../../../api/useMonitoringClient';
 
 const MonitorListWindowContent: React.FC = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const { monitoringClient } = useMonitoringClient();
   const { sources, setSources, setSelected } = useMonitorStore();
   const { setActiveWindowByName } = useWindowManager();
   const [creating, setCreating] = useState(false);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['monitoring-sources'],
-    queryFn: () => getMonitoringSourcesByUser(),
+    queryFn: async () => {
+      const response = await getMonitoringSourcesByUser({
+        client: monitoringClient,
+      });
+      console.log('Fetched sources', response.data);
+      return response.data;
+    },
   });
 
   useEffect(() => {
@@ -37,8 +45,8 @@ const MonitorListWindowContent: React.FC = () => {
   }, [isError, error, t]);
 
   useEffect(() => {
-    if (data?.data) {
-      setSources(data?.data);
+    if (data) {
+      setSources(data);
     }
   }, [data, setSources]);
 
@@ -47,6 +55,7 @@ const MonitorListWindowContent: React.FC = () => {
 
     const { data, error } = await createMonitoringSource({
       body: source,
+      client: monitoringClient,
     });
     if (error) {
       console.error('Error creating source', error);
@@ -93,7 +102,9 @@ const MonitorListWindowContent: React.FC = () => {
               onClose={() => setCreating(false)}
             />
           ) : (
-            <Button onClick={() => setCreating(true)}>{t('pages.windows.monitor.MonitorListWindow.title', '?')}</Button>
+            <Button onClick={() => setCreating(true)}>
+              {t('pages.windows.monitor.MonitorListWindow.title')}
+            </Button>
           )}
         </Stack>
       </Box>
@@ -106,7 +117,7 @@ export const MonitorListWindow: React.FC = () => {
   return (
     <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
       <Box p="lg" pb={0}>
-        <Title order={3}>{t('pages.windows.monitor.MonitorListWindow.title', '?')}</Title>
+        <Title order={3}>{t('pages.windows.monitor.MonitorListWindow.title')}</Title>
       </Box>
       <MonitorListWindowContent />
     </Box>

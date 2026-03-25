@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type PropsWithChildren } from 'react';
 import { CalendarDaysIcon, ChevronDownIcon, MapPinIcon } from '@heroicons/react/24/outline';
 import {
   Collapse,
@@ -14,6 +14,7 @@ import {
   Select,
   TagsInput,
   NumberInput,
+  Badge,
 } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
 import { type Event } from 'omni-osint-crud-client';
@@ -29,9 +30,8 @@ import { BaseForm } from './BaseForm';
 countries.registerLocale(enLocale);
 countries.registerLocale(zhLocale);
 
-interface Props {
+interface Props extends PropsWithChildren {
   event: Event;
-  width?: number | string;
   useInput?: boolean;
   onSubmit?: (data: Event) => void;
   onUpdate?: (data: Partial<Event>) => void;
@@ -41,12 +41,12 @@ interface Props {
 
 export const EventForm: React.FC<Props> = ({
   event,
-  width,
   useInput = false,
   onSubmit,
   onUpdate,
   onClose,
   onClick,
+  children,
 }) => {
   const { t, i18n } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
@@ -103,7 +103,7 @@ export const EventForm: React.FC<Props> = ({
       {({ control, formState: { errors } }) => (
         <Stack
           gap="xs"
-          style={{ width, position: 'relative', cursor: onClick ? 'pointer' : 'default' }}
+          style={{ position: 'relative', cursor: onClick ? 'pointer' : 'default' }}
           onClick={onClick}
           onDoubleClick={handleDoubleClick}
         >
@@ -322,33 +322,29 @@ export const EventForm: React.FC<Props> = ({
                 </>
               ) : (
                 <>
-                  <Text size="sm">{event.location?.address || t('placeholder.address')}</Text>
-                  <Text size="sm">{event.location?.locality || t('placeholder.locality')}</Text>
                   <Text size="sm">
-                    {event.location?.sub_locality || t('placeholder.subLocality')}
-                  </Text>
-                  <Text size="sm">
-                    {event.location?.administrative_area || t('placeholder.adminArea')}
-                  </Text>
-                  <Text size="sm">
-                    {event.location?.sub_administrative_area || t('placeholder.subAdminArea')}
+                    {[
+                      event.location?.address,
+                      event.location?.sub_locality,
+                      event.location?.locality,
+                      event.location?.sub_administrative_area,
+                      event.location?.administrative_area,
+                      event.location?.country_code
+                        ? countries.getName(
+                            event.location.country_code,
+                            i18n.language.startsWith('zh') ? 'zh' : 'en',
+                            { select: 'official' },
+                          )
+                        : undefined,
+                      event.location?.postal_code,
+                    ]
+                      .filter(Boolean)
+                      .join(', ') || t('placeholder.address')}
                   </Text>
                   <Group>
                     <Text size="sm">Lat: {event.location?.latitude ?? 'N/A'}</Text>
                     <Text size="sm">Lon: {event.location?.longitude ?? 'N/A'}</Text>
                   </Group>
-                  <Text size="sm">
-                    {event.location?.country_code
-                      ? countries.getName(
-                          event.location.country_code,
-                          i18n.language.startsWith('zh') ? 'zh' : 'en',
-                          { select: 'official' },
-                        )
-                      : t('placeholder.country')}
-                  </Text>
-                  <Text size="sm">
-                    {event.location?.postal_code || t('placeholder.postalCode')}
-                  </Text>
                 </>
               )}
             </Stack>
@@ -395,8 +391,14 @@ export const EventForm: React.FC<Props> = ({
               )}
             />
           ) : (
-            <Text size="sm">{(event.tags || []).join(', ')}</Text>
+            <Group gap="xs">
+              {(event.tags || []).map((tag) => (
+                <Badge key={tag}>{tag}</Badge>
+              ))}
+            </Group>
           )}
+
+          {children}
 
           <Divider my="sm" />
 
