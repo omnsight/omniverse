@@ -12,7 +12,7 @@ import {
   Textarea,
   TagsInput,
 } from '@mantine/core';
-import { DatePickerInput } from '@mantine/dates';
+import { CustomDatePicker } from '../inputs/CustomDatePicker';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 import { type Website } from 'omni-osint-crud-client';
@@ -25,7 +25,7 @@ interface Props {
   website: Website;
   onSubmit?: (data: Website) => void;
   onUpdate?: (data: Partial<Website>) => void;
-  onClose: () => void;
+  onClose?: () => void;
   useInput?: boolean;
   children?: React.ReactNode;
   style?: CSSProperties;
@@ -49,7 +49,7 @@ export const WebsiteForm: React.FC<Props> = ({
     if (!useInput) {
       setIsEditing(false);
     }
-    onClose();
+    onClose?.();
   };
 
   const handleDoubleClick = () => {
@@ -68,7 +68,7 @@ export const WebsiteForm: React.FC<Props> = ({
       onSubmit={onSubmit}
       onUpdate={onUpdate}
     >
-      {({ control }) => (
+      {({ control, formState: { errors } }) => (
         <Stack
           pos="relative"
           gap="xs"
@@ -85,12 +85,14 @@ export const WebsiteForm: React.FC<Props> = ({
               <Controller
                 name="title"
                 control={control}
+                rules={{ required: t('common.required') }}
                 render={({ field }) => (
                   <TextInput
                     {...field}
                     value={field.value || ''}
                     placeholder={t('components.forms.WebsiteForm.title', '?')}
                     style={{ flex: 'initial' }}
+                    error={errors.title?.message}
                   />
                 )}
               />
@@ -114,11 +116,13 @@ export const WebsiteForm: React.FC<Props> = ({
               <Controller
                 name="url"
                 control={control}
+                rules={{ required: t('common.required') }}
                 render={({ field }) => (
                   <TextInput
                     {...field}
                     value={field.value ?? ''}
                     placeholder={t('placeholder.url')}
+                    error={errors.url?.message}
                   />
                 )}
               />
@@ -157,9 +161,9 @@ export const WebsiteForm: React.FC<Props> = ({
                 name="founded_at"
                 control={control}
                 render={({ field }) => (
-                  <DatePickerInput
+                  <CustomDatePicker
                     value={field.value ? new Date(field.value * 1000) : null}
-                    onChange={(date) => field.onChange(date ? new Date(date).getTime() / 1000 : 0)}
+                    onChange={(date) => field.onChange(date ? date.getTime() / 1000 : 0)}
                     placeholder={t('placeholder.foundedDate')}
                   />
                 )}
@@ -182,9 +186,9 @@ export const WebsiteForm: React.FC<Props> = ({
                 name="discovered_at"
                 control={control}
                 render={({ field }) => (
-                  <DatePickerInput
+                  <CustomDatePicker
                     value={field.value ? new Date(field.value * 1000) : null}
-                    onChange={(date) => field.onChange(date ? new Date(date).getTime() / 1000 : 0)}
+                    onChange={(date) => field.onChange(date ? date.getTime() / 1000 : 0)}
                     placeholder={t('placeholder.discoveredDate')}
                   />
                 )}

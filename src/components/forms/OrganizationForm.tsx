@@ -9,7 +9,7 @@ import {
   TextInput,
   TagsInput,
 } from '@mantine/core';
-import { DatePickerInput } from '@mantine/dates';
+import { CustomDatePicker } from '../inputs/CustomDatePicker';
 import { useTranslation } from 'react-i18next';
 import { type Organization } from 'omni-osint-crud-client';
 import { EditableAttributes } from './EditableAttributes';
@@ -22,7 +22,7 @@ interface Props {
   organization: Organization;
   onSubmit?: (data: Organization) => void;
   onUpdate?: (data: Partial<Organization>) => void;
-  onClose: () => void;
+  onClose?: () => void;
   useInput?: boolean;
   children?: React.ReactNode;
   style?: CSSProperties;
@@ -46,7 +46,7 @@ export const OrganizationForm: React.FC<Props> = ({
     if (!useInput) {
       setIsEditing(false);
     }
-    onClose();
+    onClose?.();
   };
 
   const handleDoubleClick = () => {
@@ -58,14 +58,14 @@ export const OrganizationForm: React.FC<Props> = ({
   return (
     <BaseForm<Organization>
       style={style}
-      title={organization.name || t('components.forms.OrganizationForm.name', '?')}
+      title={organization.name || t('components.forms.OrganizationForm.name')}
       isEditing={isEditing || false}
       onClose={handlClose}
       defaultValues={organization}
       onSubmit={onSubmit}
       onUpdate={onUpdate}
     >
-      {({ control }) => (
+      {({ control, formState: { errors } }) => (
         <Stack
           pos="relative"
           gap="xs"
@@ -74,18 +74,20 @@ export const OrganizationForm: React.FC<Props> = ({
         >
           {isEditing && (
             <Text size="sm" fw={500}>
-              {t('components.forms.OrganizationForm.name', '?')}
+              {t('components.forms.OrganizationForm.name')}
             </Text>
           )}
           {isEditing && (
             <Controller
               name="name"
               control={control}
+              rules={{ required: t('common.required') }}
               render={({ field }) => (
                 <TextInput
                   {...field}
                   value={field.value || ''}
-                  placeholder={t('components.forms.OrganizationForm.name', '?')}
+                  placeholder={t('components.forms.OrganizationForm.name')}
+                  error={errors.name?.message}
                 />
               )}
             />
@@ -121,9 +123,9 @@ export const OrganizationForm: React.FC<Props> = ({
                 name="founded_at"
                 control={control}
                 render={({ field }) => (
-                  <DatePickerInput
+                  <CustomDatePicker
                     value={field.value ? new Date(field.value * 1000) : null}
-                    onChange={(date) => field.onChange(date ? new Date(date).getTime() / 1000 : 0)}
+                    onChange={(date) => field.onChange(date ? date.getTime() / 1000 : 0)}
                     placeholder={t('placeholder.foundedDate')}
                   />
                 )}
@@ -146,9 +148,9 @@ export const OrganizationForm: React.FC<Props> = ({
                 name="discovered_at"
                 control={control}
                 render={({ field }) => (
-                  <DatePickerInput
+                  <CustomDatePicker
                     value={field.value ? new Date(field.value * 1000) : null}
-                    onChange={(date) => field.onChange(date ? new Date(date).getTime() / 1000 : 0)}
+                    onChange={(date) => field.onChange(date ? date.getTime() / 1000 : 0)}
                     placeholder={t('placeholder.discoveredDate')}
                   />
                 )}

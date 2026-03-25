@@ -10,7 +10,7 @@ interface InsightFormProps {
   useInput?: boolean;
   onSubmit?: (data: OsintView) => void;
   onUpdate?: (data: Partial<OsintView>) => void;
-  onClose: () => void;
+  onClose?: () => void;
   exitButton?: React.ReactNode;
 }
 
@@ -30,7 +30,7 @@ export const InsightForm: React.FC<InsightFormProps> = ({
     if (!useInput) {
       setIsEditing(false);
     }
-    onClose();
+    onClose?.();
   };
 
   const handleDoubleClick = () => {

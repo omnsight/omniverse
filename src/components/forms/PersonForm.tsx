@@ -9,7 +9,7 @@ import {
   TextInput,
   TagsInput,
 } from '@mantine/core';
-import { DatePickerInput } from '@mantine/dates';
+import { CustomDatePicker } from '../inputs/CustomDatePicker';
 import { useTranslation } from 'react-i18next';
 import { type Person } from 'omni-osint-crud-client';
 import { EditableAttributes } from './EditableAttributes';
@@ -22,7 +22,7 @@ interface Props {
   person: Person;
   onSubmit?: (data: Person) => void;
   onUpdate?: (data: Partial<Person>) => void;
-  onClose: () => void;
+  onClose?: () => void;
   useInput?: boolean;
   children?: React.ReactNode;
   style?: CSSProperties;
@@ -46,7 +46,7 @@ export const PersonForm: React.FC<Props> = ({
     if (!useInput) {
       setIsEditing(false);
     }
-    onClose();
+    onClose?.();
   };
 
   const handleDoubleClick = () => {
@@ -58,14 +58,14 @@ export const PersonForm: React.FC<Props> = ({
   return (
     <BaseForm<Person>
       style={style}
-      title={person.name || t('components.forms.PersonForm.name', '?')}
+      title={person.name || t('components.forms.PersonForm.name')}
       isEditing={isEditing || false}
       onClose={handlClose}
       defaultValues={person}
       onSubmit={onSubmit}
       onUpdate={onUpdate}
     >
-      {({ control }) => (
+      {({ control, formState: { errors } }) => (
         <Stack
           pos="relative"
           gap="xs"
@@ -74,18 +74,20 @@ export const PersonForm: React.FC<Props> = ({
         >
           {isEditing && (
             <Text size="sm" fw={500}>
-              {t('components.forms.PersonForm.name', '?')}
+              {t('components.forms.PersonForm.name')}
             </Text>
           )}
           {isEditing && (
             <Controller
               name="name"
               control={control}
+              rules={{ required: t('common.required') }}
               render={({ field }) => (
                 <TextInput
                   {...field}
                   value={field.value || ''}
-                  placeholder={t('components.forms.PersonForm.name', '?')}
+                  placeholder={t('components.forms.PersonForm.name')}
+                  error={errors.name?.message}
                 />
               )}
             />
@@ -138,9 +140,9 @@ export const PersonForm: React.FC<Props> = ({
                 name="birth_date"
                 control={control}
                 render={({ field }) => (
-                  <DatePickerInput
+                  <CustomDatePicker
                     value={field.value ? new Date(field.value * 1000) : null}
-                    onChange={(date) => field.onChange(date ? new Date(date).getTime() / 1000 : 0)}
+                    onChange={(date) => field.onChange(date ? date.getTime() / 1000 : 0)}
                     placeholder={t('placeholder.birthDate')}
                   />
                 )}

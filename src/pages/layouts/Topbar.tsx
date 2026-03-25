@@ -21,21 +21,25 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { queryEvents } from 'omni-osint-query-client';
+import { toZonedTime, fromZonedTime } from 'date-fns-tz';
 import { useEntityDataActions } from '../windows/network/entityData';
 import { CountrySelect } from './CountrySelect';
 import { RangeDatePicker } from './RangeDatePicker';
 import { UserMenu } from './UserMenu';
 import { useQueryClient } from '../../api/useQueryClient';
+import { TimezoneSelectComponent } from '../../components/inputs/TimezoneSelect';
 
 export const AppTopbar: React.FC = () => {
   const { t } = useTranslation();
   const { queryClient } = useQueryClient();
   const { setEntities } = useEntityDataActions();
   const [country, setCountry] = useState<string | undefined>(undefined);
+  const [timezone, setTimezone] = useState<string>(Intl.DateTimeFormat().resolvedOptions().timeZone);
   const [dateRange, setDateRange] = useState<[Date | undefined, Date | undefined]>(() => {
-    const start = new Date();
+    const now = new Date();
+    const start = toZonedTime(now, timezone);
     start.setHours(0, 0, 0, 0);
-    const end = new Date();
+    const end = toZonedTime(now, timezone);
     end.setHours(23, 59, 59, 999);
     return [start, end];
   });
@@ -43,13 +47,15 @@ export const AppTopbar: React.FC = () => {
   const [searchInput, setSearchInput] = useState('');
 
   const { data, error, refetch } = useQuery({
-    queryKey: ['global-search-entities', dateRange, country || '', searchInput],
+    queryKey: ['global-search-entities', dateRange, country || '', searchInput, timezone],
     queryFn: async () => {
+      const utcStart = fromZonedTime(dateRange[0]!, timezone);
+      const utcEnd = fromZonedTime(dateRange[1]!, timezone);
       const { data, error } = await queryEvents({
         client: queryClient,
         query: {
-          date_start: Math.floor(dateRange[0]!.getTime() / 1000),
-          date_end: Math.floor(dateRange[1]!.getTime() / 1000),
+          date_start: Math.floor(utcStart.getTime() / 1000),
+          date_end: Math.floor(utcEnd.getTime() / 1000),
           country_code: country,
           query: searchInput,
         },
@@ -65,6 +71,10 @@ export const AppTopbar: React.FC = () => {
     staleTime: 5 * 60 * 1000,
     retry: 1,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   useEffect(() => {
     if (data) {
@@ -106,6 +116,7 @@ export const AppTopbar: React.FC = () => {
     setSearchInput('');
     setCountry(undefined);
     setDateRange([undefined, undefined]);
+    setTimezone(Intl.DateTimeFormat().resolvedOptions().timeZone);
   };
 
   return (
@@ -153,6 +164,12 @@ export const AppTopbar: React.FC = () => {
                       {t('pages.layouts.Topbar.country')}
                     </Text>
                     <CountrySelect country={country} setCountry={setCountry} />
+                  </Box>
+                  <Box>
+                    <Text size="xs" fw={500} mb={4} c="dimmed">
+                      {t('pages.layouts.Topbar.timezone')}
+                    </Text>
+                    <TimezoneSelectComponent timezone={timezone} setTimezone={setTimezone} />
                   </Box>
                 </Stack>
                 <Group justify="flex-end" mt="md">

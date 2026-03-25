@@ -1,0 +1,16 @@
+{
+  "pages": {
+    "windows": {
+      "data": {
+        "EntityWindow": {
+          "titleEvent": "事件详情",
+          "titleOrganization": "组织详情",
+          "titlePerson": "个人详情",
+          "titleSource": "来源详情",
+          "titleWebsite": "网站详情",
+          "titleRelation": "关系详情"
+        }
+      }
+    }
+  }
+}

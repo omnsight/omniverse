@@ -25,7 +25,11 @@
         "selectDateRange": "",
         "searchPlaceholder": "Search",
         "searchFilters": "Search Filters",
-        "country": "Country"
+        "country": "Country",
+        "timezone": "Timezone"
+      },
+      "TimezoneSelect": {
+        "select": "Select Timezone"
       },
       "Sidebar": {
         "logo": "Nexus",
@@ -88,19 +92,19 @@
       "data": {
         "EntityWindow": {
           "queryError": "",
-          "noEntitySelected": "",
-          "relatedOrganizations": "",
-          "relatedWebsites": "",
-          "relatedEvents": "",
-          "relatedSources": "",
+          "noEntitySelected": "Select at least one event, person, organization, etc. is required to embed the column.",
+          "relatedOrganizations": "Related Organizations",
+          "relatedWebsites": "Related Websites",
+          "relatedEvents": "Related Events",
+          "relatedSources": "Related Sources",
           "addNeighbors": "",
-          "warning": "",
-          "noInghtSelected": "",
-          "title": ""
+          "title": "Related Entities",
+          "noInghtSelected": "Select at least one analysis to embed the article.",
+          "dragTip": "Drag entity to an analysis to embed it"
         },
         "EntityListWindow": {
           "error": "Failed to create event",
-          "title": "Related Events"
+          "title": "Related Entities"
         }
       },
       "context": {
@@ -108,7 +112,8 @@
           "queryError": ""
         },
         "GlobalEventRecommendationWindow": {
-          "queryError": ""
+          "queryError": "",
+          "title": "Recommendations"
         }
       }
     }
@@ -128,7 +133,8 @@
     "confirm": "Confirm",
     "cancel": "",
     "save": "",
-    "notFound": "Not Found"
+    "notFound": "Not Found",
+    "warning": "Warning"
   },
   "components": {
     "map": {
@@ -146,6 +152,11 @@
         "create": "",
         "type": ""
       },
+      "edges": {
+        "RelationEdge": {
+          "name": ""
+        }
+      },
       "nodes": {
         "WebsiteNode": {
           "name": ""
@@ -162,11 +173,6 @@
         "EventNode": {
           "title": ""
         }
-      },
-      "edges": {
-        "RelationEdge": {
-          "name": ""
-        }
       }
     },
     "forms": {
@@ -174,16 +180,16 @@
         "title": ""
       },
       "SourceForm": {
-        "title": ""
+        "title": "Source Title"
       },
       "RelationForm": {
-        "label": ""
+        "label": "Label"
       },
       "PersonForm": {
-        "name": ""
+        "name": "Name"
       },
       "OrganizationForm": {
-        "name": ""
+        "name": "Organization Name"
       },
       "MonitoringSourceForm": {
         "name": "Source Name"
@@ -205,19 +211,16 @@
         "unsavedChangesWarning": "Are you sure you want to discard the changes?"
       }
     },
-    "entity": {
-      "FormRenderer": {
-        "error": ""
-      },
-      "CreationModal": {
-        "error": ""
-      }
-    },
     "editor": {
       "InsightEditor": {
         "noRelatedEntities": "No related events, people, and etc.",
         "updateInsightError": "Failed to update insight, please try again later.",
         "openGallery": "Related Events, People, and etc."
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "Restore Window"
+        }
       },
       "tools": {
         "UnredoTools": {
@@ -244,11 +247,14 @@
           "h2": "H2 Heading",
           "h3": "H3 Heading"
         }
+      }
+    },
+    "entity": {
+      "FormRenderer": {
+        "error": ""
       },
-      "extensions": {
-        "WindowAnchor": {
-          "restore": "Restore Window"
-        }
+      "CreationModal": {
+        "error": ""
       }
     }
   },

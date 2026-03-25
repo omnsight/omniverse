@@ -1,3 +1,4 @@
+import { truncate } from 'lodash';
 import React, { useEffect, useMemo } from 'react';
 import { notifications } from '@mantine/notifications';
 import { useQuery } from '@tanstack/react-query';
@@ -12,6 +13,7 @@ import {
   Paper,
   Stack,
   Text,
+  Tooltip,
 } from '@mantine/core';
 import { InsightEditor } from '../../../components/editor/InsightEditor';
 import { getViewEntities } from 'omni-osint-crud-client';
@@ -75,7 +77,11 @@ const InsightWindowContent: React.FC = () => {
     <Anchor href="#" onClick={() => setActiveWindowByName('InsightList')} key="1">
       {t('pages.windows.insight.InsightWindow.InsightWindowTitle')}
     </Anchor>,
-    <Text key="2">{selected.name}</Text>,
+    <Tooltip label={selected.name} withArrow>
+      <Text key="2">
+        {truncate(selected.name || '', { length: 20 })}
+      </Text>
+    </Tooltip>,
   ];
 
   return (

@@ -24,7 +24,7 @@ interface Props {
   source: Source;
   onSubmit?: (data: Source) => void;
   onUpdate?: (data: Partial<Source>) => void;
-  onClose: () => void;
+  onClose?: () => void;
   useInput?: boolean;
   children?: React.ReactNode;
   style?: CSSProperties;
@@ -48,7 +48,7 @@ export const SourceForm: React.FC<Props> = ({
     if (!useInput) {
       setIsEditing(false);
     }
-    onClose();
+    onClose?.();
   };
 
   const handleDoubleClick = () => {
@@ -60,14 +60,14 @@ export const SourceForm: React.FC<Props> = ({
   return (
     <BaseForm<Source>
       style={style}
-      title={source.name || source.url || t('components.forms.SourceForm.title', '?')}
+      title={source.name || source.url || t('components.forms.SourceForm.title')}
       isEditing={isEditing || false}
       onClose={handlClose}
       defaultValues={source}
       onSubmit={onSubmit}
       onUpdate={onUpdate}
     >
-      {({ control }) => (
+      {({ control, formState: { errors } }) => (
         <Stack
           pos="relative"
           gap="xs"
@@ -77,19 +77,21 @@ export const SourceForm: React.FC<Props> = ({
           <Group gap="xs">
             {isEditing && (
               <Text size="sm" fw={500}>
-                {t('components.forms.SourceForm.title', '?')}
+                {t('components.forms.SourceForm.title')}
               </Text>
             )}
             {isEditing && (
               <Controller
                 name="name"
                 control={control}
+                rules={{ required: t('common.required') }}
                 render={({ field }) => (
                   <TextInput
                     {...field}
                     value={field.value || source.url || ''}
-                    placeholder={t('components.forms.SourceForm.title', '?')}
+                    placeholder={t('components.forms.SourceForm.title')}
                     style={{ flex: 'initial' }}
+                    error={errors.name?.message}
                   />
                 )}
               />
@@ -113,11 +115,13 @@ export const SourceForm: React.FC<Props> = ({
               <Controller
                 name="url"
                 control={control}
+                rules={{ required: t('common.required') }}
                 render={({ field }) => (
                   <TextInput
                     {...field}
                     value={field.value || ''}
                     placeholder={t('placeholder.url')}
+                    error={errors.url?.message}
                   />
                 )}
               />

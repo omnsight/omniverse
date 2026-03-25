@@ -25,7 +25,11 @@
         "selectDateRange": "",
         "searchPlaceholder": "搜索",
         "searchFilters": "搜索过滤器",
-        "country": "国家"
+        "country": "国家",
+        "timezone": "时区"
+      },
+      "TimezoneSelect": {
+        "select": "请选择时区"
       },
       "Sidebar": {
         "logo": "Nexus",
@@ -88,19 +92,19 @@
       "data": {
         "EntityWindow": {
           "queryError": "",
-          "noEntitySelected": "",
-          "relatedOrganizations": "",
-          "relatedWebsites": "",
-          "relatedEvents": "",
-          "relatedSources": "",
+          "noEntitySelected": "请选择至少一个事件、人物、组织等来嵌入专栏",
+          "relatedOrganizations": "相关组织",
+          "relatedWebsites": "相关网站",
+          "relatedEvents": "相关事件",
+          "relatedSources": "相关信源",
           "addNeighbors": "",
-          "warning": "",
-          "noInghtSelected": "",
-          "title": ""
+          "title": "相关实体",
+          "noInghtSelected": "请选择一篇专栏以嵌入文章",
+          "dragTip": "将实体拖动到一篇专栏上以嵌入"
         },
         "EntityListWindow": {
           "error": "无法创建事件，请稍后再试。",
-          "title": "相关事件"
+          "title": "相关实体"
         }
       },
       "context": {
@@ -108,7 +112,8 @@
           "queryError": ""
         },
         "GlobalEventRecommendationWindow": {
-          "queryError": ""
+          "queryError": "",
+          "title": "重要事件推荐"
         }
       }
     }
@@ -128,7 +133,8 @@
     "confirm": "确认",
     "cancel": "取消",
     "save": "保存",
-    "notFound": "未找到"
+    "notFound": "未找到",
+    "warning": "警告"
   },
   "components": {
     "map": {
@@ -146,6 +152,11 @@
         "create": "",
         "type": ""
       },
+      "edges": {
+        "RelationEdge": {
+          "name": ""
+        }
+      },
       "nodes": {
         "WebsiteNode": {
           "name": ""
@@ -162,11 +173,6 @@
         "EventNode": {
           "title": ""
         }
-      },
-      "edges": {
-        "RelationEdge": {
-          "name": ""
-        }
       }
     },
     "forms": {
@@ -174,16 +180,16 @@
         "title": ""
       },
       "SourceForm": {
-        "title": ""
+        "title": "信源标题"
       },
       "RelationForm": {
-        "label": ""
+        "label": "标签"
       },
       "PersonForm": {
-        "name": ""
+        "name": "姓名"
       },
       "OrganizationForm": {
-        "name": ""
+        "name": "组织名称"
       },
       "MonitoringSourceForm": {
         "name": "信源名称"
@@ -205,19 +211,16 @@
         "unsavedChangesWarning": "是否确认放弃修改？注意：所有未保存的修改将丢失。"
       }
     },
-    "entity": {
-      "FormRenderer": {
-        "error": ""
-      },
-      "CreationModal": {
-        "error": ""
-      }
-    },
     "editor": {
       "InsightEditor": {
         "noRelatedEntities": "暂无相关事件、人物、组织等",
         "updateInsightError": "无法更新专栏，请稍后再试",
         "openGallery": "相关事件、人物、组织等"
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "恢复视图"
+        }
       },
       "tools": {
         "UnredoTools": {
@@ -244,11 +247,14 @@
           "h2": "二级标题",
           "h3": "三级标题"
         }
+      }
+    },
+    "entity": {
+      "FormRenderer": {
+        "error": ""
       },
-      "extensions": {
-        "WindowAnchor": {
-          "restore": "恢复视图"
-        }
+      "CreationModal": {
+        "error": ""
       }
     }
   },

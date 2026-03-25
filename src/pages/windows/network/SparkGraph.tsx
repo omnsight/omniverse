@@ -47,15 +47,15 @@ export const SparkGraph: React.FC = () => {
         selected: selections.some((s) => s.data._id === o._id),
       }),
     );
-    (events || []).forEach((e) =>
+    (events || []).forEach((e) => {
       allNodes.push({
         id: e._id || '',
         type: 'event',
         position: { x: 0, y: 0 },
         data: e,
         selected: selections.some((s) => s.data._id === e._id),
-      }),
-    );
+      });
+    });
     (websites || []).forEach((w) =>
       allNodes.push({
         id: w._id || '',

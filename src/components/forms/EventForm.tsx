@@ -16,7 +16,7 @@ import {
   NumberInput,
   Badge,
 } from '@mantine/core';
-import { DateTimePicker } from '@mantine/dates';
+import { CustomDateTimePicker } from '../inputs/CustomDateTimePicker';
 import { type Event } from 'omni-osint-crud-client';
 import { useTranslation } from 'react-i18next';
 import countries from 'i18n-iso-countries';
@@ -35,7 +35,7 @@ interface Props extends PropsWithChildren {
   useInput?: boolean;
   onSubmit?: (data: Event) => void;
   onUpdate?: (data: Partial<Event>) => void;
-  onClose: () => void;
+  onClose?: () => void;
   exitButton?: React.ReactNode;
   style?: CSSProperties;
 }
@@ -74,7 +74,7 @@ export const EventForm: React.FC<Props> = ({
     if (!useInput) {
       setIsEditing(false);
     }
-    onClose();
+    onClose?.();
   };
 
   const handleDoubleClick = () => {
@@ -146,18 +146,17 @@ export const EventForm: React.FC<Props> = ({
                 control={control}
                 rules={{ required: t('common.required') }}
                 render={({ field }) => (
-                  <DateTimePicker
-                    {...field}
+                  <CustomDateTimePicker
                     value={field.value ? new Date(field.value * 1000) : null}
-                    onChange={(date) => {
-                      const newDate = date ? new Date(date) : null;
-                      if (newDate && !isNaN(newDate.getTime())) {
-                        field.onChange(newDate.getTime() / 1000);
+                    onChange={(date: Date | null) => {
+                      if (date) {
+                        field.onChange(date.getTime() / 1000);
                       } else {
                         field.onChange(undefined);
                       }
                     }}
                     placeholder={t('placeholder.date')}
+                    error={errors.happened_at?.message}
                   />
                 )}
               />

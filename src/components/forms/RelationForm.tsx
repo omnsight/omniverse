@@ -21,7 +21,7 @@ interface Props {
   relation: Relation;
   onSubmit?: (data: Relation) => void;
   onUpdate?: (data: Partial<Relation>) => void;
-  onClose: () => void;
+  onClose?: () => void;
   useInput?: boolean;
   children?: React.ReactNode;
   style?: CSSProperties;
@@ -45,7 +45,7 @@ export const RelationForm: React.FC<Props> = ({
     if (!useInput) {
       setIsEditing(false);
     }
-    onClose();
+    onClose?.();
   };
 
   const handleDoubleClick = () => {
@@ -57,14 +57,14 @@ export const RelationForm: React.FC<Props> = ({
   return (
     <BaseForm<Relation>
       style={style}
-      title={relation.label || t('components.forms.RelationForm.label', '?')}
+      title={relation.label || t('components.forms.RelationForm.label')}
       isEditing={isEditing || false}
       onClose={handlClose}
       defaultValues={relation}
       onSubmit={onSubmit}
       onUpdate={onUpdate}
     >
-      {({ control }) => (
+      {({ control, formState: { errors } }) => (
         <Stack
           pos="relative"
           gap="xs"
@@ -73,18 +73,20 @@ export const RelationForm: React.FC<Props> = ({
         >
           {isEditing && (
             <Text size="sm" fw={500}>
-              {t('components.forms.RelationForm.label', '?')}
+              {t('components.forms.RelationForm.label')}
             </Text>
           )}
           {isEditing && (
             <Controller
               name="label"
               control={control}
+              rules={{ required: t('common.required') }}
               render={({ field }) => (
                 <TextInput
                   {...field}
                   value={field.value || ''}
-                  placeholder={t('components.forms.RelationForm.label', '?')}
+                  placeholder={t('components.forms.RelationForm.label')}
+                  error={errors.label?.message}
                 />
               )}
             />
@@ -96,11 +98,13 @@ export const RelationForm: React.FC<Props> = ({
               <Controller
                 name="name"
                 control={control}
+                rules={{ required: t('common.required') }}
                 render={({ field }) => (
                   <TextInput
                     {...field}
                     value={field.value || ''}
                     placeholder={t('placeholder.name')}
+                    error={errors.name?.message}
                   />
                 )}
               />

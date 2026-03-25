@@ -12,7 +12,7 @@ import {
   Select,
   Slider,
 } from '@mantine/core';
-import { DatePickerInput } from '@mantine/dates';
+import { CustomDatePicker } from '../inputs/CustomDatePicker';
 import { type MonitoringSource } from 'omni-monitoring-client';
 import { useTranslation } from 'react-i18next';
 import { EditableAttributes } from './EditableAttributes';
@@ -25,7 +25,7 @@ interface Props {
   useInput?: boolean;
   onSubmit?: (data: MonitoringSource) => void;
   onUpdate?: (data: Partial<MonitoringSource>) => void;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export const MonitoringSourceForm: React.FC<Props> = ({
@@ -44,7 +44,7 @@ export const MonitoringSourceForm: React.FC<Props> = ({
     if (!useInput) {
       setIsEditing(false);
     }
-    onClose();
+    onClose?.();
   };
 
   const handleDoubleClick = () => {
@@ -188,9 +188,9 @@ export const MonitoringSourceForm: React.FC<Props> = ({
                 control={control}
                 rules={{ required: t('common.required') }}
                 render={({ field }) => (
-                  <DatePickerInput
+                  <CustomDatePicker
                     value={field.value ? new Date(field.value * 1000) : null}
-                    onChange={(date) => field.onChange(date ? new Date(date).getTime() / 1000 : 0)}
+                    onChange={(date) => field.onChange(date ? date.getTime() / 1000 : 0)}
                     placeholder={t('placeholder.lastReviewed')}
                     error={errors.last_reviewed?.message}
                   />

@@ -1,19 +1,43 @@
-import React, { useEffect } from 'react';
-import { Box, Group, Loader, ScrollArea, SimpleGrid } from '@mantine/core';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Box, Group, Loader, ScrollArea, Stack, Title } from '@mantine/core';
 import { EventForm } from '../../../components/forms';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { queryEvents } from 'omni-osint-query-client';
 import { notifications } from '@mantine/notifications';
 
-export const GlobalEventRecommendationWindow: React.FC = () => {
-  const { t } = useTranslation();
+type TimeRange = 'today' | 'pastWeek' | 'pastMonth';
 
-  const [start, end] = [new Date(), new Date()];
-  start.setHours(0, 0, 0, 0);
-  end.setHours(23, 59, 59, 999);
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['recommendation-query', start, end],
+export const GlobalEventRecommendationWindowContent: React.FC = () => {
+  const { t } = useTranslation();
+  const [timeRange, setTimeRange] = useState<TimeRange>('today');
+
+  const [start, end] = useMemo(() => {
+    const now = new Date();
+    const startDate = new Date(now);
+    const endDate = new Date(now);
+
+    switch (timeRange) {
+      case 'today':
+        startDate.setUTCHours(0, 0, 0, 0);
+        endDate.setUTCHours(23, 59, 59, 999);
+        break;
+      case 'pastWeek':
+        startDate.setUTCDate(now.getUTCDate() - 7);
+        startDate.setUTCHours(0, 0, 0, 0);
+        endDate.setUTCHours(23, 59, 59, 999);
+        break;
+      case 'pastMonth':
+        startDate.setUTCMonth(now.getUTCMonth() - 1);
+        startDate.setUTCHours(0, 0, 0, 0);
+        endDate.setUTCHours(23, 59, 59, 999);
+        break;
+    }
+    return [startDate, endDate];
+  }, [timeRange]);
+
+  const { data, isLoading, isError, error, isSuccess } = useQuery({
+    queryKey: ['recommendation-query', timeRange],
     queryFn: async () => {
       const response = await queryEvents({
         query: {
@@ -21,13 +45,22 @@ export const GlobalEventRecommendationWindow: React.FC = () => {
           date_end: Math.floor(end.getTime() / 1000),
         },
       });
-      console.debug('Recommendation data', response.data);
+      console.debug(`Recommendation data for ${timeRange}`, response.data);
       return response.data;
     },
-    enabled: !!start && !!end,
     staleTime: 5 * 60 * 1000,
     retry: 1,
   });
+
+  useEffect(() => {
+    if (isSuccess && data?.events?.length === 0) {
+      if (timeRange === 'today') {
+        setTimeRange('pastWeek');
+      } else if (timeRange === 'pastWeek') {
+        setTimeRange('pastMonth');
+      }
+    }
+  }, [isSuccess, data, timeRange]);
 
   useEffect(() => {
     if (isError) {
@@ -49,18 +82,28 @@ export const GlobalEventRecommendationWindow: React.FC = () => {
   }
 
   return (
-    <Box pos="relative" h="100%" w="100%">
-      <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars>
-        <Box p="lg">
-          <SimpleGrid cols={3} spacing="xl">
-            {data?.events?.map((entity) => (
-              <Box key={entity._id}>
-                <EventForm event={entity} onClose={() => {}} />
-              </Box>
-            ))}
-          </SimpleGrid>
-        </Box>
-      </ScrollArea>
+    <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars>
+      <Box p="lg" pt="sm">
+        <Stack>
+          {data?.events?.map((entity) => (
+            <Box key={entity._id}>
+              <EventForm event={entity} onClose={() => {}} />
+            </Box>
+          ))}
+        </Stack>
+      </Box>
+    </ScrollArea>
+  );
+};
+
+export const GlobalEventRecommendationWindow: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
+      <Box p="lg" pb={0}>
+        <Title order={3}>{t('pages.windows.context.GlobalEventRecommendationWindow.title')}</Title>
+      </Box>
+      <GlobalEventRecommendationWindowContent />
     </Box>
   );
 };
