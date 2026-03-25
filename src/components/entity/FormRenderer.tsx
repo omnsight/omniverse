@@ -1,4 +1,4 @@
-import React, { type PropsWithChildren } from 'react';
+import React, { type PropsWithChildren, type CSSProperties } from 'react';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import {
@@ -22,9 +22,10 @@ import {
 interface Props extends PropsWithChildren {
   entity: Entity;
   onUpdate?: (entities: Entities) => void;
+  style?: CSSProperties;
 }
 
-export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdate, children }) => {
+export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdate, children, style }) => {
   const { t } = useTranslation();
 
   const handleUpdate = async (patch: Partial<EntityMainData>) => {
@@ -151,37 +152,52 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdate, children
   switch (entity.type) {
     case 'Event':
       return (
-        <EventForm event={entity.data} onUpdate={handleUpdate} onClose={() => {}}>
+        <EventForm event={entity.data} onUpdate={handleUpdate} onClose={() => {}} style={style}>
           {children}
         </EventForm>
       );
     case 'Organization':
       return (
-        <OrganizationForm organization={entity.data} onUpdate={handleUpdate} onClose={() => {}}>
+        <OrganizationForm
+          organization={entity.data}
+          onUpdate={handleUpdate}
+          onClose={() => {}}
+          style={style}
+        >
           {children}
         </OrganizationForm>
       );
     case 'Person':
       return (
-        <PersonForm person={entity.data} onUpdate={handleUpdate} onClose={() => {}}>
+        <PersonForm person={entity.data} onUpdate={handleUpdate} onClose={() => {}} style={style}>
           {children}
         </PersonForm>
       );
     case 'Relation':
       return (
-        <RelationForm relation={entity.data} onUpdate={handleUpdate} onClose={() => {}}>
+        <RelationForm
+          relation={entity.data}
+          onUpdate={handleUpdate}
+          onClose={() => {}}
+          style={style}
+        >
           {children}
         </RelationForm>
       );
     case 'Source':
       return (
-        <SourceForm source={entity.data} onUpdate={handleUpdate} onClose={() => {}}>
+        <SourceForm source={entity.data} onUpdate={handleUpdate} onClose={() => {}} style={style}>
           {children}
         </SourceForm>
       );
     case 'Website':
       return (
-        <WebsiteForm website={entity.data} onUpdate={handleUpdate} onClose={() => {}}>
+        <WebsiteForm
+          website={entity.data}
+          onUpdate={handleUpdate}
+          onClose={() => {}}
+          style={style}
+        >
           {children}
         </WebsiteForm>
       );

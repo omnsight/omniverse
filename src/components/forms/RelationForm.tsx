@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, type CSSProperties } from 'react';
 import {
   Stack,
   Group,
@@ -22,9 +22,9 @@ interface Props {
   onSubmit?: (data: Relation) => void;
   onUpdate?: (data: Partial<Relation>) => void;
   onClose: () => void;
-  onClick?: () => void;
   useInput?: boolean;
   children?: React.ReactNode;
+  style?: CSSProperties;
 }
 
 export const RelationForm: React.FC<Props> = ({
@@ -32,13 +32,14 @@ export const RelationForm: React.FC<Props> = ({
   onSubmit,
   onUpdate,
   onClose,
-  onClick,
   useInput,
   children,
+  style,
 }) => {
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(useInput || false);
+  const canEdit = onSubmit !== undefined || onUpdate !== undefined;
 
   const handlClose = () => {
     if (!useInput) {
@@ -48,13 +49,14 @@ export const RelationForm: React.FC<Props> = ({
   };
 
   const handleDoubleClick = () => {
-    if (!useInput) {
+    if (!useInput && canEdit) {
       setIsEditing(true);
     }
   };
 
   return (
     <BaseForm<Relation>
+      style={style}
       title={relation.label || t('components.forms.RelationForm.label', '?')}
       isEditing={isEditing || false}
       onClose={handlClose}
@@ -64,9 +66,9 @@ export const RelationForm: React.FC<Props> = ({
     >
       {({ control }) => (
         <Stack
+          pos="relative"
           gap="xs"
-          style={{ position: 'relative', cursor: onClick ? 'pointer' : 'default' }}
-          onClick={onClick}
+          style={{ cursor: canEdit ? (isEditing ? 'default' : 'pointer') : 'default' }}
           onDoubleClick={handleDoubleClick}
         >
           {isEditing && (

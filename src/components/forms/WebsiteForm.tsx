@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, type CSSProperties } from 'react';
 import {
   Stack,
   Group,
@@ -26,9 +26,9 @@ interface Props {
   onSubmit?: (data: Website) => void;
   onUpdate?: (data: Partial<Website>) => void;
   onClose: () => void;
-  onClick?: () => void;
   useInput?: boolean;
   children?: React.ReactNode;
+  style?: CSSProperties;
 }
 
 export const WebsiteForm: React.FC<Props> = ({
@@ -36,13 +36,14 @@ export const WebsiteForm: React.FC<Props> = ({
   onSubmit,
   onUpdate,
   onClose,
-  onClick,
   useInput,
   children,
+  style,
 }) => {
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(useInput || false);
+  const canEdit = onSubmit !== undefined || onUpdate !== undefined;
 
   const handlClose = () => {
     if (!useInput) {
@@ -52,13 +53,14 @@ export const WebsiteForm: React.FC<Props> = ({
   };
 
   const handleDoubleClick = () => {
-    if (!useInput) {
+    if (!useInput && canEdit) {
       setIsEditing(true);
     }
   };
 
   return (
     <BaseForm<Website>
+      style={style}
       title={website.title || t('components.forms.WebsiteForm.title', '?')}
       isEditing={isEditing || false}
       onClose={handlClose}
@@ -68,9 +70,9 @@ export const WebsiteForm: React.FC<Props> = ({
     >
       {({ control }) => (
         <Stack
+          pos="relative"
           gap="xs"
-          style={{ position: 'relative', cursor: onClick ? 'pointer' : 'default' }}
-          onClick={onClick}
+          style={{ cursor: canEdit ? (isEditing ? 'default' : 'pointer') : 'default' }}
           onDoubleClick={handleDoubleClick}
         >
           <Group gap="xs">

@@ -12,7 +12,7 @@ import { useWindowStore } from './stores/windowStateStore';
 
 function App() {
   const [opened] = useDisclosure();
-  const isTablet = useMediaQuery('(min-width: 780px)');
+  const isTablet = useMediaQuery('(max-width: 1024px)');
 
   useEffect(() => {
     const handleGlobalDragEnd = () => {

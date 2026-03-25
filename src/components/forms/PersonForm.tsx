@@ -13,7 +13,7 @@ import { DatePickerInput } from '@mantine/dates';
 import { useTranslation } from 'react-i18next';
 import { type Person } from 'omni-osint-crud-client';
 import { EditableAttributes } from './EditableAttributes';
-import { useState } from 'react';
+import { type CSSProperties, useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { Controller } from 'react-hook-form';
 import { BaseForm } from './BaseForm';
@@ -23,9 +23,9 @@ interface Props {
   onSubmit?: (data: Person) => void;
   onUpdate?: (data: Partial<Person>) => void;
   onClose: () => void;
-  onClick?: () => void;
   useInput?: boolean;
   children?: React.ReactNode;
+  style?: CSSProperties;
 }
 
 export const PersonForm: React.FC<Props> = ({
@@ -33,13 +33,14 @@ export const PersonForm: React.FC<Props> = ({
   onSubmit,
   onUpdate,
   onClose,
-  onClick,
   useInput,
   children,
+  style,
 }) => {
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(useInput || false);
+  const canEdit = onSubmit !== undefined || onUpdate !== undefined;
 
   const handlClose = () => {
     if (!useInput) {
@@ -49,13 +50,14 @@ export const PersonForm: React.FC<Props> = ({
   };
 
   const handleDoubleClick = () => {
-    if (!useInput) {
+    if (!useInput && canEdit) {
       setIsEditing(true);
     }
   };
 
   return (
     <BaseForm<Person>
+      style={style}
       title={person.name || t('components.forms.PersonForm.name', '?')}
       isEditing={isEditing || false}
       onClose={handlClose}
@@ -65,9 +67,9 @@ export const PersonForm: React.FC<Props> = ({
     >
       {({ control }) => (
         <Stack
+          pos="relative"
           gap="xs"
-          style={{ position: 'relative', cursor: onClick ? 'pointer' : 'default' }}
-          onClick={onClick}
+          style={{ cursor: canEdit ? (isEditing ? 'default' : 'pointer') : 'default' }}
           onDoubleClick={handleDoubleClick}
         >
           {isEditing && (

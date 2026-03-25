@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
-import { Box, Button, ScrollArea, Stack, Title } from '@mantine/core';
-import { useEntityDataStore } from '../network/entityData';
+import { ActionIcon, Box, Button, ScrollArea, Stack, Title } from '@mantine/core';
+import { useEntityDataActions, useEntityDataStore } from '../network/entityData';
 import { useEntitySelectionActions } from './entitySelection';
 import { EventForm } from '../../../components/forms';
 import { useTranslation } from 'react-i18next';
 import { useWindowManager } from '../WindowManager';
-import { PlusIcon } from '@heroicons/react/24/solid';
-import { createEvent, type Event } from 'omni-osint-crud-client';
+import { ArrowRightIcon, PlusIcon } from '@heroicons/react/24/solid';
+import { createEvent, updateEvent, type Event } from 'omni-osint-crud-client';
 import { notifications } from '@mantine/notifications';
 import { useCrudClient } from '../../../api/useCrudyClient';
+import { canWriteToEntity, useAuth } from '../../../provider/AuthContext';
 
 export const EntityListWindowContent: React.FC = () => {
   const { t } = useTranslation();
-  const { events, actions } = useEntityDataStore();
+  const { user } = useAuth();
+  const { events } = useEntityDataStore();
+  const { addEntities } = useEntityDataActions();
   const { setActiveWindowByName } = useWindowManager();
   const { setSelections } = useEntitySelectionActions();
   const { authed, crudClient } = useCrudClient();
@@ -33,9 +36,32 @@ export const EntityListWindowContent: React.FC = () => {
         color: 'red',
       });
     } else {
-      actions.addEntities({ events: [data] });
+      addEntities({ events: [data] });
       setCreating(false);
       console.log('Created event', data);
+    }
+  };
+
+  const handleUpdateEvent = async (id: string, patch: Partial<Event>) => {
+    console.debug('Updating event', id, patch);
+    const { data, error, status } = await updateEvent({
+      body: patch,
+      path: {
+        id,
+      },
+      client: crudClient,
+    });
+
+    if (error) {
+      console.error(`Error [${status}] updating event`, error);
+      notifications.show({
+        title: t('common.error'),
+        message: t('pages.windows.data.EntityListWindow.error'),
+        color: 'red',
+      });
+    } else {
+      addEntities({ events: [data] });
+      console.log('Updated event', data);
     }
   };
 
@@ -48,11 +74,27 @@ export const EntityListWindowContent: React.FC = () => {
               <EventForm
                 event={entity}
                 useInput={false}
-                onClick={() => {
-                  setSelections([entity._id || '']);
-                  setActiveWindowByName('Entity');
-                }}
+                onUpdate={
+                  canWriteToEntity(user, entity).canEdit
+                    ? (data) => data._id && handleUpdateEvent(data._id, data)
+                    : undefined
+                }
                 onClose={() => {}}
+                exitButton={
+                  <ActionIcon
+                    variant="subtle"
+                    color="gray"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (entity._id) {
+                        setSelections([entity._id]);
+                        setActiveWindowByName('Entity');
+                      }
+                    }}
+                  >
+                    <ArrowRightIcon style={{ width: 18, height: 18 }} />
+                  </ActionIcon>
+                }
               />
             </Box>
           ))}

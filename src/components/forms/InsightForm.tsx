@@ -24,6 +24,7 @@ export const InsightForm: React.FC<InsightFormProps> = ({
 }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(useInput || false);
+  const canEdit = onSubmit !== undefined || onUpdate !== undefined;
 
   const handlClose = () => {
     if (!useInput) {
@@ -33,7 +34,7 @@ export const InsightForm: React.FC<InsightFormProps> = ({
   };
 
   const handleDoubleClick = () => {
-    if (!useInput) {
+    if (!useInput && canEdit) {
       setIsEditing(true);
     }
   };
@@ -53,7 +54,12 @@ export const InsightForm: React.FC<InsightFormProps> = ({
       exitButton={exitButton}
     >
       {({ control, formState: { errors } }) => (
-        <Stack onDoubleClick={handleDoubleClick}>
+        <Stack
+          pos="relative"
+          gap="xs"
+          style={{ cursor: canEdit ? (isEditing ? 'default' : 'pointer') : 'default' }}
+          onDoubleClick={handleDoubleClick}
+        >
           {isEditing && (
             <Text size="sm" fw={500}>
               {t('placeholder.title')}

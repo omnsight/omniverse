@@ -1,4 +1,4 @@
-import { useMemo, useState, type PropsWithChildren } from 'react';
+import { useMemo, useState, type PropsWithChildren, type CSSProperties } from 'react';
 import { CalendarDaysIcon, ChevronDownIcon, MapPinIcon } from '@heroicons/react/24/outline';
 import {
   Collapse,
@@ -36,7 +36,8 @@ interface Props extends PropsWithChildren {
   onSubmit?: (data: Event) => void;
   onUpdate?: (data: Partial<Event>) => void;
   onClose: () => void;
-  onClick?: () => void;
+  exitButton?: React.ReactNode;
+  style?: CSSProperties;
 }
 
 export const EventForm: React.FC<Props> = ({
@@ -45,12 +46,14 @@ export const EventForm: React.FC<Props> = ({
   onSubmit,
   onUpdate,
   onClose,
-  onClick,
+  exitButton,
   children,
+  style,
 }) => {
   const { t, i18n } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(useInput || false);
+  const canEdit = onSubmit !== undefined || onUpdate !== undefined;
 
   // Generate country list based on current language
   const countryOptions = useMemo(() => {
@@ -75,13 +78,14 @@ export const EventForm: React.FC<Props> = ({
   };
 
   const handleDoubleClick = () => {
-    if (!useInput) {
+    if (!useInput && canEdit) {
       setIsEditing(true);
     }
   };
 
   return (
     <BaseForm<Event>
+      style={style}
       title={
         isEditing
           ? t('components.forms.EventForm.editingTitle')
@@ -95,16 +99,17 @@ export const EventForm: React.FC<Props> = ({
           ...event.location,
           sub_locality: event?.location?.sub_locality || '',
           sub_administrative_area: event?.location?.sub_administrative_area || '',
-        }
+        },
       }}
       onSubmit={onSubmit}
       onUpdate={onUpdate}
+      exitButton={exitButton}
     >
       {({ control, formState: { errors } }) => (
         <Stack
+          pos="relative"
           gap="xs"
-          style={{ position: 'relative', cursor: onClick ? 'pointer' : 'default' }}
-          onClick={onClick}
+          style={{ cursor: canEdit ? (isEditing ? 'default' : 'pointer') : 'default' }}
           onDoubleClick={handleDoubleClick}
         >
           {isEditing && (
@@ -145,13 +150,13 @@ export const EventForm: React.FC<Props> = ({
                     {...field}
                     value={field.value ? new Date(field.value * 1000) : null}
                     onChange={(date) => {
-                        const newDate = date ? new Date(date) : null;
-                        if (newDate && !isNaN(newDate.getTime())) {
-                          field.onChange(newDate.getTime() / 1000);
-                        } else {
-                          field.onChange(undefined);
-                        }
-                      }}
+                      const newDate = date ? new Date(date) : null;
+                      if (newDate && !isNaN(newDate.getTime())) {
+                        field.onChange(newDate.getTime() / 1000);
+                      } else {
+                        field.onChange(undefined);
+                      }
+                    }}
                     placeholder={t('placeholder.date')}
                   />
                 )}

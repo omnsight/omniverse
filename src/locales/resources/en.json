@@ -85,30 +85,30 @@
           "title": "Insight Column"
         }
       },
+      "data": {
+        "EntityWindow": {
+          "queryError": "",
+          "noEntitySelected": "",
+          "relatedOrganizations": "",
+          "relatedWebsites": "",
+          "relatedEvents": "",
+          "relatedSources": "",
+          "addNeighbors": "",
+          "warning": "",
+          "noInghtSelected": "",
+          "title": ""
+        },
+        "EntityListWindow": {
+          "error": "Failed to create event",
+          "title": "Related Events"
+        }
+      },
       "context": {
         "GlobalEventTimelineWindow": {
           "queryError": ""
         },
         "GlobalEventRecommendationWindow": {
           "queryError": ""
-        }
-      },
-      "data": {
-        "EntityWindow": {
-          "queryError": "",
-          "warning": "",
-          "noEntitySelected": "",
-          "noInghtSelected": "",
-          "relatedOrganizations": "",
-          "relatedWebsites": "",
-          "relatedEvents": "",
-          "relatedSources": "",
-          "addNeighbors": "",
-          "title": ""
-        },
-        "EntityListWindow": {
-          "error": "Failed to create event",
-          "title": "Related Events"
         }
       }
     }
@@ -117,12 +117,17 @@
     "error": "Error",
     "reset": "Reset",
     "apply": "Apply",
-    "save": "",
     "required": "This field is required",
-    "remove": "",
+    "types": {
+      "text": "text",
+      "number": "number",
+      "toggle": "toggle"
+    },
+    "remove": "Remove",
     "add": "Add Attribute",
     "confirm": "Confirm",
     "cancel": "",
+    "save": "",
     "notFound": "Not Found"
   },
   "components": {
@@ -161,44 +166,6 @@
       "edges": {
         "RelationEdge": {
           "name": ""
-        }
-      }
-    },
-    "editor": {
-      "InsightEditor": {
-        "noRelatedEntities": "No related events, people, and etc.",
-        "updateInsightError": "Failed to update insight, please try again later.",
-        "openGallery": "Related Events, People, and etc."
-      },
-      "tools": {
-        "UnredoTools": {
-          "undo": "Undo",
-          "redo": "Redo"
-        },
-        "TextTools": {
-          "bold": "Bold",
-          "italic": "Italic",
-          "strike": "Strike",
-          "highlight": "Highlight"
-        },
-        "TextSpecialTools": {
-          "codeBlock": "Code Block",
-          "blockquote": "Blockquote"
-        },
-        "ListTools": {
-          "bulletList": "Bullet List",
-          "orderedList": "Ordered List",
-          "horizontalRule": "Horizontal Rule"
-        },
-        "HeadingTools": {
-          "h1": "H1 Heading",
-          "h2": "H2 Heading",
-          "h3": "H3 Heading"
-        }
-      },
-      "extensions": {
-        "WindowAnchor": {
-          "restore": "Restore Window"
         }
       }
     },
@@ -245,6 +212,44 @@
       "CreationModal": {
         "error": ""
       }
+    },
+    "editor": {
+      "InsightEditor": {
+        "noRelatedEntities": "No related events, people, and etc.",
+        "updateInsightError": "Failed to update insight, please try again later.",
+        "openGallery": "Related Events, People, and etc."
+      },
+      "tools": {
+        "UnredoTools": {
+          "undo": "Undo",
+          "redo": "Redo"
+        },
+        "TextTools": {
+          "bold": "Bold",
+          "italic": "Italic",
+          "strike": "Strike",
+          "highlight": "Highlight"
+        },
+        "TextSpecialTools": {
+          "codeBlock": "Code Block",
+          "blockquote": "Blockquote"
+        },
+        "ListTools": {
+          "bulletList": "Bullet List",
+          "orderedList": "Ordered List",
+          "horizontalRule": "Horizontal Rule"
+        },
+        "HeadingTools": {
+          "h1": "H1 Heading",
+          "h2": "H2 Heading",
+          "h3": "H3 Heading"
+        }
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "Restore Window"
+        }
+      }
     }
   },
   "placeholder": {
@@ -278,8 +283,8 @@
     "longitude": "Longitude",
     "country": "Country",
     "postalCode": "Postal Code",
-    "key": "",
-    "value": "",
+    "key": "Key",
+    "value": "Value",
     "relation": "Relation",
     "createdDate": "Created Date",
     "updatedDate": "Updated Date",

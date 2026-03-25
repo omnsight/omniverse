@@ -15,7 +15,7 @@ import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 import { type Source } from 'omni-osint-crud-client';
 import { EditableAttributes } from './EditableAttributes';
-import { useState } from 'react';
+import { type CSSProperties, useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { Controller } from 'react-hook-form';
 import { BaseForm } from './BaseForm';
@@ -25,9 +25,9 @@ interface Props {
   onSubmit?: (data: Source) => void;
   onUpdate?: (data: Partial<Source>) => void;
   onClose: () => void;
-  onClick?: () => void;
   useInput?: boolean;
   children?: React.ReactNode;
+  style?: CSSProperties;
 }
 
 export const SourceForm: React.FC<Props> = ({
@@ -35,13 +35,14 @@ export const SourceForm: React.FC<Props> = ({
   onSubmit,
   onUpdate,
   onClose,
-  onClick,
   useInput,
   children,
+  style,
 }) => {
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(useInput || false);
+  const canEdit = onSubmit !== undefined || onUpdate !== undefined;
 
   const handlClose = () => {
     if (!useInput) {
@@ -51,13 +52,14 @@ export const SourceForm: React.FC<Props> = ({
   };
 
   const handleDoubleClick = () => {
-    if (!useInput) {
+    if (!useInput && canEdit) {
       setIsEditing(true);
     }
   };
 
   return (
     <BaseForm<Source>
+      style={style}
       title={source.name || source.url || t('components.forms.SourceForm.title', '?')}
       isEditing={isEditing || false}
       onClose={handlClose}
@@ -67,9 +69,9 @@ export const SourceForm: React.FC<Props> = ({
     >
       {({ control }) => (
         <Stack
+          pos="relative"
           gap="xs"
-          style={{ position: 'relative', cursor: onClick ? 'pointer' : 'default' }}
-          onClick={onClick}
+          style={{ cursor: canEdit ? (isEditing ? 'default' : 'pointer') : 'default' }}
           onDoubleClick={handleDoubleClick}
         >
           <Group gap="xs">

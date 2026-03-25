@@ -43,11 +43,9 @@ export const useAuth = () => {
   return context;
 };
 
-export const useEntityAuth = (entity?: EntityWithAuth) => {
-  const { user } = useAuth();
-
+export const canWriteToEntity = (user: AuthUser | null, entity?: EntityWithAuth) => {
   if (!user || !entity) {
-    return { canEdit: false };
+    return { canEdit: true };
   }
 
   // Check Owner (user.id matches entity.owner)
@@ -64,6 +62,11 @@ export const useEntityAuth = (entity?: EntityWithAuth) => {
   }
 
   return { canEdit: false };
+};
+
+export const useEntityAuth = (entity?: EntityWithAuth) => {
+  const { user } = useAuth();
+  return canWriteToEntity(user, entity);
 };
 
 export const useDataOwner = (data?: DataWithOwner) => {

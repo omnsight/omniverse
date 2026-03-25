@@ -1,6 +1,6 @@
-import { Button, Group, Stack, Text, TextInput } from '@mantine/core';
-import { randomId } from '@mantine/hooks';
+import { Button, Group, NumberInput, Select, Stack, Switch, Text, TextInput } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { randomId } from '@mantine/hooks';
 
 interface Props {
   value: Record<string, any>;
@@ -10,34 +10,43 @@ interface Props {
 
 export const EditableAttributes: React.FC<Props> = ({ value, onChange, isEditing }) => {
   const { t } = useTranslation();
+
   const handleAdd = () => {
-    const newKey = randomId();
-    onChange({ ...value, [newKey]: '' });
+    onChange({ ...value, [randomId()]: { key: '', value: '', type: 'text' } });
   };
 
-  const handleKeyChange = (oldKey: string, newKey: string) => {
-    const { [oldKey]: _, ...rest } = value;
-    onChange({ ...rest, [newKey]: value[oldKey] });
+  const handleKeyChange = (id: string, newKey: string) => {
+    onChange({ ...value, [id]: { ...value[id], key: newKey } });
   };
 
-  const handleValueChange = (key: string, newValue: string) => {
-    onChange({ ...value, [key]: newValue });
+  const handleValueChange = (id: string, newValue: any) => {
+    onChange({ ...value, [id]: { ...value[id], value: newValue } });
   };
 
-  const handleRemove = (key: string) => {
-    const { [key]: _, ...rest } = value;
+  const handleTypeChange = (id: string, newType: 'text' | 'number' | 'toggle') => {
+    let defaultValue: any = '';
+    if (newType === 'number') {
+      defaultValue = 0;
+    } else if (newType === 'toggle') {
+      defaultValue = false;
+    }
+    onChange({ ...value, [id]: { ...(value[id] || {}), type: newType, value: defaultValue } });
+  };
+
+  const handleRemove = (id: string) => {
+    const { [id]: _, ...rest } = value;
     onChange(rest);
   };
 
   if (!isEditing) {
     return (
       <Stack gap="xs">
-        {Object.entries(value).map(([key, val]) => (
-          <Group key={key} gap="xs">
+        {Object.entries(value).map(([id, val]: [string, any]) => (
+          <Group key={id} gap="xs">
             <Text size="sm" fw={500}>
-              {key}:
+              {val.key}:
             </Text>
-            <Text size="sm">{val}</Text>
+            <Text size="sm">{String(val.value)}</Text>
           </Group>
         ))}
       </Stack>
@@ -46,24 +55,65 @@ export const EditableAttributes: React.FC<Props> = ({ value, onChange, isEditing
 
   return (
     <Stack gap="xs" pb="sm">
-      {Object.entries(value).map(([key, val]) => (
-        <Group key={key} gap="xs">
-          <TextInput
-            value={key}
-            onChange={(e) => handleKeyChange(key, e.currentTarget.value)}
-            placeholder={t('placeholder.key', '?')}
-          />
-          <TextInput
-            value={val}
-            onChange={(e) => handleValueChange(key, e.currentTarget.value)}
-            placeholder={t('placeholder.value', '?')}
-          />
-          <Button color="red" variant="subtle" size="xs" onClick={() => handleRemove(key)}>
-            {t('common.remove', '?')}
-          </Button>
-        </Group>
-      ))}
-      <Button onClick={handleAdd} size="xs" mt="sm">
+      {Object.entries(value).map(([id, val]: [string, any]) => {
+        return (
+          <Group key={id} gap="xs">
+            <TextInput
+              w={75}
+              value={val.key}
+              onChange={(e) => handleKeyChange(id, e.currentTarget.value)}
+              placeholder={t('placeholder.key')}
+            />
+            <Select
+              w={100}
+              value={val.type}
+              onChange={(newType) => {
+                if (newType) {
+                  handleTypeChange(id, newType as 'text' | 'number' | 'toggle');
+                }
+              }}
+              placeholder={t('placeholder.type')}
+              data={[
+                { value: 'text', label: t('common.types.text') },
+                { value: 'number', label: t('common.types.number') },
+                { value: 'toggle', label: t('common.types.toggle') },
+              ]}
+            />
+            {val.type === 'text' && (
+              <TextInput
+                w={150}
+                value={val.value}
+                onChange={(e) => handleValueChange(id, e.currentTarget.value)}
+                placeholder={t('placeholder.value')}
+              />
+            )}
+            {val.type === 'number' && (
+              <NumberInput
+                w={150}
+                value={val.value}
+                onChange={(v) => handleValueChange(id, v)}
+                placeholder={t('placeholder.value')}
+              />
+            )}
+            {val.type === 'toggle' && (
+              <Switch
+                w={150}
+                checked={val.value}
+                onChange={(e) => handleValueChange(id, e.currentTarget.checked)}
+              />
+            )}
+            <Button color="red" variant="subtle" size="xs" onClick={() => handleRemove(id)}>
+              {t('common.remove')}
+            </Button>
+          </Group>
+        );
+      })}
+      <Button
+        onClick={handleAdd}
+        size="xs"
+        mt="sm"
+        disabled={Object.values(value).some((v: any) => v.key === '')}
+      >
         {t('common.add')}
       </Button>
     </Stack>

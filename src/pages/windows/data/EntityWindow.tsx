@@ -7,11 +7,11 @@ import {
   Text,
   Stack,
   Group,
-  LoadingOverlay,
   Button,
   ActionIcon,
   Title,
   Loader,
+  Paper,
 } from '@mantine/core';
 import { useEntitySelectionActions, useSelectedEntities } from './entitySelection';
 import { useEntityDataActions } from '../network/entityData';
@@ -26,7 +26,7 @@ import {
   EmptyAvatar,
 } from '../../../components/avatars';
 import { EntityFormRenderer } from '../../../components/entity/FormRenderer';
-import { getEntityTitle } from '../../../components/entity/entity';
+import { getEntityTitle, type Entity } from '../../../components/entity/entity';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { useEntityAuth, useAuth } from '../../../provider/AuthContext';
@@ -35,23 +35,24 @@ import { notifications } from '@mantine/notifications';
 import { useWindowStoreActions } from '../../../stores/windowStateStore';
 import { PlusCircleIcon } from '@heroicons/react/16/solid';
 
-const EntityWindowContent: React.FC = () => {
-  const { t } = useTranslation();
-  const { user, hasRole } = useAuth();
-  const selections = useSelectedEntities();
-  const { setSelections } = useEntitySelectionActions();
-  const { addEntities } = useEntityDataActions();
-  const selected = useInsightStore((state) => state.getSelectedInsight());
-  const { register, setDragging } = useWindowStoreActions();
+interface EntityWindowContentProps {
+  selectedEntity?: Entity;
+  hasWritePermission: boolean;
+  handleDragStart: (e: React.DragEvent) => void;
+}
 
-  const lastSelection = selections[selections.length - 1];
-  const auth = useEntityAuth(lastSelection?.data);
-  const hasWritePermission = user ? (hasRole('admin') || hasRole('pro')) && auth.canEdit : false;
+const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
+  selectedEntity,
+  hasWritePermission,
+  handleDragStart,
+}) => {
+  const { t } = useTranslation();
+  const { addEntities } = useEntityDataActions();
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['neighbors', lastSelection?.data._id],
-    queryFn: () => queryNeighbors({ path: { id: lastSelection.data._id || '' } }),
-    enabled: !!lastSelection,
+    queryKey: ['neighbors', selectedEntity?.data._id],
+    queryFn: () => queryNeighbors({ path: { id: selectedEntity?.data._id || '' } }),
+    enabled: !!selectedEntity,
   });
 
   useEffect(() => {
@@ -65,37 +66,6 @@ const EntityWindowContent: React.FC = () => {
     }
   }, [isError, error]);
 
-  useEffect(() => {
-    register('entity-window', (savedState) => {
-      setSelections(savedState.entities);
-    });
-  }, []);
-
-  const handleDragStart = (e: React.DragEvent) => {
-    if (!lastSelection.data._id) {
-      notifications.show({
-        title: t('pages.windows.data.EntityWindow.warning', '?'),
-        message: t('pages.windows.data.EntityWindow.noEntitySelected', '?'),
-        color: 'orange',
-      });
-    } else if (!selected) {
-      notifications.show({
-        title: t('pages.windows.data.EntityWindow.warning', '?'),
-        message: t('pages.windows.data.EntityWindow.noInghtSelected', '?'),
-        color: 'orange',
-      });
-    } else {
-      const payload = {
-        type: 'entity-window',
-        label: getEntityTitle(lastSelection),
-        state: { entities: [lastSelection.data._id] },
-      };
-      setDragging(payload);
-      e.dataTransfer.setData('application/x-tiptap-node', JSON.stringify(payload));
-      e.dataTransfer.effectAllowed = 'copy';
-    }
-  };
-
   if (isLoading) {
     return (
       <Group justify="center" align="center" style={{ flex: 1 }}>
@@ -104,7 +74,7 @@ const EntityWindowContent: React.FC = () => {
     );
   }
 
-  if (!lastSelection) {
+  if (!selectedEntity) {
     return (
       <Group justify="center" align="center" style={{ flex: 1 }}>
         <Text>{t('pages.windows.data.EntityWindow.noEntitySelected', '?')}</Text>
@@ -113,18 +83,12 @@ const EntityWindowContent: React.FC = () => {
   }
 
   return (
-    <EntityFormRenderer
-      entity={lastSelection}
-      onUpdate={hasWritePermission ? (entities) => addEntities(entities, undefined) : undefined}
-    >
-      <ActionIcon
-        draggable
-        onDragStart={handleDragStart}
-        onDragEnd={() => setDragging(undefined)}
-        style={{ position: 'absolute', top: 15, left: 15, zIndex: 10 }}
-      >
-        <PlusCircleIcon />
-      </ActionIcon>
+    <Paper withBorder p="md" style={{ flex: 1, position: 'relative' }}>
+      <EntityFormRenderer
+        entity={selectedEntity}
+        onUpdate={hasWritePermission ? (entities) => addEntities(entities, undefined) : undefined}
+        style={{ border: 'none', boxShadow: 'none', padding: 0 }}
+      />
 
       <Divider my="sm" />
 
@@ -225,7 +189,7 @@ const EntityWindowContent: React.FC = () => {
                         websites: data?.data?.websites,
                         relations: data?.data?.relations,
                       },
-                      ['neighbors', lastSelection?.data._id],
+                      ['neighbors', selectedEntity?.data._id],
                     );
                   }
                 }}
@@ -236,18 +200,70 @@ const EntityWindowContent: React.FC = () => {
           )}
         </Stack>
       </Box>
-    </EntityFormRenderer>
+    </Paper>
   );
 };
 
 export const EntityWindow: React.FC = () => {
   const { t } = useTranslation();
+  const { user, hasRole } = useAuth();
+  const selections = useSelectedEntities();
+  const { setSelections } = useEntitySelectionActions();
+  const { register, setDragging } = useWindowStoreActions();
+  const lastSelection: Entity | undefined =
+    selections.length > 0 ? selections[selections.length - 1] : undefined;
+  const selected = useInsightStore((state) => state.getSelectedInsight());
+  const auth = useEntityAuth(lastSelection?.data);
+  const hasWritePermission = user ? (hasRole('admin') || hasRole('pro')) && auth.canEdit : false;
+
+  useEffect(() => {
+    register('entity-window', (savedState) => {
+      setSelections(savedState.entities);
+    });
+  }, []);
+
+  const handleDragStart = (e: React.DragEvent) => {
+    if (!lastSelection || !lastSelection.data._id) {
+      notifications.show({
+        title: t('pages.windows.data.EntityWindow.warning', '?'),
+        message: t('pages.windows.data.EntityWindow.noEntitySelected', '?'),
+        color: 'orange',
+      });
+    } else if (!selected) {
+      notifications.show({
+        title: t('pages.windows.data.EntityWindow.warning', '?'),
+        message: t('pages.windows.data.EntityWindow.noInghtSelected', '?'),
+        color: 'orange',
+      });
+    } else {
+      const payload = {
+        type: 'entity-window',
+        label: getEntityTitle(lastSelection),
+        state: { entities: [lastSelection.data._id] },
+      };
+      setDragging(payload);
+      e.dataTransfer.setData('application/x-tiptap-node', JSON.stringify(payload));
+      e.dataTransfer.effectAllowed = 'copy';
+    }
+  };
+
   return (
     <Box pos="relative" h="100%" w="100%" style={{ display: 'flex', flexDirection: 'column' }}>
       <Box p="lg" pb={0}>
         <Title order={3}>{t('pages.windows.data.EntityWindow.title', '?')}</Title>
+        <ActionIcon
+          draggable
+          onDragStart={handleDragStart}
+          onDragEnd={() => setDragging(undefined)}
+        >
+          <PlusCircleIcon />
+        </ActionIcon>
       </Box>
-      <EntityWindowContent />
+      <EntityWindowContent
+        selectedEntity={lastSelection}
+        hasWritePermission={hasWritePermission}
+        handleDragStart={handleDragStart}
+      />
     </Box>
   );
 };

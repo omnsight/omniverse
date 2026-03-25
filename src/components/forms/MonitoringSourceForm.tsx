@@ -38,6 +38,7 @@ export const MonitoringSourceForm: React.FC<Props> = ({
   const { t } = useTranslation();
   const [attributesOpen, setAttributesOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(useInput || false);
+  const canEdit = onSubmit !== undefined || onUpdate !== undefined;
 
   const handlClose = () => {
     if (!useInput) {
@@ -47,7 +48,7 @@ export const MonitoringSourceForm: React.FC<Props> = ({
   };
 
   const handleDoubleClick = () => {
-    if (!useInput) {
+    if (!useInput && canEdit) {
       setIsEditing(true);
     }
   };
@@ -62,7 +63,12 @@ export const MonitoringSourceForm: React.FC<Props> = ({
       onUpdate={onUpdate}
     >
       {({ control, formState: { errors } }) => (
-        <Stack onDoubleClick={handleDoubleClick}>
+        <Stack
+          pos="relative"
+          gap="xs"
+          style={{ cursor: canEdit ? (isEditing ? 'default' : 'pointer') : 'default' }}
+          onDoubleClick={handleDoubleClick}
+        >
           {isEditing && (
             <Text size="sm" fw={500}>
               {t('components.forms.MonitoringSourceForm.name')}

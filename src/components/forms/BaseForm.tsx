@@ -10,6 +10,7 @@ import {
 } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { get } from 'lodash';
+import { type CSSProperties } from 'react';
 
 interface Props<T extends FieldValues> {
   title: string;
@@ -20,6 +21,7 @@ interface Props<T extends FieldValues> {
   defaultValues: DefaultValues<T>;
   exitButton?: React.ReactNode;
   children: (methods: UseFormReturn<T>) => React.ReactNode;
+  style?: CSSProperties;
 }
 
 export function BaseForm<T extends FieldValues>({
@@ -31,6 +33,7 @@ export function BaseForm<T extends FieldValues>({
   defaultValues,
   exitButton,
   children,
+  style,
 }: Props<T>) {
   const { t } = useTranslation();
   const methods = useForm<T>({ defaultValues });
@@ -83,10 +86,11 @@ export function BaseForm<T extends FieldValues>({
       p="md"
       shadow="sm"
       pos="relative"
-      withBorder
       style={{
         display: 'flex',
         flexDirection: 'column',
+        border: '1px solid var(--mantine-color-default-border)',
+        ...style,
       }}
     >
       <LoadingOverlay visible={isSubmitting} overlayProps={{ radius: 'sm', blur: 1 }} />
