@@ -1,16 +1,10 @@
 import React from 'react';
 import L from 'leaflet';
-import { Marker, Tooltip } from 'react-leaflet';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { Marker } from 'react-leaflet';
 import { type Event } from 'omni-osint-crud-client';
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-
-const DefaultIcon = L.icon({
-  iconUrl: icon,
-  shadowUrl: iconShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-});
+import { EventIcon } from '@omnsight/osint-entity-components/icons';
+import { MantineProvider } from '@mantine/core';
 
 interface Props {
   event: Event;
@@ -19,10 +13,21 @@ interface Props {
 }
 
 export const EventMarker: React.FC<Props> = ({ event, position, onClick }) => {
+  const customEventIcon = L.divIcon({
+    html: renderToStaticMarkup(
+      <MantineProvider>
+        <EventIcon event={event} size={30} />
+      </MantineProvider>,
+    ),
+    className: 'custom-event-marker', // Keeps the background transparent
+    iconSize: [30, 30],
+    iconAnchor: [15, 30], // Centers the icon horizontally, anchors bottom
+  });
+
   return (
     <Marker
       position={position}
-      icon={DefaultIcon}
+      icon={customEventIcon}
       eventHandlers={{
         click: (e) => onClick?.(e),
       }}

@@ -21,11 +21,12 @@ import {
 
 interface Props extends PropsWithChildren {
   entity: Entity;
+  neighbors?: Entities;
   onUpdate?: (entities: Entities) => void;
   style?: CSSProperties;
 }
 
-export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdate, children, style }) => {
+export const EntityFormRenderer: React.FC<Props> = ({ entity, neighbors, onUpdate, children, style }) => {
   const { t } = useTranslation();
 
   const handleUpdate = async (patch: Partial<EntityMainData>) => {
@@ -33,6 +34,7 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdate, children
       console.warn('Entity does not have an ID, cannot update');
       return;
     }
+    console.log('Updating entity', entity.type, entity.data._id, patch);
 
     const entities: Entities = {};
 
@@ -152,7 +154,7 @@ export const EntityFormRenderer: React.FC<Props> = ({ entity, onUpdate, children
   switch (entity.type) {
     case 'Event':
       return (
-        <EventForm event={entity.data} onUpdate={handleUpdate} onClose={() => {}} style={style}>
+        <EventForm event={entity.data} sources={neighbors?.sources} onUpdate={handleUpdate} onClose={() => {}} style={style}>
           {children}
         </EventForm>
       );

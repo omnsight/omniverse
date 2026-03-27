@@ -19,6 +19,7 @@ export const MonitorDashboard: React.FC = () => {
         {/* Monitor Window */}
         <Panel defaultSize={20} minSize={10}>
           <WindowManager
+            name="Monitor"
             windows={[
               { name: 'MonitorList', component: MonitorListWindow },
               { name: 'Monitor', component: MonitorWindow },
@@ -31,6 +32,7 @@ export const MonitorDashboard: React.FC = () => {
         {/* Main Window */}
         <Panel defaultSize={60} minSize={30}>
           <WindowManager
+            name="Main"
             windows={[
               { name: 'Map', component: MapWindow },
               { name: 'Spark', component: SparkGraph },
@@ -46,6 +48,7 @@ export const MonitorDashboard: React.FC = () => {
             {/* Network Window */}
             <Panel minSize={15}>
               <WindowManager
+                name="Insight"
                 windows={[
                   { name: 'InsightList', component: InsightListWindow },
                   { name: 'Insight', component: InsightWindow },
@@ -56,6 +59,7 @@ export const MonitorDashboard: React.FC = () => {
             {/* Raw Data Window */}
             <Panel minSize={15}>
               <WindowManager
+                name="Entity"
                 windows={[
                   { name: 'EntityList', component: EntityListWindow },
                   { name: 'Entity', component: EntityWindow },

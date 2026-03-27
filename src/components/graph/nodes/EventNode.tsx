@@ -2,9 +2,9 @@ import { memo } from 'react';
 import { type NodeProps } from 'reactflow';
 import { useTranslation } from 'react-i18next';
 import { Avatar, Box, Text } from '@mantine/core';
-import { CalendarDaysIcon } from '@heroicons/react/24/solid';
 import { type Event } from 'omni-osint-crud-client';
 import { NodeHandles } from './NodeHandles';
+import { EventIcon } from '@omnsight/osint-entity-components/icons';
 
 export const EventNode: React.FC<NodeProps<Event>> = memo(({ data, selected }) => {
   const { t } = useTranslation();
@@ -23,7 +23,7 @@ export const EventNode: React.FC<NodeProps<Event>> = memo(({ data, selected }) =
           boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         }}
       >
-        <CalendarDaysIcon style={{ width: '60%', height: '60%' }} />
+        <EventIcon event={data} size="xl" />
       </Avatar>
       <Text
         fz={8}
@@ -39,7 +39,8 @@ export const EventNode: React.FC<NodeProps<Event>> = memo(({ data, selected }) =
           pointerEvents: 'none',
         }}
       >
-        {event?.title || t('placeholder.unknown') + t('components.graph.nodes.EventNode.title', '?')}
+        {event?.title ||
+          t('placeholder.unknown') + t('components.graph.nodes.EventNode.title', '?')}
       </Text>
     </Box>
   );

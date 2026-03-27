@@ -7,6 +7,7 @@ import {
   type FieldValues,
   type UseFormReturn,
   type SubmitHandler,
+  FormProvider,
 } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { get } from 'lodash';
@@ -14,6 +15,8 @@ import { type CSSProperties } from 'react';
 
 interface Props<T extends FieldValues> {
   title: string;
+  icon?: React.ReactNode;
+  titleRight?: React.ReactNode;
   isEditing: boolean;
   onSubmit?: SubmitHandler<T>;
   onUpdate?: (data: Partial<T>) => void;
@@ -26,6 +29,8 @@ interface Props<T extends FieldValues> {
 
 export function BaseForm<T extends FieldValues>({
   title,
+  icon,
+  titleRight,
   isEditing,
   onSubmit,
   onUpdate,
@@ -97,9 +102,11 @@ export function BaseForm<T extends FieldValues>({
       <LoadingOverlay visible={isSubmitting} overlayProps={{ radius: 'sm', blur: 1 }} />
       <Group justify="space-between" mb="md">
         <Group>
+          {icon}
           <Tooltip label={title}>
             <Title order={4}>{truncateString(title, 25)}</Title>
           </Tooltip>
+          {titleRight}
           {isEditing && (
             <ActionIcon
               radius="xl"
@@ -123,7 +130,9 @@ export function BaseForm<T extends FieldValues>({
         )}
         {!isEditing && exitButton}
       </Group>
-      <form onSubmit={handleInternalSubmit}>{children(methods)}</form>
+      <FormProvider {...methods}>
+        <form onSubmit={handleInternalSubmit}>{children(methods)}</form>
+      </FormProvider>
     </Paper>
   );
 }

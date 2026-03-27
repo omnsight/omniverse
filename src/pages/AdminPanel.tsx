@@ -16,7 +16,7 @@ export const AdminDashboard: React.FC = () => {
       <Group orientation="horizontal">
         {/* Monitor Window */}
         <Panel defaultSize={20} minSize={10}>
-          <WindowManager windows={[{ name: 'EntityList', component: EntityListWindow }]} />
+          <WindowManager name="EntityList" windows={[{ name: 'EntityList', component: EntityListWindow }]} />
         </Panel>
 
         <CustomSeparator orientation="horizontal" />
@@ -24,6 +24,7 @@ export const AdminDashboard: React.FC = () => {
         {/* Main Window */}
         <Panel defaultSize={60} minSize={30}>
           <WindowManager
+            name="Main"
             windows={[
               { name: 'Map', component: MapWindow },
               { name: 'Spark', component: SparkGraph },
@@ -39,6 +40,7 @@ export const AdminDashboard: React.FC = () => {
             {/* Network Window */}
             <Panel minSize={15}>
               <WindowManager
+                name="Network"
                 windows={[
                   { name: 'Spark', component: SparkGraph },
                   { name: 'Timeline', component: TimelineGraph },
@@ -49,7 +51,7 @@ export const AdminDashboard: React.FC = () => {
             <CustomSeparator orientation="vertical" />
             {/* Raw Data Window */}
             <Panel minSize={15}>
-              <WindowManager windows={[{ name: 'Entity', component: EntityWindow }]} />
+              <WindowManager name="Entity" windows={[{ name: 'Entity', component: EntityWindow }]} />
             </Panel>
           </Group>
         </Panel>

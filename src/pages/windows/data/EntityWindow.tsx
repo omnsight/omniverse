@@ -8,7 +8,6 @@ import {
   Text,
   Stack,
   Group,
-  Button,
   Breadcrumbs,
   Loader,
   Badge,
@@ -27,7 +26,7 @@ import {
   EventAvatar,
   EmptyAvatar,
   AvatarRowList,
-} from '../../../components/avatars';
+} from '@omnsight/osint-entity-components/avatars';
 import { EntityFormRenderer } from '../../../components/entity/FormRenderer';
 import { getEntityTitle, type Entity } from '../../../components/entity/entity';
 import { useTranslation } from 'react-i18next';
@@ -91,6 +90,7 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
     <ScrollArea h="100%" type="scroll" offsetScrollbars>
       <EntityFormRenderer
         entity={selectedEntity}
+        neighbors={data}
         onUpdate={hasWritePermission ? (entities) => addEntities(entities, undefined) : undefined}
         style={{ border: 'none', boxShadow: 'none', padding: 0 }}
       />
@@ -143,6 +143,21 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
               )) || []}
             </AvatarSpan>
           </Stack>
+
+          {/* Persons */}
+          <Stack gap="xs">
+            <Text fw={600}>{t('pages.windows.data.EntityWindow.relatedPersons')}</Text>
+            <AvatarSpan>
+              {data?.persons?.map((person: any) => (
+                <PersonAvatar
+                  key={person._id}
+                  data={person}
+                  relation={data?.relations?.find((r: any) => r._to === person._id)}
+                />
+              )) || []}
+              <EmptyAvatar />
+            </AvatarSpan>
+          </Stack>
         </SimpleGrid>
 
         {/* Full Sources List */}
@@ -151,56 +166,12 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
           <AvatarRowList>
             {data?.sources?.map((source: any) => (
               <SourceAvatarRow
-                width={400}
                 key={source._id}
                 data={source}
                 relation={data?.relations?.find((r: any) => r._to === source._id)}
               />
             )) || []}
           </AvatarRowList>
-        </Stack>
-      </Box>
-
-      {/* STICKY BOTTOM LEFT: PERSONS */}
-      <Box style={{ position: 'absolute', bottom: 15, left: 15, zIndex: 10 }}>
-        <AvatarSpan>
-          {data?.persons?.map((person: any) => (
-            <PersonAvatar
-              key={person._id}
-              data={person}
-              relation={data?.relations?.find((r: any) => r._to === person._id)}
-            />
-          )) || []}
-          <EmptyAvatar />
-        </AvatarSpan>
-      </Box>
-
-      {/* STICKY BOTTOM Right */}
-      <Box style={{ position: 'absolute', bottom: 15, right: 15, zIndex: 10 }}>
-        <Stack align="flex-end" gap="xs">
-          {hasWritePermission && (
-            <Group gap="sm">
-              <Button
-                onClick={() => {
-                  if (data) {
-                    addEntities(
-                      {
-                        events: data?.events,
-                        organizations: data?.organizations,
-                        people: data?.persons,
-                        sources: data?.sources,
-                        websites: data?.websites,
-                        relations: data?.relations,
-                      },
-                      ['neighbors', selectedEntity?.data._id],
-                    );
-                  }
-                }}
-              >
-                {t('pages.windows.data.EntityWindow.addNeighbors', '?')}
-              </Button>
-            </Group>
-          )}
         </Stack>
       </Box>
     </ScrollArea>

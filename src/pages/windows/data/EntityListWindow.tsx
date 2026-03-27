@@ -76,7 +76,7 @@ export const EntityListWindowContent: React.FC = () => {
                 useInput={false}
                 onUpdate={
                   canWriteToEntity(user, entity).canEdit
-                    ? (data) => data._id && handleUpdateEvent(data._id, data)
+                    ? (data) => entity._id && handleUpdateEvent(entity._id, data)
                     : undefined
                 }
                 onClose={() => {}}

@@ -81,9 +81,10 @@ export const GeoMap: React.FC<Props> = ({ events, relations, selected, setSelect
         })}
 
         {/* Relations */}
-        {relations.map((rel, idx) => (
-          <RelationPolyline key={rel._id || idx} events={events} relation={rel} />
-        ))}
+        {toolMode === 'relations' &&
+          relations.map((rel, idx) => (
+            <RelationPolyline key={rel._id || idx} events={events} relation={rel} />
+          ))}
 
         {/* Auto-center map when event is selected */}
         {selected && getCoords(selected) && <MapFlyer center={getCoords(selected)} />}

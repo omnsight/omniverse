@@ -59,6 +59,24 @@
           "title": "Monitoring Sources"
         }
       },
+      "data": {
+        "EntityWindow": {
+          "queryError": "",
+          "noEntitySelected": "Select at least one event, person, organization, etc. is required to embed the column.",
+          "relatedOrganizations": "Related Organizations",
+          "relatedWebsites": "Related Websites",
+          "relatedEvents": "Related Events",
+          "relatedPersons": "Related Personels",
+          "relatedSources": "Related Sources",
+          "title": "Related Entities",
+          "noInghtSelected": "Select at least one analysis to embed the article.",
+          "dragTip": "Drag entity to an analysis to embed it"
+        },
+        "EntityListWindow": {
+          "error": "Failed to create event",
+          "title": "Related Entities"
+        }
+      },
       "insight": {
         "InsightWindow": {
           "queryError": "",
@@ -79,24 +97,6 @@
         "GlobalEventRecommendationWindow": {
           "queryError": "",
           "title": "Recommendations"
-        }
-      },
-      "data": {
-        "EntityWindow": {
-          "queryError": "",
-          "noEntitySelected": "Select at least one event, person, organization, etc. is required to embed the column.",
-          "relatedOrganizations": "Related Organizations",
-          "relatedWebsites": "Related Websites",
-          "relatedEvents": "Related Events",
-          "relatedSources": "Related Sources",
-          "addNeighbors": "",
-          "title": "Related Entities",
-          "noInghtSelected": "Select at least one analysis to embed the article.",
-          "dragTip": "Drag entity to an analysis to embed it"
-        },
-        "EntityListWindow": {
-          "error": "Failed to create event",
-          "title": "Related Entities"
         }
       }
     }
@@ -124,35 +124,9 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "save": "Save",
-    "notFound": "Not Found",
     "warning": "Warning"
   },
   "components": {
-    "inputs": {
-      "TimezoneSelect": {
-        "select": ""
-      },
-      "RangeDatePicker": {
-        "dateLimitExceeded": "Date range exceeds limit",
-        "dateLimitMessage": "Date range exceeds limit, max 1 month",
-        "dateRange": "Date Range",
-        "today": "Today",
-        "yesterday": "Yesterday",
-        "lastWeek": "Last Week",
-        "lastMonth": "Last Month",
-        "selectDateRange": "Select Date Range"
-      },
-      "CountrySelect": {
-        "select": "Select a country"
-      }
-    },
-    "map": {
-      "MapTools": {
-        "start": "",
-        "normalMode": "",
-        "rulerMode": ""
-      }
-    },
     "graph": {
       "Graph": {
         "noPermission": ""
@@ -180,15 +154,43 @@
         }
       }
     },
+    "inputs": {
+      "TimezoneSelect": {
+        "select": ""
+      },
+      "RangeDatePicker": {
+        "dateLimitExceeded": "Date range exceeds limit",
+        "dateLimitMessage": "Date range exceeds limit, max 1 month",
+        "dateRange": "Date Range",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "lastWeek": "Last Week",
+        "lastMonth": "Last Month",
+        "selectDateRange": "Select Date Range"
+      },
+      "CountrySelect": {
+        "select": "Select a country"
+      }
+    },
+    "map": {
+      "MapTools": {
+        "start": "",
+        "normalMode": "",
+        "rulerMode": "",
+        "relationsMode": ""
+      }
+    },
     "forms": {
       "WebsiteForm": {
         "title": "Edit Website"
       },
       "SourceForm": {
-        "title": "Source Title"
+        "title": "Source Title",
+        "sourceDescription": "Enter source description"
       },
       "RelationForm": {
-        "title": "Edit Relation"
+        "title": "Edit Relation",
+        "namePattern": "Can only contain letters, underscores, and hyphens"
       },
       "PersonForm": {
         "title": "Edit Person",
@@ -218,11 +220,24 @@
         "unsavedChangesWarning": "Are you sure you want to discard the changes?"
       }
     },
+    "entity": {
+      "FormRenderer": {
+        "error": ""
+      },
+      "CreationModal": {
+        "error": ""
+      }
+    },
     "editor": {
       "InsightEditor": {
         "noRelatedEntities": "No related events, people, and etc.",
         "updateInsightError": "Failed to update insight, please try again later.",
         "openGallery": "Related Events, People, and etc."
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "Restore Window"
+        }
       },
       "tools": {
         "UnredoTools": {
@@ -249,24 +264,11 @@
           "h2": "H2 Heading",
           "h3": "H3 Heading"
         }
-      },
-      "extensions": {
-        "WindowAnchor": {
-          "restore": "Restore Window"
-        }
       }
     },
     "cards": {
       "MonitoringSourceSummaryCard": {
         "title": ""
-      }
-    },
-    "entity": {
-      "FormRenderer": {
-        "error": ""
-      },
-      "CreationModal": {
-        "error": ""
       }
     }
   },
@@ -274,6 +276,7 @@
     "title": "",
     "url": "URL",
     "description": "Description",
+    "type": "Type",
     "foundedDate": "Founded Date",
     "discoveredDate": "Discovered Date",
     "tags": "Tags",
@@ -285,7 +288,6 @@
     "role": "Role",
     "nationality": "Nationality",
     "birthDate": "Birth Date",
-    "type": "Type",
     "source": {
       "type": "Source Type"
     },
@@ -304,9 +306,6 @@
     "postalCode": "Postal Code",
     "key": "Key",
     "value": "Value",
-    "relation": "Relation",
-    "createdDate": "Created Date",
-    "updatedDate": "Updated Date",
     "unknown": "Unknown"
   }
 }

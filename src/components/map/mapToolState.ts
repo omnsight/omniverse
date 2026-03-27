@@ -7,7 +7,7 @@ export interface RulerPoint {
   distanceFromStart: number; // in meters
 }
 
-export type ToolMode = 'normal' | 'ruler';
+export type ToolMode = 'normal' | 'ruler' | 'relations';
 
 export interface MapToolState {
   mode: ToolMode;

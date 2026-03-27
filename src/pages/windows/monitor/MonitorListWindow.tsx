@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { ActionIcon, Box, Group, Loader, ScrollArea, Stack, Title } from '@mantine/core';
-import { type MonitoringSource, getMonitoringSourcesByUser } from 'omni-monitoring-client';
+import { getMonitoringSourcesByUser } from 'omni-monitoring-client';
 import { useMonitorStore } from './monitorData';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useWindowManager } from '../WindowManager';
 import { notifications } from '@mantine/notifications';
 import { useMonitoringClient } from '../../../api/useMonitoringClient';
-import { MonitoringSourceSummaryCard } from '../../../components/cards/MonitoringSourceSummaryCard';
+import { MonitoringSourceCard } from '@omnsight/osint-entity-components/cards';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 const MonitorListWindowContent: React.FC = () => {
@@ -57,8 +57,8 @@ const MonitorListWindowContent: React.FC = () => {
       <Box p="lg" pt="sm">
         <Stack>
           {sources.map((source) => (
-            <MonitoringSourceSummaryCard
-              source={source}
+            <MonitoringSourceCard
+              monitoringSource={source}
               action={
                 <ActionIcon
                   variant="subtle"

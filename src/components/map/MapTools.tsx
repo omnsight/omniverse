@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useMapEvents, CircleMarker, Polyline, Tooltip, Marker } from 'react-leaflet';
 import { Paper, ActionIcon, Stack, Text, Tooltip as MantineTooltip } from '@mantine/core';
-import { CursorArrowRaysIcon, MapIcon } from '@heroicons/react/24/solid';
+import { CursorArrowRaysIcon, LinkIcon, MapIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
 import L from 'leaflet';
 import { useMapToolState, useMapToolActions } from './mapToolState';
@@ -214,6 +214,16 @@ export const MapTools: React.FC = () => {
                 }}
               >
                 <MapIcon style={{ width: '70%', height: '70%' }} />
+              </ActionIcon>
+            </MantineTooltip>
+            <MantineTooltip label={t('components.map.MapTools.relationsMode', '?')} withArrow position="right">
+              <ActionIcon
+                variant={mode === 'relations' ? 'filled' : 'subtle'}
+                color={mode === 'relations' ? 'yellow' : 'gray'}
+                size="md"
+                onClick={() => setMode('relations')}
+              >
+                <LinkIcon style={{ width: '70%', height: '70%' }} />
               </ActionIcon>
             </MantineTooltip>
           </Stack>

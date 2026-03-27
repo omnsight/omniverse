@@ -1,3 +1,4 @@
+import { useMultiWindowStoreActions } from '../../../stores/multiWindowState';
 import { useEffect, useState, useRef } from 'react';
 import { type Node, type Edge, applyNodeChanges, MarkerType } from 'reactflow';
 import { getStressLayout } from '../../../components/graph/layout';
@@ -25,6 +26,7 @@ export const SparkGraph: React.FC = () => {
   const { addEntities } = useEntityDataActions();
   const { selectedIds } = useEntitySelectionStore();
   const { setSelections } = useEntitySelectionActions();
+  const { setActiveWindow } = useMultiWindowStoreActions();
   const [entityToCreate, setEntityToCreate] = useState<Entity | undefined>(undefined);
   const hasWritePermission = user ? hasRole('admin') || hasRole('pro') : false;
   const expandedEventIds = useRef(new Set());
@@ -160,7 +162,12 @@ export const SparkGraph: React.FC = () => {
         edges={edges}
         setNodes={setNodes}
         setEdges={setEdges}
-        onSelection={(ids) => setSelections(ids)}
+        onSelection={(ids) => {
+          setSelections(ids);
+          if (ids.length > 0) {
+            setActiveWindow('data', 'Entity');
+          }
+        }}
         onCreate={handleCreate}
         onRemove={handleRemove}
         allowOperations={['move', 'connect', 'remove', 'create']}

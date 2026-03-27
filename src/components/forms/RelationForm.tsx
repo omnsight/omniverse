@@ -100,7 +100,13 @@ export const RelationForm: React.FC<Props> = ({
               <Controller
                 name="name"
                 control={control}
-                rules={{ required: t('common.required') }}
+                rules={{
+                  required: t('common.required'),
+                  pattern: {
+                    value: /^[a-zA-Z_-]+$/,
+                    message: t('components.forms.RelationForm.namePattern'),
+                  },
+                }}
                 render={({ field }) => (
                   <TextInput
                     {...field}

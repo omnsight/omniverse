@@ -33,5 +33,9 @@ export const MapConstraint = () => {
     };
   }, [map]);
 
+  useEffect(() => {
+    map.invalidateSize();
+  }, [map]);
+
   return null;
 };

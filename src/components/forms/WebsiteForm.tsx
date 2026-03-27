@@ -18,8 +18,61 @@ import { useTranslation } from 'react-i18next';
 import { type Website } from 'omni-osint-crud-client';
 import { EditableAttributes } from './EditableAttributes';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { BaseForm } from './BaseForm';
+import {
+  WebsiteIcon,
+  WebsiteIconSelector,
+  WebsiteColorSelector,
+} from '@omnsight/osint-entity-components/icons';
+
+const WebsiteIconFormSection = ({ data }: { data: Website }) => {
+  const { control } = useFormContext<Website>();
+  const { t } = useTranslation();
+  const type = useWatch({ control, name: 'type' });
+  const iconColor = useWatch({ control, name: 'attributes.icon_color' });
+
+  const modifiedData = {
+    ...data,
+    type: type,
+    attributes: { ...data.attributes, icon_color: iconColor },
+  };
+
+  return (
+    <Group grow>
+      <Controller
+        name="type"
+        control={control}
+        rules={{ required: t('common.required') }}
+        render={({ field, fieldState: { error } }) => (
+          <Stack gap={0}>
+            <WebsiteIconSelector {...field} data={modifiedData} value={field.value} />
+            {error?.message && (
+              <Text c="red" size="xs">
+                {error.message}
+              </Text>
+            )}
+          </Stack>
+        )}
+      />
+      <Controller
+        name="attributes.icon_color"
+        control={control}
+        rules={{ required: t('common.required') }}
+        render={({ field, fieldState: { error } }) => (
+          <Stack gap={0}>
+            <WebsiteColorSelector {...field} value={String(field.value)} />
+            {error?.message && (
+              <Text c="red" size="xs">
+                {error.message}
+              </Text>
+            )}
+          </Stack>
+        )}
+      />
+    </Group>
+  );
+};
 
 interface Props {
   website: Website;
@@ -61,6 +114,7 @@ export const WebsiteForm: React.FC<Props> = ({
   return (
     <BaseForm<Website>
       style={style}
+      icon={<WebsiteIcon website={website} />}
       title={website.title || t('components.forms.WebsiteForm.title')}
       isEditing={isEditing || false}
       onClose={handlClose}
@@ -111,7 +165,7 @@ export const WebsiteForm: React.FC<Props> = ({
           </Group>
 
           <Group gap={4}>
-            <Text>{t('placeholder.url')}:</Text>
+            {isEditing && <Text>{t('placeholder.url')}:</Text>}
             {isEditing ? (
               <Controller
                 name="url"
@@ -131,11 +185,9 @@ export const WebsiteForm: React.FC<Props> = ({
             )}
           </Group>
 
-          {isEditing ? (
-            <>
-              <Text size="sm" fw={500}>
-                {t('placeholder.description')}
-              </Text>
+          <Group gap={4}>
+            {isEditing && <Text>{t('placeholder.description')}:</Text>}
+            {isEditing ? (
               <Controller
                 name="description"
                 control={control}
@@ -147,10 +199,23 @@ export const WebsiteForm: React.FC<Props> = ({
                   />
                 )}
               />
-            </>
-          ) : (
-            <Text>{website.description || t('placeholder.description')}</Text>
-          )}
+            ) : (
+              <Text>{website.description || t('placeholder.description')}</Text>
+            )}
+          </Group>
+
+          <Group gap={4}>
+            {isEditing && (
+              <Text size="sm" c="dimmed">
+                {t('placeholder.type')}:
+              </Text>
+            )}
+            {isEditing ? (
+              <WebsiteIconFormSection data={website} />
+            ) : (
+              <Text size="sm">{website.type}</Text>
+            )}
+          </Group>
 
           <Group gap={4}>
             <Text size="sm" c="dimmed">

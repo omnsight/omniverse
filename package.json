@@ -22,6 +22,7 @@
     "@mantine/hooks": "^8.3.9",
     "@mantine/modals": "^8.3.18",
     "@mantine/notifications": "^8.3.9",
+    "@omnsight/osint-entity-components": "latest",
     "@tanstack/react-query": "^5.90.21",
     "@tiptap/extension-highlight": "^3.14.0",
     "@tiptap/extension-text-style": "^3.14.0",

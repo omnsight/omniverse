@@ -2,9 +2,9 @@ import React, { memo } from 'react';
 import { type NodeProps } from 'reactflow';
 import { Avatar, Box, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { DocumentTextIcon } from '@heroicons/react/24/solid';
 import type { Source } from 'omni-osint-crud-client';
 import { NodeHandles } from './NodeHandles';
+import { SourceIcon } from '@omnsight/osint-entity-components/icons';
 
 export const SourceNode: React.FC<NodeProps<Source>> = memo(({ data, selected }) => {
   const { t } = useTranslation();
@@ -23,7 +23,7 @@ export const SourceNode: React.FC<NodeProps<Source>> = memo(({ data, selected })
           boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         }}
       >
-        <DocumentTextIcon style={{ width: '60%', height: '60%' }} />
+        <SourceIcon source={source} size="xl" />
       </Avatar>
       <Text
         fz={8}

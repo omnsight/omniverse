@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Group, Loader, ScrollArea, Stack, Title } from '@mantine/core';
-import { EventSummaryCard } from '../../../components/cards/EventSummaryCard';
+import { EventCard } from '@omnsight/osint-entity-components/cards';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { queryEvents } from 'omni-osint-query-client';
@@ -87,7 +87,7 @@ export const GlobalEventRecommendationWindowContent: React.FC = () => {
         <Stack>
           {data?.events?.map((entity) => (
             <Box key={entity._id}>
-              <EventSummaryCard event={entity} />
+              <EventCard event={entity} />
             </Box>
           ))}
         </Stack>

@@ -59,6 +59,24 @@
           "title": "监控信源列表"
         }
       },
+      "data": {
+        "EntityWindow": {
+          "queryError": "",
+          "noEntitySelected": "请选择至少一个事件、人物、组织等来嵌入专栏",
+          "relatedOrganizations": "相关组织",
+          "relatedWebsites": "相关网站",
+          "relatedEvents": "相关事件",
+          "relatedPersons": "相关人员",
+          "relatedSources": "相关信源",
+          "title": "相关实体",
+          "noInghtSelected": "请选择一篇专栏以嵌入文章",
+          "dragTip": "将实体拖动到一篇专栏上以嵌入"
+        },
+        "EntityListWindow": {
+          "error": "无法创建事件，请稍后再试。",
+          "title": "相关消息"
+        }
+      },
       "insight": {
         "InsightWindow": {
           "queryError": "",
@@ -78,25 +96,7 @@
         },
         "GlobalEventRecommendationWindow": {
           "queryError": "",
-          "title": "重要事件推荐"
-        }
-      },
-      "data": {
-        "EntityWindow": {
-          "queryError": "",
-          "noEntitySelected": "请选择至少一个事件、人物、组织等来嵌入专栏",
-          "relatedOrganizations": "相关组织",
-          "relatedWebsites": "相关网站",
-          "relatedEvents": "相关事件",
-          "relatedSources": "相关信源",
-          "addNeighbors": "",
-          "title": "相关实体",
-          "noInghtSelected": "请选择一篇专栏以嵌入文章",
-          "dragTip": "将实体拖动到一篇专栏上以嵌入"
-        },
-        "EntityListWindow": {
-          "error": "无法创建事件，请稍后再试。",
-          "title": "相关实体"
+          "title": "最新消息"
         }
       }
     }
@@ -124,35 +124,9 @@
     "confirm": "确认",
     "cancel": "取消",
     "save": "保存",
-    "notFound": "未找到",
     "warning": "警告"
   },
   "components": {
-    "inputs": {
-      "TimezoneSelect": {
-        "select": ""
-      },
-      "RangeDatePicker": {
-        "dateLimitExceeded": "日期范围超出限制",
-        "dateLimitMessage": "日期范围超出限制，最多选择一个月",
-        "dateRange": "日期范围",
-        "today": "今天",
-        "yesterday": "昨天",
-        "lastWeek": "上周",
-        "lastMonth": "上个月",
-        "selectDateRange": "选择日期范围"
-      },
-      "CountrySelect": {
-        "select": "请选择国家"
-      }
-    },
-    "map": {
-      "MapTools": {
-        "start": "",
-        "normalMode": "",
-        "rulerMode": ""
-      }
-    },
     "graph": {
       "Graph": {
         "noPermission": ""
@@ -180,15 +154,43 @@
         }
       }
     },
+    "inputs": {
+      "TimezoneSelect": {
+        "select": ""
+      },
+      "RangeDatePicker": {
+        "dateLimitExceeded": "日期范围超出限制",
+        "dateLimitMessage": "日期范围超出限制，最多选择一个月",
+        "dateRange": "日期范围",
+        "today": "今天",
+        "yesterday": "昨天",
+        "lastWeek": "上周",
+        "lastMonth": "上个月",
+        "selectDateRange": "选择日期范围"
+      },
+      "CountrySelect": {
+        "select": "请选择国家"
+      }
+    },
+    "map": {
+      "MapTools": {
+        "start": "",
+        "normalMode": "",
+        "rulerMode": "",
+        "relationsMode": ""
+      }
+    },
     "forms": {
       "WebsiteForm": {
         "title": "编辑网站消息"
       },
       "SourceForm": {
-        "title": "编辑信源"
+        "title": "编辑信源",
+        "sourceDescription": "请输入信源详情"
       },
       "RelationForm": {
-        "title": "编辑关系"
+        "title": "编辑关系",
+        "namePattern": "只能包含字母、下划线和减号"
       },
       "PersonForm": {
         "title": "编辑个人信息",
@@ -218,11 +220,24 @@
         "unsavedChangesWarning": "是否确认放弃修改？注意：所有未保存的修改将丢失。"
       }
     },
+    "entity": {
+      "FormRenderer": {
+        "error": ""
+      },
+      "CreationModal": {
+        "error": ""
+      }
+    },
     "editor": {
       "InsightEditor": {
         "noRelatedEntities": "暂无相关事件、人物、组织等",
         "updateInsightError": "无法更新专栏，请稍后再试",
         "openGallery": "相关事件、人物、组织等"
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "恢复视图"
+        }
       },
       "tools": {
         "UnredoTools": {
@@ -249,24 +264,11 @@
           "h2": "二级标题",
           "h3": "三级标题"
         }
-      },
-      "extensions": {
-        "WindowAnchor": {
-          "restore": "恢复视图"
-        }
       }
     },
     "cards": {
       "MonitoringSourceSummaryCard": {
         "title": ""
-      }
-    },
-    "entity": {
-      "FormRenderer": {
-        "error": ""
-      },
-      "CreationModal": {
-        "error": ""
       }
     }
   },
@@ -274,6 +276,7 @@
     "title": "标题",
     "url": "链接",
     "description": "描述",
+    "type": "类型",
     "foundedDate": "成立日期",
     "discoveredDate": "发现日期",
     "tags": "标签",
@@ -285,7 +288,6 @@
     "role": "角色",
     "nationality": "国籍",
     "birthDate": "出生日期",
-    "type": "类型",
     "source": {
       "type": "信源类型"
     },
@@ -304,9 +306,6 @@
     "postalCode": "邮政编码",
     "key": "标签",
     "value": "内容",
-    "relation": "关系",
-    "createdDate": "创建日期",
-    "updatedDate": "更新日期",
     "unknown": "未知"
   }
 }
