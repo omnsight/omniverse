@@ -10,8 +10,16 @@ import { CustomSeparator } from './layouts/CustomSeparator';
 import { MapWindow } from './windows/main/MapWindow';
 import { InsightListWindow } from './windows/insight/InsightListWindow';
 import { InsightWindow } from './windows/insight/InsightWindow';
+import { useAuth } from '@/provider/AuthContext';
+import { Navigate } from 'react-router-dom';
 
 export const MonitorDashboard: React.FC = () => {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <Navigate to="/redirect" replace />;
+  }
+
   return (
     <Box h="100%" w="100%" bg="light-dark(gray.0, dark.8)">
       {/* 1. MAIN HORIZONTAL GROUP */}

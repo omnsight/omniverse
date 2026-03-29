@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo } from 'react';
-import { Box, Group } from '@mantine/core';
-import { useMultiWindowStore } from '../../stores/multiWindowState';
+import { Box } from '@mantine/core';
+import { useWindowStore, useWindowStoreActions } from '../../stores/windowState';
 
 interface WindowManagerContextType {
   setActiveWindowByName: (name: string) => void;
@@ -19,19 +19,19 @@ export const useWindowManager = () => {
 interface WindowManagerProps {
   name: string; // The new name prop
   windows: { name: string; component: React.FC }[];
+  side?: 'top-right' | 'bottom-right';
 }
 
-export const WindowManager: React.FC<WindowManagerProps> = ({ name, windows }) => {
-  const windowStates = useMultiWindowStore((s) => s.windowStates);
-  const { registerManager, setActiveWindow } = useMultiWindowStore((s) => s.actions);
+export const WindowManager: React.FC<WindowManagerProps> = ({ name, windows, side }) => {
+  const windowStates = useWindowStore((s) => s.windowStates);
+  const { registerManager, setActiveWindow } = useWindowStoreActions();
+  const activeWindowName = windowStates[name]?.active;
 
   useEffect(() => {
     if (windows.length > 0) {
-      registerManager(name, windows[0].name);
+      registerManager(name, windows[0].name, side);
     }
-  }, [name, registerManager, windows]);
-
-  const activeWindowName = windowStates[name] || (windows.length > 0 ? windows[0].name : undefined);
+  }, [name, registerManager, windows, side]);
 
   const activeIndex = useMemo(() => {
     if (!activeWindowName) return 0;
@@ -57,52 +57,6 @@ export const WindowManager: React.FC<WindowManagerProps> = ({ name, windows }) =
       <Box pos="relative" h="100%" w="100%" style={{ overflow: 'hidden' }}>
         {/* The Actual Content */}
         <ActiveComponent />
-
-        {/* The Floating Navigation (Dots) */}
-        <Box
-          pos="absolute"
-          bottom={15}
-          left="50%"
-          style={{
-            transform: 'translateX(-50%)',
-            zIndex: 1000,
-            opacity: 0,
-            transition: 'opacity 0.2s ease, visibility 0.2s',
-            pointerEvents: 'none',
-            ':hover > & ': {
-              opacity: 1,
-              visibility: 'visible',
-              pointerEvents: 'all',
-            },
-          }}
-        >
-          <Group
-            gap="xs"
-            p="xs"
-            style={{
-              borderRadius: 100,
-              backdropFilter: 'blur(4px)',
-            }}
-          >
-            {windows.map((win, idx) => (
-              <Box
-                key={win.name}
-                onClick={() => setActiveWindow(name, win.name)}
-                style={{
-                  width: activeIndex === idx ? 20 : 8, // Active dot is wider
-                  height: 8,
-                  borderRadius: 4,
-                  backgroundColor:
-                    activeIndex === idx
-                      ? 'var(--mantine-color-blue-filled)'
-                      : 'var(--mantine-color-gray-4)',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                }}
-              />
-            ))}
-          </Group>
-        </Box>
       </Box>
     </WindowManagerContext.Provider>
   );

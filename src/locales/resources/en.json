@@ -1,5 +1,9 @@
 {
   "pages": {
+    "RedirectPage": {
+      "title": "Unauthorized Access",
+      "description": "You do not have permission to view this page. You will be redirected to the homepage in {{countdown}} seconds."
+    },
     "ErrorPage": {
       "title": "Error Page",
       "description": "Oops! Encountered an unknown error",
@@ -39,29 +43,44 @@
     "windows": {
       "network": {
         "SparkGraph": {
-          "deleteEdgeError": "",
-          "deleteEntityError": ""
+          "deleteEdgeError": "Failed to delete edge, please try again later.",
+          "deleteEntityError": "Failed to delete entity, please try again later."
         },
         "ComparsionView": {
-          "selectAtLeastTwo": "",
-          "selectSameType": "",
-          "showAttributes": "",
-          "showMainData": ""
+          "selectAtLeastTwo": "Please select at least two entities to compare.",
+          "selectSameType": "Please select entities of the same type to compare.",
+          "showAttributes": "Show Attributes",
+          "showMainData": "Show Main Data"
         }
       },
       "monitor": {
         "MonitorWindow": {
-          "noSourceSelected": "",
+          "noSourceSelected": "Please select at least one monitoring source.",
           "title": "Monitoring Sources"
         },
         "MonitorListWindow": {
-          "getSourcesError": "",
+          "getSourcesError": "Failed to get monitoring sources, please try again later.",
+          "createSourceError": "Failed to create monitoring source. Please try again later.",
           "title": "Monitoring Sources"
+        }
+      },
+      "insight": {
+        "InsightWindow": {
+          "queryError": "Failed to query insights, please try again later.",
+          "empty": "No selected article",
+          "InsightWindowTitle": "Insight Analysis"
+        },
+        "InsightListWindow": {
+          "queryError": "Failed to query insights, please try again later.",
+          "createError": "Failed to create insight, please try again later.",
+          "updateError": "Failed to update insight, please try again later.",
+          "permissionError": "Failed to update insight access config, please try again later.",
+          "title": "Insight Column"
         }
       },
       "data": {
         "EntityWindow": {
-          "queryError": "",
+          "queryError": "Failed to query entities, please try again later.",
           "noEntitySelected": "Select at least one event, person, organization, etc. is required to embed the column.",
           "relatedOrganizations": "Related Organizations",
           "relatedWebsites": "Related Websites",
@@ -74,28 +93,16 @@
         },
         "EntityListWindow": {
           "error": "Failed to create event",
+          "errorPermissions": "",
           "title": "Related Entities"
-        }
-      },
-      "insight": {
-        "InsightWindow": {
-          "queryError": "",
-          "empty": "No selected article",
-          "InsightWindowTitle": "Insight Analysis"
-        },
-        "InsightListWindow": {
-          "queryError": "Failed to query insights, please try again later.",
-          "createError": "Failed to create insight, please try again later.",
-          "error": "Failed to update content, please check your input.",
-          "title": "Insight Column"
         }
       },
       "context": {
         "GlobalEventTimelineWindow": {
-          "queryError": ""
+          "queryError": "Failed to query events, please try again later."
         },
         "GlobalEventRecommendationWindow": {
-          "queryError": "",
+          "queryError": "Failed to query recommendations, please try again later.",
           "title": "Recommendations"
         }
       }
@@ -105,6 +112,7 @@
     "error": "Error",
     "reset": "Reset",
     "apply": "Apply",
+    "save": "Save",
     "create": "Create",
     "entity": {
       "Person": "Person",
@@ -113,119 +121,15 @@
       "Website": "Website",
       "Source": "Source"
     },
-    "required": "This field is required",
-    "types": {
-      "text": "text",
-      "number": "number",
-      "toggle": "toggle"
-    },
-    "remove": "Remove",
-    "add": "Add Attribute",
-    "confirm": "Confirm",
-    "cancel": "Cancel",
-    "save": "Save",
     "warning": "Warning"
   },
   "components": {
-    "graph": {
-      "Graph": {
-        "noPermission": ""
-      },
-      "nodes": {
-        "WebsiteNode": {
-          "name": ""
-        },
-        "SourceNode": {
-          "name": ""
-        },
-        "PersonNode": {
-          "name": ""
-        },
-        "OrganizationNode": {
-          "name": ""
-        },
-        "EventNode": {
-          "title": ""
-        }
-      },
-      "edges": {
-        "RelationEdge": {
-          "name": ""
-        }
-      }
-    },
-    "inputs": {
-      "TimezoneSelect": {
-        "select": ""
-      },
-      "RangeDatePicker": {
-        "dateLimitExceeded": "Date range exceeds limit",
-        "dateLimitMessage": "Date range exceeds limit, max 1 month",
-        "dateRange": "Date Range",
-        "today": "Today",
-        "yesterday": "Yesterday",
-        "lastWeek": "Last Week",
-        "lastMonth": "Last Month",
-        "selectDateRange": "Select Date Range"
-      },
-      "CountrySelect": {
-        "select": "Select a country"
-      }
-    },
     "map": {
       "MapTools": {
-        "start": "",
-        "normalMode": "",
-        "rulerMode": "",
-        "relationsMode": ""
-      }
-    },
-    "forms": {
-      "WebsiteForm": {
-        "title": "Edit Website"
-      },
-      "SourceForm": {
-        "title": "Source Title",
-        "sourceDescription": "Enter source description"
-      },
-      "RelationForm": {
-        "title": "Edit Relation",
-        "namePattern": "Can only contain letters, underscores, and hyphens"
-      },
-      "PersonForm": {
-        "title": "Edit Person",
-        "name": "Name"
-      },
-      "OrganizationForm": {
-        "title": "Edit Organization",
-        "name": "Organization Name"
-      },
-      "MonitoringSourceForm": {
-        "title": "Edit Monitoring Source",
-        "name": "Source Name"
-      },
-      "InsightForm": {
-        "title": "Edit Insight"
-      },
-      "EventForm": {
-        "title": "Event Title",
-        "minLatitude-90-90": "Latitude cannot be less than ",
-        "maxLatitude": "Latitude cannot be greater than 90",
-        "minLongitude-180-180": "Longitude cannot be less than ",
-        "maxLongitude": "Longitude cannot be greater than 180",
-        "eventDescription": "event description"
-      },
-      "BaseForm": {
-        "discardChanges": "Discard Changes And Exit",
-        "unsavedChangesWarning": "Are you sure you want to discard the changes?"
-      }
-    },
-    "entity": {
-      "FormRenderer": {
-        "error": ""
-      },
-      "CreationModal": {
-        "error": ""
+        "start": "Start",
+        "normalMode": "Normal Mode",
+        "rulerMode": "Ruler Mode",
+        "relationsMode": "Show Relations"
       }
     },
     "editor": {
@@ -233,11 +137,6 @@
         "noRelatedEntities": "No related events, people, and etc.",
         "updateInsightError": "Failed to update insight, please try again later.",
         "openGallery": "Related Events, People, and etc."
-      },
-      "extensions": {
-        "WindowAnchor": {
-          "restore": "Restore Window"
-        }
       },
       "tools": {
         "UnredoTools": {
@@ -264,48 +163,73 @@
           "h2": "H2 Heading",
           "h3": "H3 Heading"
         }
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "Restore Window"
+        }
       }
     },
-    "cards": {
-      "MonitoringSourceSummaryCard": {
-        "title": ""
+    "entity": {
+      "CreationModal": {
+        "error": "Cannot create event, please try again later"
+      },
+      "FormRenderer": {
+        "Website": {
+          "updateError": "Failed to update website, please try again later.",
+          "updatePermissionError": "Failed to update website access config, please try again later."
+        },
+        "Source": {
+          "updateError": "Failed to update source, please try again later.",
+          "updatePermissionError": "Failed to update source access config, please try again later."
+        },
+        "Relation": {
+          "updateError": "Failed to update relation, please try again later.",
+          "updatePermissionError": "Failed to update relation access config, please try again later."
+        },
+        "Person": {
+          "updateError": "Failed to update person, please try again later.",
+          "updatePermissionError": "Failed to update person access config, please try again later."
+        },
+        "Organization": {
+          "updateError": "Failed to update organization, please try again later.",
+          "updatePermissionError": "Failed to update organization access config, please try again later."
+        },
+        "Event": {
+          "updateError": "Failed to update event, please try again later.",
+          "updatePermissionError": "Failed to update event access config, please try again later."
+        }
+      }
+    },
+    "graph": {
+      "Graph": {
+        "noPermission": "No permission to view this graph"
+      },
+      "nodes": {
+        "WebsiteNode": {
+          "name": "Website"
+        },
+        "SourceNode": {
+          "name": "Source"
+        },
+        "PersonNode": {
+          "name": "Person"
+        },
+        "OrganizationNode": {
+          "name": "Organization"
+        },
+        "EventNode": {
+          "title": "Event"
+        }
+      },
+      "edges": {
+        "RelationEdge": {
+          "name": "Relation"
+        }
       }
     }
   },
   "placeholder": {
-    "title": "",
-    "url": "URL",
-    "description": "Description",
-    "type": "Type",
-    "foundedDate": "Founded Date",
-    "discoveredDate": "Discovered Date",
-    "tags": "Tags",
-    "attributes": "Attributes",
-    "reliability": "Reliability",
-    "label": "Label",
-    "name": "Name",
-    "confidence": "Confidence",
-    "role": "Role",
-    "nationality": "Nationality",
-    "birthDate": "Birth Date",
-    "source": {
-      "type": "Source Type"
-    },
-    "lastReviewed": "Last Reviewed",
-    "enter": "Enter",
-    "date": "Date",
-    "location": "Location",
-    "address": "Address",
-    "locality": "Locality",
-    "subLocality": "Sub Locality (optional)",
-    "adminArea": "Administrative Area",
-    "subAdminArea": "Sub Administrative Area (optional)",
-    "latitude": "Latitude",
-    "longitude": "Longitude",
-    "country": "Country",
-    "postalCode": "Postal Code",
-    "key": "Key",
-    "value": "Value",
     "unknown": "Unknown"
   }
 }

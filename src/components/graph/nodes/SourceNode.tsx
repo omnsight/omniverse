@@ -26,11 +26,10 @@ export const SourceNode: React.FC<NodeProps<Source>> = memo(({ data, selected })
         <SourceIcon source={source} size="xl" />
       </Avatar>
       <Text
-        fz={8}
+        fz={10}
         fw={500}
-        c="dimmed"
         pos="absolute"
-        top="100%"
+        top="95%"
         left="50%"
         mt={4}
         style={{
@@ -39,7 +38,23 @@ export const SourceNode: React.FC<NodeProps<Source>> = memo(({ data, selected })
           pointerEvents: 'none',
         }}
       >
-        {source?.name || t('placeholder.unknown') + t('components.graph.nodes.SourceNode.name', '?')}
+        {t('components.graph.nodes.SourceNode.name')}
+      </Text>
+      <Text
+        fz={8}
+        fw={500}
+        c="dimmed"
+        pos="absolute"
+        top="125%"
+        left="50%"
+        mt={4}
+        style={{
+          transform: 'translateX(-50%)',
+          whiteSpace: 'nowrap',
+          pointerEvents: 'none',
+        }}
+      >
+        {source?.name || t('placeholder.unknown') + t('components.graph.nodes.SourceNode.name')}
       </Text>
     </Box>
   );

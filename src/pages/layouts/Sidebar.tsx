@@ -1,5 +1,5 @@
 import { AppShell, Group, Text, NavLink, rem, Stack, Divider } from '@mantine/core';
-import { GlobeAltIcon, LightBulbIcon, EyeIcon, UserCircleIcon } from '@heroicons/react/24/solid';
+import { LightBulbIcon, EyeIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../provider/AuthContext';
@@ -8,7 +8,7 @@ export const AppSidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
-  const { hasRole } = useAuth();
+  const { user, hasRole } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -20,7 +20,11 @@ export const AppSidebar: React.FC = () => {
       {/* --- Header / Logo --- */}
       <AppShell.Section>
         <Group gap="sm" mb="md" px="xs" wrap="nowrap">
-          <GlobeAltIcon style={{ width: rem(34), flexShrink: 0 }} className="text-blue-600" />
+          <img
+            src="/nexus-icon-transparent.svg"
+            style={{ width: rem(34), flexShrink: 0 }}
+            alt="logo"
+          />
           <Stack gap={0}>
             <Text fw={700} size="md" lh={1}>
               {t('pages.layouts.Sidebar.logo')}
@@ -43,14 +47,16 @@ export const AppSidebar: React.FC = () => {
           color="blue"
           onClick={() => navigate('/intelligence')}
         />
-        <NavLink
-          label={t('pages.layouts.Sidebar.monitor')}
-          leftSection={<EyeIcon style={{ width: rem(20) }} />}
-          active={isActive('/monitor')}
-          variant="light"
-          color="blue"
-          onClick={() => navigate('/monitor')}
-        />
+        {user && (
+          <NavLink
+            label={t('pages.layouts.Sidebar.monitor')}
+            leftSection={<EyeIcon style={{ width: rem(20) }} />}
+            active={isActive('/monitor')}
+            variant="light"
+            color="blue"
+            onClick={() => navigate('/monitor')}
+          />
+        )}
         {hasRole('admin') && (
           <NavLink
             label={t('pages.layouts.Sidebar.admin')}

@@ -8,8 +8,16 @@ import { TimelineGraph } from './windows/network/TimelineGraph';
 import { ComparisonView } from './windows/network/ComparsionView';
 import { CustomSeparator } from './layouts/CustomSeparator';
 import { MapWindow } from './windows/main/MapWindow';
+import { useAuth } from '@/provider/AuthContext';
+import { Navigate } from 'react-router-dom';
 
 export const AdminDashboard: React.FC = () => {
+  const { hasRole } = useAuth();
+
+  if (!hasRole('admin')) {
+    return <Navigate to="/redirect" replace />;
+  }
+
   return (
     <Box h="100%" w="100%" bg="light-dark(gray.0, dark.8)">
       {/* 1. MAIN HORIZONTAL GROUP */}

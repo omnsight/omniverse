@@ -5,10 +5,15 @@ import { PlusIcon } from '@heroicons/react/24/solid';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { notifications } from '@mantine/notifications';
 import { ActionIcon, Box, Button, Group, Loader, ScrollArea, Stack, Title } from '@mantine/core';
-import { InsightForm } from '../../../components/forms';
+import { InsightForm } from '@omnsight/osint-entity-components/forms';
 import { useCrudClient } from '../../../api/useCrudyClient';
-import type { OsintView } from 'omni-osint-crud-client/types';
-import { createView, queryViews, updateView } from 'omni-osint-crud-client/sdk';
+import type { OsintView, Permissive } from 'omni-osint-crud-client/types';
+import {
+  createView,
+  queryViews,
+  updateView,
+  updateViewPermissions,
+} from 'omni-osint-crud-client/sdk';
 import { useInsightStore } from './insightData';
 import { useWindowManager } from '../WindowManager';
 import { useAuth } from '../../../provider/AuthContext';
@@ -87,12 +92,35 @@ const InsightListWindowContent: React.FC = () => {
       console.error(`Error [${status}] updating insight`, error);
       notifications.show({
         title: t('common.error'),
-        message: t('pages.windows.insight.InsightListWindow.error'),
+        message: t('pages.windows.insight.InsightListWindow.updateError'),
         color: 'red',
       });
     } else {
       setInsights(insights.map((insight) => (insight._id === id ? data : insight)));
       console.log('Updated insight', data);
+    }
+  };
+
+  const updateInsightPermission = async (id: string, patch: Permissive) => {
+    console.debug('Updating insight permission', id, patch);
+    const { data, error, status } = await updateViewPermissions({
+      body: patch,
+      path: {
+        id,
+      },
+      client: crudClient,
+    });
+
+    if (error) {
+      console.error(`Error [${status}] updating insight permission`, error);
+      notifications.show({
+        title: t('common.error'),
+        message: t('pages.windows.insight.InsightListWindow.permissionError'),
+        color: 'red',
+      });
+    } else {
+      setInsights(insights.map((insight) => (insight._id === id ? data : insight)));
+      console.log('Updated insight permission', data);
     }
   };
 
@@ -112,10 +140,14 @@ const InsightListWindowContent: React.FC = () => {
             <InsightForm
               key={insight._id}
               insight={insight}
-              useInput={false}
               onUpdate={
                 user?.id === insight.owner
                   ? (data) => insight._id && updateInsight(insight._id, data)
+                  : undefined
+              }
+              onUpdatePermissive={
+                user?.id === insight.owner
+                  ? (data) => insight._id && updateInsightPermission(insight._id, data)
                   : undefined
               }
               onClose={() => {}}
@@ -152,16 +184,11 @@ const InsightListWindowContent: React.FC = () => {
                     },
                   ],
                 }}
-                useInput={true}
                 onSubmit={submitNewInsight}
                 onClose={() => setCreating(false)}
               />
             ) : (
-              <Button
-                fullWidth
-                data-testid="add-insight-button"
-                onClick={() => setCreating(true)}
-              >
+              <Button fullWidth data-testid="add-insight-button" onClick={() => setCreating(true)}>
                 <PlusIcon style={{ width: 20, height: 20 }} />
               </Button>
             ))}

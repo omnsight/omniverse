@@ -10,7 +10,7 @@ import {
   Anchor,
 } from '@mantine/core';
 import { useMonitorStore } from './monitorData';
-import { MonitoringSourceForm } from '../../../components/forms/MonitoringSourceForm';
+import { MonitoringSourceForm } from '@omnsight/osint-entity-components/forms';
 import { updateMonitoringSource } from 'omni-monitoring-client';
 import { useTranslation } from 'react-i18next';
 import { useDataOwner } from '../../../provider/AuthContext';
@@ -33,7 +33,7 @@ const MonitorWindowContent: React.FC<{ selected: any }> = ({ selected }) => {
   if (!selected) {
     return (
       <Group justify="center" align="center" style={{ flex: 1 }}>
-        <Text>{t('pages.windows.monitor.MonitorWindow.noSourceSelected', '?')}</Text>
+        <Text>{t('pages.windows.monitor.MonitorWindow.noSourceSelected')}</Text>
       </Group>
     );
   }

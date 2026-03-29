@@ -1,26 +1,38 @@
 import { Node, mergeAttributes } from '@tiptap/core';
 import { type NodeViewProps, NodeViewWrapper, ReactNodeViewRenderer } from '@tiptap/react';
-import { Button, Tooltip } from '@mantine/core';
+import { Badge, Tooltip } from '@mantine/core';
 import { ArrowPathIcon } from '@heroicons/react/16/solid';
 import { useTranslation } from 'react-i18next';
-import { useWindowStoreActions } from '../../../stores/windowStateStore';
+import { useWindowDragStoreActions } from '../../../stores/windowDragStateStore';
 
 export const WindowAnchorComponent: React.FC<NodeViewProps> = ({ node }) => {
   const { t } = useTranslation();
-  const { restore } = useWindowStoreActions();
+  const { restore } = useWindowDragStoreActions();
   const { type, state, label } = node.attrs;
 
   return (
-    <NodeViewWrapper className="inline-block mx-1">
+    <NodeViewWrapper as="span" className="inline-block align-middle mx-1">
       <Tooltip label={t('components.editor.extensions.WindowAnchor.restore')}>
-        <Button
+        <Badge
           variant="light"
-          size="compact-xs"
-          leftSection={<ArrowPathIcon className="w-4 h-4" />}
-          onClick={() => restore(type, state)}
+          size="sm"
+          radius="sm"
+          leftSection={<ArrowPathIcon className="w-3 h-3" />}
+          onClick={(e) => {
+            // Prevent TipTap from selecting the node when clicking the badge
+            e.preventDefault();
+            e.stopPropagation();
+            restore(type, state);
+          }}
+          style={{ 
+            cursor: 'pointer',
+            textTransform: 'none', // Keeps your labels from being forced to uppercase
+            verticalAlign: 'middle',
+            userSelect: 'none'
+          }}
         >
           {label}
-        </Button>
+        </Badge>
       </Tooltip>
     </NodeViewWrapper>
   );
@@ -28,10 +40,11 @@ export const WindowAnchorComponent: React.FC<NodeViewProps> = ({ node }) => {
 
 export const WindowAnchor = Node.create({
   name: 'windowAnchor',
-  group: 'inline', // or 'block' depending on your UI
+  group: 'inline',
   inline: true,
-  selectable: true,
   atom: true,
+  selectable: true,
+  draggable: true,
 
   addAttributes() {
     return {

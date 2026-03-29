@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { client } from 'omni-osint-query-client/client';
 import { useAuth } from '../provider/AuthContext';
 
-export const useQueryClient = () => {
+export const useEntityQueryClient = () => {
   const { user } = useAuth();
   client.setConfig({
     baseURL: import.meta.env.VITE_OSINT_QUERY_API_BASE_URL,
@@ -20,5 +20,5 @@ export const useQueryClient = () => {
     }
   }, [user]);
 
-  return { queryClient: client, authed: !!user };
+  return { entityQueryClient: client, authed: !!user };
 };

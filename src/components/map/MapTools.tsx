@@ -125,7 +125,7 @@ export const MapTools: React.FC = () => {
               <div style={{ textAlign: 'center' }}>
                 <div>
                   {idx === 0
-                    ? t('components.map.MapTools.start', '?')
+                    ? t('components.map.MapTools.start')
                     : formatDistance(point.distanceFromStart)}
                 </div>
                 <div style={{ fontSize: '0.8em', color: '#666' }}>
@@ -191,7 +191,7 @@ export const MapTools: React.FC = () => {
       <MapControl style={{ bottom: 20, left: 20 }}>
         <Paper shadow="md" p={4} radius="md">
           <Stack gap={4}>
-            <MantineTooltip label={t('components.map.MapTools.normalMode', '?')} withArrow position="right">
+            <MantineTooltip label={t('components.map.MapTools.normalMode')} withArrow position="right">
               <ActionIcon
                 variant={mode === 'normal' ? 'filled' : 'subtle'}
                 color="blue"
@@ -201,7 +201,7 @@ export const MapTools: React.FC = () => {
                 <CursorArrowRaysIcon style={{ width: '70%', height: '70%' }} />
               </ActionIcon>
             </MantineTooltip>
-            <MantineTooltip label={t('components.map.MapTools.rulerMode', '?')} withArrow position="right">
+            <MantineTooltip label={t('components.map.MapTools.rulerMode')} withArrow position="right">
               <ActionIcon
                 variant={mode === 'ruler' ? 'filled' : 'subtle'}
                 color={mode === 'ruler' ? 'red' : 'gray'}
@@ -216,7 +216,7 @@ export const MapTools: React.FC = () => {
                 <MapIcon style={{ width: '70%', height: '70%' }} />
               </ActionIcon>
             </MantineTooltip>
-            <MantineTooltip label={t('components.map.MapTools.relationsMode', '?')} withArrow position="right">
+            <MantineTooltip label={t('components.map.MapTools.relationsMode')} withArrow position="right">
               <ActionIcon
                 variant={mode === 'relations' ? 'filled' : 'subtle'}
                 color={mode === 'relations' ? 'yellow' : 'gray'}

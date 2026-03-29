@@ -67,7 +67,7 @@ export const GlobalEventRecommendationWindowContent: React.FC = () => {
       console.error('Error querying recommendation data', error);
       notifications.show({
         title: t('common.error'),
-        message: t('pages.windows.context.GlobalEventRecommendationWindow.queryError', '?'),
+        message: t('pages.windows.context.GlobalEventRecommendationWindow.queryError'),
         color: 'red',
       });
     }

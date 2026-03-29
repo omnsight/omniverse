@@ -8,7 +8,8 @@ import { IntelDashboard } from './pages/IntelPanel';
 import { MonitorDashboard } from './pages/MonitorPanel';
 import { AdminDashboard } from './pages/AdminPanel';
 import { ErrorPage } from './pages/ErrorPage';
-import { useWindowStore } from './stores/windowStateStore';
+import RedirectPage from './pages/RedirectPage';
+import { useWindowDragStore } from './stores/windowDragStateStore';
 
 function App() {
   const [opened] = useDisclosure();
@@ -16,7 +17,7 @@ function App() {
 
   useEffect(() => {
     const handleGlobalDragEnd = () => {
-      useWindowStore.getState().actions.setDragging(undefined);
+      useWindowDragStore.getState().actions.setDragging(undefined);
     };
 
     window.addEventListener('dragend', handleGlobalDragEnd);
@@ -52,6 +53,7 @@ function App() {
             <Route path="/monitor" element={<MonitorDashboard />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/error" element={<ErrorPage />} />
+            <Route path="/redirect" element={<RedirectPage />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </AppShell.Main>

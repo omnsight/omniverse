@@ -1,7 +1,7 @@
 import { Extension } from '@tiptap/core';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
 import { Decoration, DecorationSet } from '@tiptap/pm/view';
-import { useWindowStore } from '../../../stores/windowStateStore';
+import { useWindowDragStore } from '../../../stores/windowDragStateStore';
 
 export const WindowDndExtension = Extension.create({
   name: 'windowDnd',
@@ -12,10 +12,13 @@ export const WindowDndExtension = Extension.create({
         props: {
           handleDOMEvents: {
             dragover: (view, event) => {
-              const dragging = useWindowStore.getState().activeDrag;
+              const dragging = useWindowDragStore.getState().activeDrag;
               if (!dragging) return false;
 
               event.preventDefault();
+              if (event.dataTransfer) {
+                event.dataTransfer.dropEffect = 'copy';
+              }
 
               const pos = view.posAtCoords({ left: event.clientX, top: event.clientY });
               if (pos) {
@@ -49,18 +52,20 @@ export const WindowDndExtension = Extension.create({
           handleDrop: (view, event) => {
             view.setProps({ decorations: () => DecorationSet.empty });
 
-            const raw = event.dataTransfer?.getData('application/x-window-node');
+            const raw = event.dataTransfer?.getData('application/x-tiptap-node');
+            console.debug('raw', raw);
             if (!raw) return false;
 
             try {
               const { type, label, state } = JSON.parse(raw);
               const pos = view.posAtCoords({ left: event.clientX, top: event.clientY });
+              console.debug('drop pos', pos, 'type', type, 'label', label, 'state', state);
 
               if (pos) {
                 const node = view.state.schema.nodes.windowAnchor.create({ type, label, state });
                 const transaction = view.state.tr.insert(pos.pos, node);
                 view.dispatch(transaction);
-                useWindowStore.getState().actions.setDragging(undefined);
+                useWindowDragStore.getState().actions.setDragging(undefined);
                 return true;
               }
             } catch (e) {

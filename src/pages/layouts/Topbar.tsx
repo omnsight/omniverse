@@ -23,18 +23,20 @@ import { useQuery } from '@tanstack/react-query';
 import { queryEvents } from 'omni-osint-query-client';
 import { toZonedTime, fromZonedTime } from 'date-fns-tz';
 import { useEntityDataActions } from '../windows/network/entityData';
-import { CountrySelect } from '../../components/inputs/CountrySelect';
-import { RangeDatePicker } from '../../components/inputs/RangeDatePicker';
+import { CountrySelect, RangeDatePicker, TimezoneSelectComponent } from '@omnsight/osint-entity-components/inputs';
 import { UserMenu } from './UserMenu';
-import { useQueryClient } from '../../api/useQueryClient';
-import { TimezoneSelectComponent } from '../../components/inputs/TimezoneSelect';
+import { useEntityQueryClient } from '../../api/useQueryClient';
+import { useWindowStoreActions } from '@/stores/windowState';
 
 export const AppTopbar: React.FC = () => {
   const { t } = useTranslation();
-  const { queryClient } = useQueryClient();
+  const { setActiveWindow } = useWindowStoreActions();
+  const { entityQueryClient } = useEntityQueryClient();
   const { setEntities } = useEntityDataActions();
   const [country, setCountry] = useState<string | undefined>(undefined);
-  const [timezone, setTimezone] = useState<string>(Intl.DateTimeFormat().resolvedOptions().timeZone);
+  const [timezone, setTimezone] = useState<string>(
+    Intl.DateTimeFormat().resolvedOptions().timeZone,
+  );
   const [dateRange, setDateRange] = useState<[Date | undefined, Date | undefined]>(() => {
     const now = new Date();
     const start = toZonedTime(now, timezone);
@@ -52,7 +54,7 @@ export const AppTopbar: React.FC = () => {
       const utcStart = fromZonedTime(dateRange[0]!, timezone);
       const utcEnd = fromZonedTime(dateRange[1]!, timezone);
       const { data, error } = await queryEvents({
-        client: queryClient,
+        client: entityQueryClient,
         query: {
           date_start: Math.floor(utcStart.getTime() / 1000),
           date_end: Math.floor(utcEnd.getTime() / 1000),
@@ -87,6 +89,13 @@ export const AppTopbar: React.FC = () => {
       );
     }
   }, [data, setEntities]);
+
+  useEffect(() => {
+    if (data?.events?.length || data?.relations?.length) {
+      setActiveWindow('network', 'Spark');
+      setActiveWindow('data', 'EntityList');
+    }
+  }, [data, setActiveWindow]);
 
   useEffect(() => {
     if (error) {

@@ -1,4 +1,4 @@
-import { useMultiWindowStoreActions } from '../../../stores/multiWindowState';
+import { useWindowStoreActions } from '../../../stores/windowState';
 import { useEffect, useState, useRef } from 'react';
 import { type Node, type Edge, applyNodeChanges, MarkerType } from 'reactflow';
 import { getStressLayout } from '../../../components/graph/layout';
@@ -26,7 +26,7 @@ export const SparkGraph: React.FC = () => {
   const { addEntities } = useEntityDataActions();
   const { selectedIds } = useEntitySelectionStore();
   const { setSelections } = useEntitySelectionActions();
-  const { setActiveWindow } = useMultiWindowStoreActions();
+  const { setActiveWindow } = useWindowStoreActions();
   const [entityToCreate, setEntityToCreate] = useState<Entity | undefined>(undefined);
   const hasWritePermission = user ? hasRole('admin') || hasRole('pro') : false;
   const expandedEventIds = useRef(new Set());
@@ -131,7 +131,7 @@ export const SparkGraph: React.FC = () => {
         const { error } = await deleteRelation({ path: { id } });
         if (error) {
           notifications.show({
-            message: t('pages.windows.network.SparkGraph.deleteEdgeError', '?'),
+            message: t('pages.windows.network.SparkGraph.deleteEdgeError'),
             color: 'red',
           });
         }
@@ -139,7 +139,7 @@ export const SparkGraph: React.FC = () => {
         const { error } = await deleteEntity({ path: { id } });
         if (error) {
           notifications.show({
-            message: t('pages.windows.network.SparkGraph.deleteEntityError', '?'),
+            message: t('pages.windows.network.SparkGraph.deleteEntityError'),
             color: 'red',
           });
         }

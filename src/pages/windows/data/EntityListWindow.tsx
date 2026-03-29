@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 import { ActionIcon, Box, Button, ScrollArea, Stack, Title } from '@mantine/core';
 import { useEntityDataActions, useEntityDataStore } from '../network/entityData';
 import { useEntitySelectionActions } from './entitySelection';
-import { EventForm } from '../../../components/forms';
+import { EventForm } from '@omnsight/osint-entity-components/forms';
 import { useTranslation } from 'react-i18next';
 import { useWindowManager } from '../WindowManager';
 import { ArrowRightIcon, PlusIcon } from '@heroicons/react/24/solid';
-import { createEvent, updateEvent, type Event } from 'omni-osint-crud-client';
+import {
+  createEvent,
+  updateEvent,
+  updateEventPermissions,
+  type Event,
+  type Permissive,
+} from 'omni-osint-crud-client';
 import { notifications } from '@mantine/notifications';
 import { useCrudClient } from '../../../api/useCrudyClient';
 import { canWriteToEntity, useAuth } from '../../../provider/AuthContext';
@@ -14,7 +20,7 @@ import { canWriteToEntity, useAuth } from '../../../provider/AuthContext';
 export const EntityListWindowContent: React.FC = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const { events } = useEntityDataStore();
+  const { events, sources, relations } = useEntityDataStore();
   const { addEntities } = useEntityDataActions();
   const { setActiveWindowByName } = useWindowManager();
   const { setSelections } = useEntitySelectionActions();
@@ -65,18 +71,50 @@ export const EntityListWindowContent: React.FC = () => {
     }
   };
 
+  const handleUpdateEventPermission = async (id: string, patch: Permissive) => {
+    console.debug('Updating event permissions', id, patch);
+    const { data, error, status } = await updateEventPermissions({
+      body: patch,
+      path: {
+        id,
+      },
+      client: crudClient,
+    });
+
+    if (error) {
+      console.error(`Error [${status}] updating event permissions`, error);
+      notifications.show({
+        title: t('common.error'),
+        message: t('pages.windows.data.EntityListWindow.errorPermissions'),
+        color: 'red',
+      });
+    } else {
+      addEntities({ events: [data] });
+      console.log('Updated event permissions', data);
+    }
+  };
+
   return (
     <ScrollArea h="100%" w="100%" type="scroll" offsetScrollbars>
       <Box p="lg" pt="sm">
         <Stack>
-          {events.map((entity) => (
-            <Box key={entity._id}>
+          {events.map((event) => (
+            <Box key={event._id}>
               <EventForm
-                event={entity}
-                useInput={false}
+                event={event}
+                sources={sources.filter((source) =>
+                  relations.some(
+                    (relation) => relation._from === event._id && relation._to === source._id,
+                  ),
+                )}
                 onUpdate={
-                  canWriteToEntity(user, entity).canEdit
-                    ? (data) => entity._id && handleUpdateEvent(entity._id, data)
+                  canWriteToEntity(user, event).canEdit
+                    ? (data) => event._id && handleUpdateEvent(event._id, data)
+                    : undefined
+                }
+                onUpdatePermissive={
+                  user?.id === event.owner
+                    ? (data) => event._id && handleUpdateEventPermission(event._id, data)
                     : undefined
                 }
                 onClose={() => {}}
@@ -86,8 +124,8 @@ export const EntityListWindowContent: React.FC = () => {
                     color="gray"
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (entity._id) {
-                        setSelections([entity._id]);
+                      if (event._id) {
+                        setSelections([event._id]);
                         setActiveWindowByName('Entity');
                       }
                     }}
@@ -100,12 +138,7 @@ export const EntityListWindowContent: React.FC = () => {
           ))}
           {authed &&
             (creating ? (
-              <EventForm
-                event={{}}
-                useInput={true}
-                onSubmit={submitNewEvent}
-                onClose={() => setCreating(false)}
-              />
+              <EventForm event={{}} onSubmit={submitNewEvent} onClose={() => setCreating(false)} />
             ) : (
               <Button fullWidth onClick={() => setCreating(true)}>
                 <PlusIcon style={{ width: 20, height: 20 }} />

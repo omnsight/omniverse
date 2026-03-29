@@ -13,6 +13,8 @@ import type {
   WebsiteMainData,
 } from 'omni-osint-crud-client';
 
+export type { Event, Organization, Person, Source, Website, Relation };
+
 export type EntityMainData =
   | EventMainData
   | OrganizationMainData

@@ -46,7 +46,7 @@ const InsightWindowContent: React.FC = () => {
     if (isError) {
       notifications.show({
         title: t('common.error'),
-        message: t('pages.windows.insight.InsightWindow.queryError', '?'),
+        message: t('pages.windows.insight.InsightWindow.queryError'),
         color: 'red',
       });
     }

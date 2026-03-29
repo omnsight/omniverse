@@ -26,11 +26,10 @@ export const EventNode: React.FC<NodeProps<Event>> = memo(({ data, selected }) =
         <EventIcon event={data} size="xl" />
       </Avatar>
       <Text
-        fz={8}
+        fz={10}
         fw={500}
-        c="dimmed"
         pos="absolute"
-        top="100%"
+        top="95%"
         left="50%"
         mt={4}
         style={{
@@ -39,8 +38,23 @@ export const EventNode: React.FC<NodeProps<Event>> = memo(({ data, selected }) =
           pointerEvents: 'none',
         }}
       >
-        {event?.title ||
-          t('placeholder.unknown') + t('components.graph.nodes.EventNode.title', '?')}
+        {t('components.graph.nodes.EventNode.title')}
+      </Text>
+      <Text
+        fz={8}
+        fw={500}
+        c="dimmed"
+        pos="absolute"
+        top="125%"
+        left="50%"
+        mt={4}
+        style={{
+          transform: 'translateX(-50%)',
+          whiteSpace: 'nowrap',
+          pointerEvents: 'none',
+        }}
+      >
+        {event?.title || t('placeholder.unknown') + t('components.graph.nodes.EventNode.title')}
       </Text>
     </Box>
   );

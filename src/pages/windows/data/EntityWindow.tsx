@@ -10,9 +10,9 @@ import {
   Group,
   Breadcrumbs,
   Loader,
-  Badge,
   Tooltip,
   Anchor,
+  ActionIcon,
 } from '@mantine/core';
 import { useEntitySelectionActions, useSelectedEntities } from './entitySelection';
 import { useEntityDataActions } from '../network/entityData';
@@ -34,8 +34,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useEntityAuth, useAuth } from '../../../provider/AuthContext';
 import { useInsightStore } from '../insight/insightData';
 import { notifications } from '@mantine/notifications';
-import { useWindowStoreActions } from '../../../stores/windowStateStore';
+import { useWindowDragStoreActions } from '../../../stores/windowDragStateStore';
 import { useWindowManager } from '../WindowManager';
+import { IconMdiAnchor } from '@omnsight/osint-entity-components/icons';
+import { useEntityQueryClient } from '@/api/useQueryClient';
 
 interface EntityWindowContentProps {
   selectedEntity?: Entity;
@@ -47,16 +49,22 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
   hasWritePermission,
 }) => {
   const { t } = useTranslation();
+  const { hasRole } = useAuth();
+  const { entityQueryClient } = useEntityQueryClient();
   const { addEntities } = useEntityDataActions();
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['neighbors', selectedEntity?.data._id],
     queryFn: async () => {
-      const response = await queryNeighbors({ path: { id: selectedEntity?.data._id || '' } });
+      const response = await queryNeighbors({
+        path: { id: selectedEntity?.data._id || '' },
+        client: entityQueryClient,
+      });
       console.debug('queryNeighbors response', response);
       return response.data || {};
     },
     enabled: !!selectedEntity,
+    staleTime: 5 * 60 * 1000,
   });
 
   useEffect(() => {
@@ -64,7 +72,7 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
       console.error('Error fetching entity data', error);
       notifications.show({
         title: t('common.error'),
-        message: t('pages.windows.data.EntityWindow.queryError', '?'),
+        message: t('pages.windows.data.EntityWindow.queryError'),
         color: 'red',
       });
     }
@@ -91,7 +99,8 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
       <EntityFormRenderer
         entity={selectedEntity}
         neighbors={data}
-        onUpdate={hasWritePermission ? (entities) => addEntities(entities, undefined) : undefined}
+        isAdmin={hasRole('admin')}
+        onUpdated={hasWritePermission ? (entities) => addEntities(entities, undefined) : undefined}
         style={{ border: 'none', boxShadow: 'none', padding: 0 }}
       />
 
@@ -111,7 +120,7 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
                   relation={data?.relations?.find((r: any) => r._to === entity._id)}
                 />
               )) || []}
-              <EmptyAvatar />
+              {!data?.organizations?.length && <EmptyAvatar />}
             </AvatarSpan>
           </Stack>
 
@@ -126,7 +135,7 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
                   relation={data?.relations?.find((r: any) => r._to === entity._id)}
                 />
               )) || []}
-              <EmptyAvatar />
+              {!data?.websites?.length && <EmptyAvatar />}
             </AvatarSpan>
           </Stack>
 
@@ -141,6 +150,7 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
                   relation={data?.relations?.find((r: any) => r._to === entity._id)}
                 />
               )) || []}
+              {!data?.events?.length && <EmptyAvatar />}
             </AvatarSpan>
           </Stack>
 
@@ -155,7 +165,7 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
                   relation={data?.relations?.find((r: any) => r._to === person._id)}
                 />
               )) || []}
-              <EmptyAvatar />
+              {!data?.persons?.length && <EmptyAvatar />}
             </AvatarSpan>
           </Stack>
         </SimpleGrid>
@@ -171,6 +181,7 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
                 relation={data?.relations?.find((r: any) => r._to === source._id)}
               />
             )) || []}
+            {!data?.sources?.length && <EmptyAvatar />}
           </AvatarRowList>
         </Stack>
       </Box>
@@ -183,7 +194,7 @@ export const EntityWindow: React.FC = () => {
   const { user, hasRole } = useAuth();
   const selections = useSelectedEntities();
   const { setSelections } = useEntitySelectionActions();
-  const { register, setDragging } = useWindowStoreActions();
+  const { register, setDragging } = useWindowDragStoreActions();
   const { setActiveWindowByName } = useWindowManager();
   const lastSelection: Entity | undefined =
     selections.length > 0 ? selections[selections.length - 1] : undefined;
@@ -242,14 +253,18 @@ export const EntityWindow: React.FC = () => {
       <Group p="lg" pb={0}>
         <Breadcrumbs>{breadcrumbs}</Breadcrumbs>
         <Tooltip label={t('pages.windows.data.EntityWindow.dragTip')}>
-          <Badge
+          <ActionIcon
+            variant="filled"
+            aria-label="Drag to add to insight"
+            size="sm"
+            radius="lg"
             draggable
             onDragStart={handleDragStart}
             onDragEnd={() => setDragging(undefined)}
             style={{ cursor: 'grab' }}
           >
-            +
-          </Badge>
+            <IconMdiAnchor />
+          </ActionIcon>
         </Tooltip>
       </Group>
       <EntityWindowContent selectedEntity={lastSelection} hasWritePermission={hasWritePermission} />

@@ -26,11 +26,10 @@ export const PersonNode: React.FC<NodeProps<Person>> = memo(({ data, selected })
         <PersonIcon person={person} size="xl" />
       </Avatar>
       <Text
-        fz={8}
+        fz={10}
         fw={500}
-        c="dimmed"
         pos="absolute"
-        top="100%"
+        top="95%"
         left="50%"
         mt={4}
         style={{
@@ -39,7 +38,23 @@ export const PersonNode: React.FC<NodeProps<Person>> = memo(({ data, selected })
           pointerEvents: 'none',
         }}
       >
-        {person?.name || t('placeholder.unknown') + t('components.graph.nodes.PersonNode.name', '?')}
+        {t('components.graph.nodes.PersonNode.name')}
+      </Text>
+      <Text
+        fz={8}
+        fw={500}
+        c="dimmed"
+        pos="absolute"
+        top="125%"
+        left="50%"
+        mt={4}
+        style={{
+          transform: 'translateX(-50%)',
+          whiteSpace: 'nowrap',
+          pointerEvents: 'none',
+        }}
+      >
+        {person?.name || t('placeholder.unknown') + t('components.graph.nodes.PersonNode.name')}
       </Text>
     </Box>
   );

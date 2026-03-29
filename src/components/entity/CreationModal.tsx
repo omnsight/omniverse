@@ -18,7 +18,7 @@ import {
   RelationForm,
   SourceForm,
   WebsiteForm,
-} from '../forms';
+} from '@omnsight/osint-entity-components/forms';
 
 interface Props {
   entity?: Entity;
@@ -39,7 +39,7 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
         if (error) {
           notifications.show({
             title: t('common.error'),
-            message: t('components.entity.CreationModal.error', '?'),
+            message: t('components.entity.CreationModal.error'),
             color: 'red',
           });
         } else {
@@ -53,7 +53,7 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
         if (organizationError) {
           notifications.show({
             title: t('common.error'),
-            message: t('components.entity.CreationModal.error', '?'),
+            message: t('components.entity.CreationModal.error'),
             color: 'red',
           });
         } else {
@@ -65,7 +65,7 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
         if (personError) {
           notifications.show({
             title: t('common.error'),
-            message: t('components.entity.CreationModal.error', '?'),
+            message: t('components.entity.CreationModal.error'),
             color: 'red',
           });
         } else {
@@ -79,7 +79,7 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
         if (relationError) {
           notifications.show({
             title: t('common.error'),
-            message: t('components.entity.CreationModal.error', '?'),
+            message: t('components.entity.CreationModal.error'),
             color: 'red',
           });
         } else {
@@ -91,7 +91,7 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
         if (sourceError) {
           notifications.show({
             title: t('common.error'),
-            message: t('components.entity.CreationModal.error', '?'),
+            message: t('components.entity.CreationModal.error'),
             color: 'red',
           });
         } else {
@@ -105,7 +105,7 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
         if (websiteError) {
           notifications.show({
             title: t('common.error'),
-            message: t('components.entity.CreationModal.error', '?'),
+            message: t('components.entity.CreationModal.error'),
             color: 'red',
           });
         } else {
@@ -127,7 +127,6 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
           <EventForm
             event={entity.data}
             onSubmit={createEntity}
-            useInput={true}
             onClose={() => setEntity(undefined)}
           />
         );
@@ -136,7 +135,6 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
           <OrganizationForm
             organization={entity.data}
             onSubmit={createEntity}
-            useInput={true}
             onClose={() => setEntity(undefined)}
           />
         );
@@ -145,7 +143,6 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
           <PersonForm
             person={entity.data}
             onSubmit={createEntity}
-            useInput={true}
             onClose={() => setEntity(undefined)}
           />
         );
@@ -154,7 +151,6 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
           <RelationForm
             relation={entity.data}
             onSubmit={createEntity}
-            useInput={true}
             onClose={() => setEntity(undefined)}
           />
         );
@@ -163,7 +159,6 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
           <SourceForm
             source={entity.data}
             onSubmit={createEntity}
-            useInput={true}
             onClose={() => setEntity(undefined)}
           />
         );
@@ -172,7 +167,6 @@ export const EntityCreationModal: React.FC<Props> = ({ entity, setEntity, onCrea
           <WebsiteForm
             website={entity.data}
             onSubmit={createEntity}
-            useInput={true}
             onClose={() => setEntity(undefined)}
           />
         );

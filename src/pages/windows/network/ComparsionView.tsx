@@ -57,7 +57,7 @@ export const ComparisonView: React.FC = () => {
         w="100%"
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
-        <Text>{t('pages.windows.network.ComparsionView.selectAtLeastTwo', '?')}</Text>
+        <Text>{t('pages.windows.network.ComparsionView.selectAtLeastTwo')}</Text>
       </Box>
     );
   }
@@ -73,7 +73,7 @@ export const ComparisonView: React.FC = () => {
         w="100%"
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
-        <Text>{t('pages.windows.network.ComparsionView.selectSameType', '?')}</Text>
+        <Text>{t('pages.windows.network.ComparsionView.selectSameType')}</Text>
       </Box>
     );
   }
@@ -105,8 +105,8 @@ export const ComparisonView: React.FC = () => {
           onChange={(event) => setShowAttributes(event.currentTarget.checked)}
           label={
             showAttributes
-              ? t('pages.windows.network.ComparsionView.showAttributes', '?')
-              : t('pages.windows.network.ComparsionView.showMainData', '?')
+              ? t('pages.windows.network.ComparsionView.showAttributes')
+              : t('pages.windows.network.ComparsionView.showMainData')
           }
         />
       </Box>
