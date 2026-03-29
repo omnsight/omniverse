@@ -1,0 +1,82 @@
+services:
+  omni-osint-query:
+    image: ghcr.io/omnsight/omni-osint-query:latest
+    container_name: omni-osint-query
+    env_file:
+      - .env.development
+    environment:
+      - ARANGODB_HOST=http://arangodb:8529
+      - REDIS_HOST=redis
+    ports:
+      - "8000:8000"
+    depends_on:
+      - arangodb
+      - redis
+      - omni-osint-crud
+    command: uvicorn omni_osint_query.main:app --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/osint/query"]
+      interval: 3s
+      timeout: 9s
+      retries: 3
+
+  omni-osint-crud:
+    image: ghcr.io/omnsight/omni-osint-crud:latest
+    container_name: omni-osint-crud
+    env_file:
+      - .env.development
+    environment:
+      - ARANGODB_HOST=http://arangodb:8529
+      - REDIS_HOST=redis
+    ports:
+      - "8001:8000"
+    depends_on:
+      - arangodb
+      - redis
+    command: uvicorn omni_osint_crud.main:app --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/osint/crud"]
+      interval: 3s
+      timeout: 9s
+      retries: 3
+
+  omni-monitoring:
+    image: ghcr.io/omnsight/omni-monitoring:latest
+    container_name: omni-monitoring
+    env_file:
+      - .env.development
+    environment:
+      - ARANGODB_HOST=http://arangodb:8529
+      - REDIS_HOST=redis
+    ports:
+      - "8002:8000"
+    depends_on:
+      - arangodb
+      - redis
+      - omni-osint-crud
+    command: uvicorn omni_monitoring.main:app --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/monitoring"]
+      interval: 3s
+      timeout: 9s
+      retries: 3
+
+  arangodb:
+    image: arangodb/arangodb:3.12
+    command: arangod --experimental-vector-index
+    container_name: osint-arangodb
+    environment:
+      - ARANGO_ROOT_PASSWORD=${ARANGODB_PASSWORD}
+    ports:
+      - "8529:8529"
+    volumes:
+      - arangodb_data:/var/lib/arangodb3
+
+  redis:
+    image: redis:7-alpine
+    container_name: osint-redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  arangodb_data:

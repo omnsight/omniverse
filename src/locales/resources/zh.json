@@ -1,0 +1,235 @@
+{
+  "pages": {
+    "RedirectPage": {
+      "title": "无权访问",
+      "description": "您无权限查看此页面。您将在 {{countdown}} 秒后被重定向到首页。"
+    },
+    "ErrorPage": {
+      "title": "错误页面",
+      "description": "遇到未知错误",
+      "return": "返回首页"
+    },
+    "layouts": {
+      "UserMenu": {
+        "login": "登录",
+        "account": "账号",
+        "profile": "账户资料",
+        "theme": "主题",
+        "lightMode": "浅色主题",
+        "darkMode": "深色主题",
+        "systemMode": "系统主题",
+        "language": "语言",
+        "english": "英文",
+        "chinese": "中文",
+        "selectLanguage": "选择语言",
+        "signOut": "退出登录"
+      },
+      "Topbar": {
+        "queryEntitiesError": "无法查询到有关数据，请检查查询参数",
+        "selectDateRange": "",
+        "searchPlaceholder": "搜索",
+        "searchFilters": "搜索过滤器",
+        "country": "国家",
+        "timezone": "时区"
+      },
+      "Sidebar": {
+        "logo": "Nexus",
+        "subtitle": "信息情报可视化平台",
+        "intelligence": "信息综合",
+        "monitor": "信源监控",
+        "admin": "管理员面板"
+      }
+    },
+    "windows": {
+      "network": {
+        "SparkGraph": {
+          "deleteEdgeError": "删除关联失败，请稍后重试。",
+          "deleteEntityError": "删除实体失败，请稍后重试。"
+        },
+        "ComparsionView": {
+          "selectAtLeastTwo": "请选择至少两个实体进行比较",
+          "selectSameType": "请选择相同类型的实体进行比较",
+          "showAttributes": "显示属性",
+          "showMainData": "显示主要数据"
+        }
+      },
+      "monitor": {
+        "MonitorWindow": {
+          "noSourceSelected": "请选择至少一个信源进行监控",
+          "title": "监控信源列表"
+        },
+        "MonitorListWindow": {
+          "getSourcesError": "获取监控信源列表失败，请稍后重试。",
+          "createSourceError": "无法创建监控源，请稍后重试。",
+          "title": "监控信源列表"
+        }
+      },
+      "insight": {
+        "InsightWindow": {
+          "queryError": "获取专栏相关事件、人物、组织等失败，请稍后重试。",
+          "empty": "没有选中的文章,请选择并点击一篇专栏",
+          "InsightWindowTitle": "分析专栏"
+        },
+        "InsightListWindow": {
+          "queryError": "获取专栏失败，请稍后重试。",
+          "createError": "发表新专栏失败，请稍后尝试",
+          "updateError": "更新专栏失败，请稍后重试。",
+          "permissionError": "无法更改事件权限，请稍后重试。",
+          "title": "分析专栏"
+        }
+      },
+      "data": {
+        "EntityWindow": {
+          "queryError": "无法查询到事件数据，请检查查询参数。",
+          "noEntitySelected": "请选择至少一个事件、人物、组织等来嵌入专栏",
+          "relatedOrganizations": "相关组织",
+          "relatedWebsites": "相关网站",
+          "relatedEvents": "相关事件",
+          "relatedPersons": "相关人员",
+          "relatedSources": "相关信源",
+          "title": "相关实体",
+          "noInghtSelected": "请选择一篇专栏以嵌入文章",
+          "dragTip": "将实体拖动到一篇专栏上以嵌入"
+        },
+        "EntityListWindow": {
+          "error": "无法创建事件，请稍后再试。",
+          "errorPermissions": "无法更改事件权限，请稍后重试。",
+          "title": "相关消息"
+        }
+      },
+      "context": {
+        "GlobalEventTimelineWindow": {
+          "queryError": "无法查询到事件数据，请检查查询参数。"
+        },
+        "GlobalEventRecommendationWindow": {
+          "queryError": "无法查询到最新消息，请稍后重试。",
+          "title": "最新消息"
+        }
+      }
+    }
+  },
+  "common": {
+    "error": "错误",
+    "reset": "重置",
+    "apply": "应用",
+    "save": "保存",
+    "create": "创建",
+    "entity": {
+      "Person": "个人",
+      "Organization": "组织",
+      "Event": "事件",
+      "Website": "网站",
+      "Source": "信源"
+    },
+    "warning": "警告"
+  },
+  "components": {
+    "map": {
+      "MapTools": {
+        "start": "开始",
+        "normalMode": "正常模式",
+        "rulerMode": "测量模式",
+        "relationsMode": "显示关系"
+      }
+    },
+    "editor": {
+      "InsightEditor": {
+        "noRelatedEntities": "暂无相关事件、人物、组织等",
+        "updateInsightError": "无法更新专栏，请稍后再试",
+        "openGallery": "相关事件、人物、组织等"
+      },
+      "tools": {
+        "UnredoTools": {
+          "undo": "撤销",
+          "redo": "重做"
+        },
+        "TextTools": {
+          "bold": "加粗",
+          "italic": "斜体",
+          "strike": "删除线",
+          "highlight": "高亮"
+        },
+        "TextSpecialTools": {
+          "codeBlock": "代码块",
+          "blockquote": "引用块"
+        },
+        "ListTools": {
+          "bulletList": "无序列表",
+          "orderedList": "有序列表",
+          "horizontalRule": "水平分隔线"
+        },
+        "HeadingTools": {
+          "h1": "一级标题",
+          "h2": "二级标题",
+          "h3": "三级标题"
+        }
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "恢复视图"
+        }
+      }
+    },
+    "entity": {
+      "CreationModal": {
+        "error": "无法创建事件，请稍后重试"
+      },
+      "FormRenderer": {
+        "Website": {
+          "updateError": "无法更新网站，请稍后重试",
+          "updatePermissionError": "无法更新网站权限配置，请稍后再试"
+        },
+        "Source": {
+          "updateError": "无法更新信源，请稍后重试",
+          "updatePermissionError": "无法更新信源权限配置，请稍后再试"
+        },
+        "Relation": {
+          "updateError": "无法更新关系，请稍后重试",
+          "updatePermissionError": "无法更新关系权限配置，请稍后再试"
+        },
+        "Person": {
+          "updateError": "无法更新人物，请稍后重试",
+          "updatePermissionError": "无法更新人物权限配置，请稍后再试"
+        },
+        "Organization": {
+          "updateError": "无法更新组织，请稍后重试",
+          "updatePermissionError": "无法更新组织权限配置，请稍后再试"
+        },
+        "Event": {
+          "updateError": "无法更新事件，请稍后重试",
+          "updatePermissionError": "无法更新事件权限配置，请稍后再试"
+        }
+      }
+    },
+    "graph": {
+      "Graph": {
+        "noPermission": "您无权限查看此图。"
+      },
+      "nodes": {
+        "WebsiteNode": {
+          "name": "网站"
+        },
+        "SourceNode": {
+          "name": "信源"
+        },
+        "PersonNode": {
+          "name": "人物"
+        },
+        "OrganizationNode": {
+          "name": "组织"
+        },
+        "EventNode": {
+          "title": "事件"
+        }
+      },
+      "edges": {
+        "RelationEdge": {
+          "name": "关系"
+        }
+      }
+    }
+  },
+  "placeholder": {
+    "unknown": "未知"
+  }
+}

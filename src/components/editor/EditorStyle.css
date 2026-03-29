@@ -1,0 +1,7 @@
+.ProseMirror-focused {
+  outline: none;
+}
+/* Highlight the drop target visually */
+.ProseMirror.dragging {
+  border: 2px dashed #228be6; /* Mantine blue.6 */
+}

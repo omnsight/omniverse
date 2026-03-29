@@ -1,0 +1,235 @@
+{
+  "pages": {
+    "RedirectPage": {
+      "title": "Unauthorized Access",
+      "description": "You do not have permission to view this page. You will be redirected to the homepage in {{countdown}} seconds."
+    },
+    "ErrorPage": {
+      "title": "Error Page",
+      "description": "Oops! Encountered an unknown error",
+      "return": "Return to Home"
+    },
+    "layouts": {
+      "UserMenu": {
+        "login": "Login",
+        "account": "Account",
+        "profile": "Profile",
+        "theme": "Theme",
+        "lightMode": "Light Mode",
+        "darkMode": "Dark Mode",
+        "systemMode": "System Mode",
+        "language": "Language",
+        "english": "English",
+        "chinese": "Chinese",
+        "selectLanguage": "Select Language",
+        "signOut": "Sign Out"
+      },
+      "Topbar": {
+        "queryEntitiesError": "Failed to query entities",
+        "selectDateRange": "",
+        "searchPlaceholder": "Search",
+        "searchFilters": "Search Filters",
+        "country": "Country",
+        "timezone": "Timezone"
+      },
+      "Sidebar": {
+        "logo": "Nexus",
+        "subtitle": "Intelligence Platform",
+        "intelligence": "Intelligence Panel",
+        "monitor": "Monitor Panel",
+        "admin": "Admin Panel"
+      }
+    },
+    "windows": {
+      "network": {
+        "SparkGraph": {
+          "deleteEdgeError": "Failed to delete edge, please try again later.",
+          "deleteEntityError": "Failed to delete entity, please try again later."
+        },
+        "ComparsionView": {
+          "selectAtLeastTwo": "Please select at least two entities to compare.",
+          "selectSameType": "Please select entities of the same type to compare.",
+          "showAttributes": "Show Attributes",
+          "showMainData": "Show Main Data"
+        }
+      },
+      "monitor": {
+        "MonitorWindow": {
+          "noSourceSelected": "Please select at least one monitoring source.",
+          "title": "Monitoring Sources"
+        },
+        "MonitorListWindow": {
+          "getSourcesError": "Failed to get monitoring sources, please try again later.",
+          "createSourceError": "Failed to create monitoring source. Please try again later.",
+          "title": "Monitoring Sources"
+        }
+      },
+      "insight": {
+        "InsightWindow": {
+          "queryError": "Failed to query insights, please try again later.",
+          "empty": "No selected article",
+          "InsightWindowTitle": "Insight Analysis"
+        },
+        "InsightListWindow": {
+          "queryError": "Failed to query insights, please try again later.",
+          "createError": "Failed to create insight, please try again later.",
+          "updateError": "Failed to update insight, please try again later.",
+          "permissionError": "Failed to update insight access config, please try again later.",
+          "title": "Insight Column"
+        }
+      },
+      "data": {
+        "EntityWindow": {
+          "queryError": "Failed to query entities, please try again later.",
+          "noEntitySelected": "Select at least one event, person, organization, etc. is required to embed the column.",
+          "relatedOrganizations": "Related Organizations",
+          "relatedWebsites": "Related Websites",
+          "relatedEvents": "Related Events",
+          "relatedPersons": "Related Personels",
+          "relatedSources": "Related Sources",
+          "title": "Related Entities",
+          "noInghtSelected": "Select at least one analysis to embed the article.",
+          "dragTip": "Drag entity to an analysis to embed it"
+        },
+        "EntityListWindow": {
+          "error": "Failed to create event",
+          "errorPermissions": "",
+          "title": "Related Entities"
+        }
+      },
+      "context": {
+        "GlobalEventTimelineWindow": {
+          "queryError": "Failed to query events, please try again later."
+        },
+        "GlobalEventRecommendationWindow": {
+          "queryError": "Failed to query recommendations, please try again later.",
+          "title": "Recommendations"
+        }
+      }
+    }
+  },
+  "common": {
+    "error": "Error",
+    "reset": "Reset",
+    "apply": "Apply",
+    "save": "Save",
+    "create": "Create",
+    "entity": {
+      "Person": "Person",
+      "Organization": "Organization",
+      "Event": "Event",
+      "Website": "Website",
+      "Source": "Source"
+    },
+    "warning": "Warning"
+  },
+  "components": {
+    "map": {
+      "MapTools": {
+        "start": "Start",
+        "normalMode": "Normal Mode",
+        "rulerMode": "Ruler Mode",
+        "relationsMode": "Show Relations"
+      }
+    },
+    "editor": {
+      "InsightEditor": {
+        "noRelatedEntities": "No related events, people, and etc.",
+        "updateInsightError": "Failed to update insight, please try again later.",
+        "openGallery": "Related Events, People, and etc."
+      },
+      "tools": {
+        "UnredoTools": {
+          "undo": "Undo",
+          "redo": "Redo"
+        },
+        "TextTools": {
+          "bold": "Bold",
+          "italic": "Italic",
+          "strike": "Strike",
+          "highlight": "Highlight"
+        },
+        "TextSpecialTools": {
+          "codeBlock": "Code Block",
+          "blockquote": "Blockquote"
+        },
+        "ListTools": {
+          "bulletList": "Bullet List",
+          "orderedList": "Ordered List",
+          "horizontalRule": "Horizontal Rule"
+        },
+        "HeadingTools": {
+          "h1": "H1 Heading",
+          "h2": "H2 Heading",
+          "h3": "H3 Heading"
+        }
+      },
+      "extensions": {
+        "WindowAnchor": {
+          "restore": "Restore Window"
+        }
+      }
+    },
+    "entity": {
+      "CreationModal": {
+        "error": "Cannot create event, please try again later"
+      },
+      "FormRenderer": {
+        "Website": {
+          "updateError": "Failed to update website, please try again later.",
+          "updatePermissionError": "Failed to update website access config, please try again later."
+        },
+        "Source": {
+          "updateError": "Failed to update source, please try again later.",
+          "updatePermissionError": "Failed to update source access config, please try again later."
+        },
+        "Relation": {
+          "updateError": "Failed to update relation, please try again later.",
+          "updatePermissionError": "Failed to update relation access config, please try again later."
+        },
+        "Person": {
+          "updateError": "Failed to update person, please try again later.",
+          "updatePermissionError": "Failed to update person access config, please try again later."
+        },
+        "Organization": {
+          "updateError": "Failed to update organization, please try again later.",
+          "updatePermissionError": "Failed to update organization access config, please try again later."
+        },
+        "Event": {
+          "updateError": "Failed to update event, please try again later.",
+          "updatePermissionError": "Failed to update event access config, please try again later."
+        }
+      }
+    },
+    "graph": {
+      "Graph": {
+        "noPermission": "No permission to view this graph"
+      },
+      "nodes": {
+        "WebsiteNode": {
+          "name": "Website"
+        },
+        "SourceNode": {
+          "name": "Source"
+        },
+        "PersonNode": {
+          "name": "Person"
+        },
+        "OrganizationNode": {
+          "name": "Organization"
+        },
+        "EventNode": {
+          "title": "Event"
+        }
+      },
+      "edges": {
+        "RelationEdge": {
+          "name": "Relation"
+        }
+      }
+    }
+  },
+  "placeholder": {
+    "unknown": "Unknown"
+  }
+}
