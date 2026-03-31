@@ -12,19 +12,19 @@ export default defineConfig({
   server: {
     proxy: {
       '/query': {
-        target: 'http://localhost:8000',
+        target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/query/, ''),
       },
       '/crud': {
-        target: 'http://localhost:8001',
+        target: 'http://localhost:8081',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/crud/, ''),
       },
       '/monitoring': {
-        target: 'http://localhost:8002',
+        target: 'http://localhost:8082',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/monitoring/, ''),
