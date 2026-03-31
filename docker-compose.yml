@@ -8,17 +8,12 @@ services:
       - ARANGODB_HOST=http://arangodb:8529
       - REDIS_HOST=redis
     ports:
-      - "8000:8000"
+      - "8080:8080"
     depends_on:
       - arangodb
       - redis
       - omni-osint-crud
-    command: uvicorn omni_osint_query.main:app --host 0.0.0.0 --port 8000 --reload
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health/osint/query"]
-      interval: 3s
-      timeout: 9s
-      retries: 3
+    command: uvicorn omni_osint_query.main:app --host 0.0.0.0 --port 8080 --reload
 
   omni-osint-crud:
     image: ghcr.io/omnsight/omni-osint-crud:latest
@@ -29,16 +24,11 @@ services:
       - ARANGODB_HOST=http://arangodb:8529
       - REDIS_HOST=redis
     ports:
-      - "8001:8000"
+      - "8081:8080"
     depends_on:
       - arangodb
       - redis
-    command: uvicorn omni_osint_crud.main:app --host 0.0.0.0 --port 8000 --reload
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health/osint/crud"]
-      interval: 3s
-      timeout: 9s
-      retries: 3
+    command: uvicorn omni_osint_crud.main:app --host 0.0.0.0 --port 8080 --reload
 
   omni-monitoring:
     image: ghcr.io/omnsight/omni-monitoring:latest
@@ -49,17 +39,12 @@ services:
       - ARANGODB_HOST=http://arangodb:8529
       - REDIS_HOST=redis
     ports:
-      - "8002:8000"
+      - "8082:8080"
     depends_on:
       - arangodb
       - redis
       - omni-osint-crud
-    command: uvicorn omni_monitoring.main:app --host 0.0.0.0 --port 8000 --reload
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health/monitoring"]
-      interval: 3s
-      timeout: 9s
-      retries: 3
+    command: uvicorn omni_monitoring.main:app --host 0.0.0.0 --port 8080 --reload
 
   arangodb:
     image: arangodb/arangodb:3.12
@@ -77,6 +62,58 @@ services:
     container_name: osint-redis
     ports:
       - "6379:6379"
+
+  health-check-proxy:
+    image: python:3.11-alpine
+    container_name: health-aggregator
+    ports:
+      - "8888:8888" # The ALB will ping this port
+    command:
+      - python3
+      - -c
+      - |
+        import http.server, urllib.request, sys
+
+        class HealthHandler(http.server.BaseHTTPRequestHandler):
+          def do_GET(self):
+              # Service names match your docker-compose service names
+              # Internal ports are all 8080
+              urls = [
+                'http://omni-osint-crud:8080/health', 
+                'http://omni-osint-query:8080/health', 
+                'http://omni-monitoring:8080/health'
+              ]
+              try:
+                for url in urls:
+                  with urllib.request.urlopen(url, timeout=2) as r:
+                    if r.getcode() != 200:
+                      raise Exception(f"Failed: {url}")
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b'OK')
+              except Exception as e:
+                print(f"Health check failed: {e}", file=sys.stderr)
+                self.send_response(503)
+                self.end_headers()
+                self.wfile.write(b'FAIL')
+
+          # Silence logs so they don't spam your docker output every 30s
+          def log_message(self, format, *args):
+              return
+
+        print("Starting Health Aggregator on port 8888...")
+        http.server.HTTPServer(('0.0.0.0', 8888), HealthHandler).serve_forever()
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python3",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8888', timeout=2)",
+        ]
+      interval: 3s
+      timeout: 9s
+      retries: 3
 
 volumes:
   arangodb_data:
