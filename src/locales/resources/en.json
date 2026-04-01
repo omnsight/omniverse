@@ -1,12 +1,7 @@
 {
   "pages": {
-    "RedirectPage": {
-      "title": "Unauthorized Access",
-      "description": "You do not have permission to view this page. You will be redirected to the homepage in {{countdown}} seconds."
-    },
     "ErrorPage": {
-      "title": "Error Page",
-      "description": "Oops! Encountered an unknown error",
+      "redirect": "Redirecting to home in {countdown} seconds...",
       "return": "Return to Home"
     },
     "layouts": {
@@ -112,7 +107,6 @@
     "error": "Error",
     "reset": "Reset",
     "apply": "Apply",
-    "save": "Save",
     "create": "Create",
     "entity": {
       "Person": "Person",
@@ -121,6 +115,7 @@
       "Website": "Website",
       "Source": "Source"
     },
+    "save": "Save",
     "warning": "Warning"
   },
   "components": {
@@ -130,6 +125,64 @@
         "normalMode": "Normal Mode",
         "rulerMode": "Ruler Mode",
         "relationsMode": "Show Relations"
+      }
+    },
+    "graph": {
+      "Graph": {
+        "noPermission": "No permission to view this graph"
+      },
+      "nodes": {
+        "WebsiteNode": {
+          "name": "Website"
+        },
+        "SourceNode": {
+          "name": "Source"
+        },
+        "PersonNode": {
+          "name": "Person"
+        },
+        "OrganizationNode": {
+          "name": "Organization"
+        },
+        "EventNode": {
+          "title": "Event"
+        }
+      },
+      "edges": {
+        "RelationEdge": {
+          "name": "Relation"
+        }
+      }
+    },
+    "entity": {
+      "CreationModal": {
+        "error": "Cannot create event, please try again later"
+      },
+      "FormRenderer": {
+        "Website": {
+          "updateError": "Failed to update website, please try again later.",
+          "updatePermissionError": "Failed to update website access config, please try again later."
+        },
+        "Source": {
+          "updateError": "Failed to update source, please try again later.",
+          "updatePermissionError": "Failed to update source access config, please try again later."
+        },
+        "Relation": {
+          "updateError": "Failed to update relation, please try again later.",
+          "updatePermissionError": "Failed to update relation access config, please try again later."
+        },
+        "Person": {
+          "updateError": "Failed to update person, please try again later.",
+          "updatePermissionError": "Failed to update person access config, please try again later."
+        },
+        "Organization": {
+          "updateError": "Failed to update organization, please try again later.",
+          "updatePermissionError": "Failed to update organization access config, please try again later."
+        },
+        "Event": {
+          "updateError": "Failed to update event, please try again later.",
+          "updatePermissionError": "Failed to update event access config, please try again later."
+        }
       }
     },
     "editor": {
@@ -167,64 +220,6 @@
       "extensions": {
         "WindowAnchor": {
           "restore": "Restore Window"
-        }
-      }
-    },
-    "entity": {
-      "CreationModal": {
-        "error": "Cannot create event, please try again later"
-      },
-      "FormRenderer": {
-        "Website": {
-          "updateError": "Failed to update website, please try again later.",
-          "updatePermissionError": "Failed to update website access config, please try again later."
-        },
-        "Source": {
-          "updateError": "Failed to update source, please try again later.",
-          "updatePermissionError": "Failed to update source access config, please try again later."
-        },
-        "Relation": {
-          "updateError": "Failed to update relation, please try again later.",
-          "updatePermissionError": "Failed to update relation access config, please try again later."
-        },
-        "Person": {
-          "updateError": "Failed to update person, please try again later.",
-          "updatePermissionError": "Failed to update person access config, please try again later."
-        },
-        "Organization": {
-          "updateError": "Failed to update organization, please try again later.",
-          "updatePermissionError": "Failed to update organization access config, please try again later."
-        },
-        "Event": {
-          "updateError": "Failed to update event, please try again later.",
-          "updatePermissionError": "Failed to update event access config, please try again later."
-        }
-      }
-    },
-    "graph": {
-      "Graph": {
-        "noPermission": "No permission to view this graph"
-      },
-      "nodes": {
-        "WebsiteNode": {
-          "name": "Website"
-        },
-        "SourceNode": {
-          "name": "Source"
-        },
-        "PersonNode": {
-          "name": "Person"
-        },
-        "OrganizationNode": {
-          "name": "Organization"
-        },
-        "EventNode": {
-          "title": "Event"
-        }
-      },
-      "edges": {
-        "RelationEdge": {
-          "name": "Relation"
         }
       }
     }

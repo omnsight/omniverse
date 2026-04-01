@@ -1,19 +1,34 @@
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useEffect } from 'react';
-import { AppShell } from '@mantine/core';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AppShell, LoadingOverlay } from '@mantine/core';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { AppTopbar } from './pages/layouts/Topbar';
 import { AppSidebar } from './pages/layouts/Sidebar';
 import { IntelDashboard } from './pages/IntelPanel';
 import { MonitorDashboard } from './pages/MonitorPanel';
 import { AdminDashboard } from './pages/AdminPanel';
 import { ErrorPage } from './pages/ErrorPage';
-import RedirectPage from './pages/RedirectPage';
 import { useWindowDragStore } from './stores/windowDragStateStore';
+import { useAuth } from 'react-oidc-context';
 
 function App() {
   const [opened] = useDisclosure();
+  const auth = useAuth();
+  const navigate = useNavigate();
   const isTablet = useMediaQuery('(max-width: 1024px)');
+
+  useEffect(() => {
+    if (auth.error) {
+      console.error('Auth Error:', auth.error);
+      navigate('/error', {
+        replace: true,
+        state: {
+          errorName: 'authError',
+          redirect_timeout: 0,
+        },
+      });
+    }
+  }, [auth.error, navigate]);
 
   useEffect(() => {
     const handleGlobalDragEnd = () => {
@@ -45,15 +60,16 @@ function App() {
             height: 'calc(100vh - 60px)',
             display: 'flex',
             flexDirection: 'column',
+            position: 'relative',
           }}
         >
+          <LoadingOverlay visible={auth.isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
           <Routes>
             <Route path="/" element={<Navigate to="/intelligence" replace />} />
             <Route path="/intelligence" element={<IntelDashboard />} />
             <Route path="/monitor" element={<MonitorDashboard />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/error" element={<ErrorPage />} />
-            <Route path="/redirect" element={<RedirectPage />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </AppShell.Main>

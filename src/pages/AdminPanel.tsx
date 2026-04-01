@@ -9,13 +9,26 @@ import { ComparisonView } from './windows/network/ComparsionView';
 import { CustomSeparator } from './layouts/CustomSeparator';
 import { MapWindow } from './windows/main/MapWindow';
 import { useAuth } from '@/provider/AuthContext';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export const AdminDashboard: React.FC = () => {
   const { hasRole } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!hasRole('admin')) {
+      navigate('/error', {
+        replace: true,
+        state: {
+          errorName: 'requireAdmin',
+        },
+      });
+    }
+  }, [hasRole, navigate]);
 
   if (!hasRole('admin')) {
-    return <Navigate to="/redirect" replace />;
+    return null;
   }
 
   return (
