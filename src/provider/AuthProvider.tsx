@@ -14,15 +14,13 @@ const CLIENT_ID = import.meta.env.VITE_OIDC_CLIENT_ID;
 const AUTHORITY = import.meta.env.VITE_OIDC_AUTHORITY;
 
 const parseRoles = (user: User | null): string[] => {
-  if (!user || !user.access_token) return [];
+  if (!user || !user.id_token) return [];
 
   try {
-    const decoded = jwtDecode(user.access_token) as {
-      roles?: string[];
-    };
-    return decoded.roles || [];
+    const decoded = jwtDecode<{ "cognito:groups"?: string[] }>(user.id_token);
+    return decoded["cognito:groups"] || [];
   } catch (error) {
-    console.error('Failed to decode JWT', error);
+    console.error('Failed to decode JWT for user roles', error);
     return [];
   }
 };
