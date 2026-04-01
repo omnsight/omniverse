@@ -1,5 +1,23 @@
 {
   "pages": {
+    "UserProfile": {
+      "settings": "Settings",
+      "myAccount": "My Account",
+      "generalSettings": "General",
+      "dateTime": "Date Time",
+      "userId": "User ID",
+      "roles": "Account Type",
+      "theme": "Theme",
+      "systemDefault": "System Default",
+      "lightMode": "Light Mode",
+      "darkMode": "Dark Mode",
+      "navColor": "Theme Color",
+      "language": "Language",
+      "english": "English",
+      "chinese": "Chinese",
+      "selectLanguage": "Select Language",
+      "timezone": "Timezone"
+    },
     "ErrorPage": {
       "redirect": "Redirecting to home in {countdown} seconds...",
       "return": "Return to Home"
@@ -127,33 +145,6 @@
         "relationsMode": "Show Relations"
       }
     },
-    "graph": {
-      "Graph": {
-        "noPermission": "No permission to view this graph"
-      },
-      "nodes": {
-        "WebsiteNode": {
-          "name": "Website"
-        },
-        "SourceNode": {
-          "name": "Source"
-        },
-        "PersonNode": {
-          "name": "Person"
-        },
-        "OrganizationNode": {
-          "name": "Organization"
-        },
-        "EventNode": {
-          "title": "Event"
-        }
-      },
-      "edges": {
-        "RelationEdge": {
-          "name": "Relation"
-        }
-      }
-    },
     "entity": {
       "CreationModal": {
         "error": "Cannot create event, please try again later"
@@ -182,6 +173,33 @@
         "Event": {
           "updateError": "Failed to update event, please try again later.",
           "updatePermissionError": "Failed to update event access config, please try again later."
+        }
+      }
+    },
+    "graph": {
+      "Graph": {
+        "noPermission": "No permission to view this graph"
+      },
+      "nodes": {
+        "WebsiteNode": {
+          "name": "Website"
+        },
+        "SourceNode": {
+          "name": "Source"
+        },
+        "PersonNode": {
+          "name": "Person"
+        },
+        "OrganizationNode": {
+          "name": "Organization"
+        },
+        "EventNode": {
+          "title": "Event"
+        }
+      },
+      "edges": {
+        "RelationEdge": {
+          "name": "Relation"
         }
       }
     },

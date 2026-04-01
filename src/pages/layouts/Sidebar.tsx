@@ -3,19 +3,25 @@ import { LightBulbIcon, EyeIcon, UserCircleIcon } from '@heroicons/react/24/soli
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../provider/AuthContext';
+import { useNavColorStore } from '@/stores/themeStore';
 
 export const AppSidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
   const { user, hasRole } = useAuth();
+  const { navColor } = useNavColorStore();
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
     <AppShell.Navbar
       p="sm"
-      style={{ borderRight: '1px solid var(--mantine-color-default-border)' }}
+      style={{
+        borderRight: '1px solid var(--mantine-color-default-border)',
+        backgroundColor: navColor,
+        transition: 'background-color 300ms ease',
+      }}
     >
       {/* --- Header / Logo --- */}
       <AppShell.Section>
@@ -26,10 +32,10 @@ export const AppSidebar: React.FC = () => {
             alt="logo"
           />
           <Stack gap={0}>
-            <Text fw={700} size="md" lh={1}>
+            <Text fw={700} size="lg" lh={1}>
               {t('pages.layouts.Sidebar.logo')}
             </Text>
-            <Text size={rem(10)} c="dimmed" lh={1.2}>
+            <Text size="xs" c="dimmed" lh={1.2}>
               {t('pages.layouts.Sidebar.subtitle')}
             </Text>
           </Stack>

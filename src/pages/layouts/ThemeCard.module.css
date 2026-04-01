@@ -1,0 +1,23 @@
+.button {
+  display: block;
+  border-radius: var(--mantine-radius-md);
+  outline: none;
+}
+
+.button:focus-visible paper {
+  outline: 2px solid var(--mantine-color-blue-filled);
+  outline-offset: 2px;
+}
+
+/* Make card look slightly "pressed" on active */
+.button:active paper {
+  transform: translateY(1px);
+}
+
+.radioReplacement {
+  width: rem(20);
+  height: rem(20);
+  border-radius: 50%;
+  border: 2px solid;
+  background-color: transparent;
+}
