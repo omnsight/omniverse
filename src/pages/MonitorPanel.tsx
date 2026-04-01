@@ -11,13 +11,34 @@ import { MapWindow } from './windows/main/MapWindow';
 import { InsightListWindow } from './windows/insight/InsightListWindow';
 import { InsightWindow } from './windows/insight/InsightWindow';
 import { useAuth } from '@/provider/AuthContext';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export const MonitorDashboard: React.FC = () => {
-  const { user } = useAuth();
+  const { user, hasRole } = useAuth();
+  const navigate = useNavigate();
 
-  if (!user) {
-    return <Navigate to="/redirect" replace />;
+  useEffect(() => {
+    if (!user) {
+      navigate('/error', {
+        replace: true,
+        state: {
+          errorName: 'requireLogin',
+        },
+      });
+    }
+    if (!hasRole('pro')) {
+      navigate('/error', {
+        replace: true,
+        state: {
+          errorName: 'requirePro',
+        },
+      });
+    }
+  }, [user, navigate]);
+
+  if (!user || !hasRole('pro')) {
+    return null;
   }
 
   return (

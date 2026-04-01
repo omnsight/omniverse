@@ -2,6 +2,24 @@
   "common": {
     "entity": {
       "Relation": "关系"
+    },
+    "pages": {
+      "ErrorPage": {
+        "title": {
+          "error": "发生未知错误",
+          "requireAdmin": "需要管理员权限",
+          "requireLogin": "需要登录",
+          "requirePro": "需要升级账户",
+          "authError": "登录失败"
+        },
+        "description": {
+          "error": "发生未知错误，请稍后重试。",
+          "requireAdmin": "您没有管理员权限。",
+          "requireLogin": "您需要登录才能访问此页面，请先登录。",
+          "requirePro": "您需要升级账户才能访问此功能，请升级您的账户。",
+          "authError": "登录失败，请稍后重试。"
+        }
+      }
     }
   }
 }

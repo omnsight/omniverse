@@ -1,12 +1,7 @@
 {
   "pages": {
-    "RedirectPage": {
-      "title": "无权访问",
-      "description": "您无权限查看此页面。您将在 {{countdown}} 秒后被重定向到首页。"
-    },
     "ErrorPage": {
-      "title": "错误页面",
-      "description": "遇到未知错误",
+      "redirect": "将在 {countdown} 秒后自动跳转至首页...",
       "return": "返回首页"
     },
     "layouts": {
@@ -112,7 +107,6 @@
     "error": "错误",
     "reset": "重置",
     "apply": "应用",
-    "save": "保存",
     "create": "创建",
     "entity": {
       "Person": "个人",
@@ -121,6 +115,7 @@
       "Website": "网站",
       "Source": "信源"
     },
+    "save": "保存",
     "warning": "警告"
   },
   "components": {
@@ -130,6 +125,64 @@
         "normalMode": "正常模式",
         "rulerMode": "测量模式",
         "relationsMode": "显示关系"
+      }
+    },
+    "graph": {
+      "Graph": {
+        "noPermission": "您无权限查看此图。"
+      },
+      "nodes": {
+        "WebsiteNode": {
+          "name": "网站"
+        },
+        "SourceNode": {
+          "name": "信源"
+        },
+        "PersonNode": {
+          "name": "人物"
+        },
+        "OrganizationNode": {
+          "name": "组织"
+        },
+        "EventNode": {
+          "title": "事件"
+        }
+      },
+      "edges": {
+        "RelationEdge": {
+          "name": "关系"
+        }
+      }
+    },
+    "entity": {
+      "CreationModal": {
+        "error": "无法创建事件，请稍后重试"
+      },
+      "FormRenderer": {
+        "Website": {
+          "updateError": "无法更新网站，请稍后重试",
+          "updatePermissionError": "无法更新网站权限配置，请稍后再试"
+        },
+        "Source": {
+          "updateError": "无法更新信源，请稍后重试",
+          "updatePermissionError": "无法更新信源权限配置，请稍后再试"
+        },
+        "Relation": {
+          "updateError": "无法更新关系，请稍后重试",
+          "updatePermissionError": "无法更新关系权限配置，请稍后再试"
+        },
+        "Person": {
+          "updateError": "无法更新人物，请稍后重试",
+          "updatePermissionError": "无法更新人物权限配置，请稍后再试"
+        },
+        "Organization": {
+          "updateError": "无法更新组织，请稍后重试",
+          "updatePermissionError": "无法更新组织权限配置，请稍后再试"
+        },
+        "Event": {
+          "updateError": "无法更新事件，请稍后重试",
+          "updatePermissionError": "无法更新事件权限配置，请稍后再试"
+        }
       }
     },
     "editor": {
@@ -167,64 +220,6 @@
       "extensions": {
         "WindowAnchor": {
           "restore": "恢复视图"
-        }
-      }
-    },
-    "entity": {
-      "CreationModal": {
-        "error": "无法创建事件，请稍后重试"
-      },
-      "FormRenderer": {
-        "Website": {
-          "updateError": "无法更新网站，请稍后重试",
-          "updatePermissionError": "无法更新网站权限配置，请稍后再试"
-        },
-        "Source": {
-          "updateError": "无法更新信源，请稍后重试",
-          "updatePermissionError": "无法更新信源权限配置，请稍后再试"
-        },
-        "Relation": {
-          "updateError": "无法更新关系，请稍后重试",
-          "updatePermissionError": "无法更新关系权限配置，请稍后再试"
-        },
-        "Person": {
-          "updateError": "无法更新人物，请稍后重试",
-          "updatePermissionError": "无法更新人物权限配置，请稍后再试"
-        },
-        "Organization": {
-          "updateError": "无法更新组织，请稍后重试",
-          "updatePermissionError": "无法更新组织权限配置，请稍后再试"
-        },
-        "Event": {
-          "updateError": "无法更新事件，请稍后重试",
-          "updatePermissionError": "无法更新事件权限配置，请稍后再试"
-        }
-      }
-    },
-    "graph": {
-      "Graph": {
-        "noPermission": "您无权限查看此图。"
-      },
-      "nodes": {
-        "WebsiteNode": {
-          "name": "网站"
-        },
-        "SourceNode": {
-          "name": "信源"
-        },
-        "PersonNode": {
-          "name": "人物"
-        },
-        "OrganizationNode": {
-          "name": "组织"
-        },
-        "EventNode": {
-          "title": "事件"
-        }
-      },
-      "edges": {
-        "RelationEdge": {
-          "name": "关系"
         }
       }
     }

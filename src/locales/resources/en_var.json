@@ -3,5 +3,23 @@
     "entity": {
       "Relation": "Relation"
     }
+  },
+  "pages": {
+    "ErrorPage": {
+      "title": {
+        "error": "Error",
+        "requireAdmin": "Admin Permission Required",
+        "requireLogin": "Login Required",
+        "requirePro": "Upgrade Account Required",
+        "authError": "Authentication Error"
+      },
+      "description": {
+        "error": "An unknown error occurred. Please try again later.",
+        "requireAdmin": "You do not have admin permission. Please contact the administrator.",
+        "requireLogin": "You need to log in to access this page. Please log in first.",
+        "requirePro": "You need to upgrade your account to a Pro plan to access this feature. Please upgrade your plan.",
+        "authError": "Authentication failed. Please check your credentials and try again."
+      }
+    }
   }
 }

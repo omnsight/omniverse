@@ -139,7 +139,7 @@ export const AppAuthProvider = ({ children }: { children: React.ReactNode }) => 
     client_id: CLIENT_ID,
     redirect_uri: window.location.origin,
     response_type: 'code',
-    scope: 'openid profile email',
+    scope: 'openid profile email phone',
     onSigninCallback: () => {
       // Removes the code/state from URL after login
       window.history.replaceState({}, document.title, window.location.pathname);
