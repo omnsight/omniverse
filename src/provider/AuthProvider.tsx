@@ -31,7 +31,7 @@ const AuthAdapter = ({ children }: { children: React.ReactNode }) => {
 
   // MAPPING: Convert OIDC-Context generic user to Your App's User format
   const appUser: AuthUser | null = useMemo(() => {
-    if (!auth.user) return null;
+    if (!auth.user || !auth.user.id_token) return null;
     return {
       id: auth.user.profile.sub,
       username: auth.user.profile.preferred_username || '',
@@ -39,7 +39,7 @@ const AuthAdapter = ({ children }: { children: React.ReactNode }) => {
       firstName: auth.user.profile.given_name,
       lastName: auth.user.profile.family_name,
       roles: parseRoles(auth.user),
-      token: auth.user.access_token,
+      token: auth.user.id_token,
     };
   }, [auth.user]);
 
@@ -54,7 +54,6 @@ const AuthAdapter = ({ children }: { children: React.ReactNode }) => {
     login: () => auth.signinRedirect(),
     logout: () => auth.signoutRedirect(),
     hasRole,
-    token: auth.user?.access_token,
   };
 
   if (auth.isLoading) {
@@ -118,7 +117,6 @@ const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(null);
     },
     hasRole: (role: string) => user?.roles.includes(role) || false,
-    token: user?.token,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
