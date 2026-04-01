@@ -1,6 +1,6 @@
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useEffect } from 'react';
-import { AppShell, LoadingOverlay, useMantineColorScheme } from '@mantine/core';
+import { AppShell, LoadingOverlay } from '@mantine/core';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AppTopbar } from './pages/layouts/Topbar';
 import { AppSidebar } from './pages/layouts/Sidebar';
