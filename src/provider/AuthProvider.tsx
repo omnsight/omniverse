@@ -53,7 +53,12 @@ const AuthAdapter = ({ children }: { children: React.ReactNode }) => {
     isLoading: auth.isLoading,
     user: appUser,
     login: () => auth.signinRedirect(),
-    logout: () => auth.signoutRedirect(),
+    logout: () => auth.signoutRedirect({
+      extraQueryParams: {
+        client_id: CLIENT_ID,
+        logout_uri: window.location.origin,
+      },
+    }),
     hasRole,
   };
 
