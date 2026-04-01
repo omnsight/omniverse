@@ -13,8 +13,8 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 export const AdminDashboard: React.FC = () => {
-  const { hasRole } = useAuth();
   const navigate = useNavigate();
+  const { hasRole } = useAuth();
 
   useEffect(() => {
     if (!hasRole('admin')) {

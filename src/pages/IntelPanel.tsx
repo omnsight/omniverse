@@ -22,8 +22,12 @@ import {
 } from '@heroicons/react/24/solid';
 import { slideDownLeft, slideUpLeft } from './layouts/transitionSliding';
 import { useWindowStore, useWindowStoreActions } from '@/stores/windowState';
+import { useAuth } from 'react-oidc-context';
+import { useNavigate } from 'react-router-dom';
 
 export const IntelDashboard: React.FC = () => {
+  const auth = useAuth();
+  const navigate = useNavigate();
   const { topRightOpen, bottomRightOpen } = useWindowStore();
   const { registerManager, setTopRightOpen, setBottomRightOpen } = useWindowStoreActions();
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -32,6 +36,19 @@ export const IntelDashboard: React.FC = () => {
   const leftPanelRef = useRef<PanelImperativeHandle>(null);
   const mainPanelRef = useRef<PanelImperativeHandle>(null);
   const rightPanelRef = useRef<PanelImperativeHandle>(null);
+
+  useEffect(() => {
+    if (auth.error) {
+      console.error('Auth Error:', auth.error);
+      navigate('/error', {
+        replace: true,
+        state: {
+          errorName: 'authError',
+          redirect_timeout: 0,
+        },
+      });
+    }
+  }, [auth.error, navigate]);
 
   useEffect(() => {
     registerManager('network', 'Spark', 'top-right');

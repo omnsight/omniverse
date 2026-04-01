@@ -1,7 +1,7 @@
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useEffect } from 'react';
 import { AppShell, LoadingOverlay } from '@mantine/core';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppTopbar } from './pages/layouts/Topbar';
 import { AppSidebar } from './pages/layouts/Sidebar';
 import { IntelDashboard } from './pages/IntelPanel';
@@ -14,21 +14,7 @@ import { useAuth } from 'react-oidc-context';
 function App() {
   const [opened] = useDisclosure();
   const auth = useAuth();
-  const navigate = useNavigate();
   const isTablet = useMediaQuery('(max-width: 1024px)');
-
-  useEffect(() => {
-    if (auth.error) {
-      console.error('Auth Error:', auth.error);
-      navigate('/error', {
-        replace: true,
-        state: {
-          errorName: 'authError',
-          redirect_timeout: 0,
-        },
-      });
-    }
-  }, [auth.error, navigate]);
 
   useEffect(() => {
     const handleGlobalDragEnd = () => {
