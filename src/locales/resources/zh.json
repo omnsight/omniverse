@@ -1,5 +1,23 @@
 {
   "pages": {
+    "UserProfile": {
+      "settings": "设置",
+      "myAccount": "我的账户",
+      "generalSettings": "通用",
+      "dateTime": "日期时间",
+      "userId": "用户ID",
+      "roles": "账户类型",
+      "theme": "主题模式",
+      "systemDefault": "系统默认",
+      "lightMode": "浅色模式",
+      "darkMode": "深色模式",
+      "navColor": "主题颜色",
+      "language": "语言",
+      "english": "英语",
+      "chinese": "中文",
+      "selectLanguage": "选择语言",
+      "timezone": "时区"
+    },
     "ErrorPage": {
       "redirect": "将在 {countdown} 秒后自动跳转至首页...",
       "return": "返回首页"
@@ -127,33 +145,6 @@
         "relationsMode": "显示关系"
       }
     },
-    "graph": {
-      "Graph": {
-        "noPermission": "您无权限查看此图。"
-      },
-      "nodes": {
-        "WebsiteNode": {
-          "name": "网站"
-        },
-        "SourceNode": {
-          "name": "信源"
-        },
-        "PersonNode": {
-          "name": "人物"
-        },
-        "OrganizationNode": {
-          "name": "组织"
-        },
-        "EventNode": {
-          "title": "事件"
-        }
-      },
-      "edges": {
-        "RelationEdge": {
-          "name": "关系"
-        }
-      }
-    },
     "entity": {
       "CreationModal": {
         "error": "无法创建事件，请稍后重试"
@@ -182,6 +173,33 @@
         "Event": {
           "updateError": "无法更新事件，请稍后重试",
           "updatePermissionError": "无法更新事件权限配置，请稍后再试"
+        }
+      }
+    },
+    "graph": {
+      "Graph": {
+        "noPermission": "您无权限查看此图。"
+      },
+      "nodes": {
+        "WebsiteNode": {
+          "name": "网站"
+        },
+        "SourceNode": {
+          "name": "信源"
+        },
+        "PersonNode": {
+          "name": "人物"
+        },
+        "OrganizationNode": {
+          "name": "组织"
+        },
+        "EventNode": {
+          "title": "事件"
+        }
+      },
+      "edges": {
+        "RelationEdge": {
+          "name": "关系"
         }
       }
     },

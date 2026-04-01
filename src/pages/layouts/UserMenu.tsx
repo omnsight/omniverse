@@ -2,9 +2,9 @@ import {
   Menu,
   Avatar,
   rem,
-  Switch,
   Select,
   useMantineColorScheme,
+  Checkbox,
 } from '@mantine/core';
 import {
   UserCircleIcon,
@@ -16,9 +16,11 @@ import {
 } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../provider/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export const UserMenu: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
   const { isAuthenticated, user, login, logout } = useAuth();
 
@@ -59,7 +61,7 @@ export const UserMenu: React.FC = () => {
 
       <Menu.Dropdown>
         <Menu.Label>{t('pages.layouts.UserMenu.account')}</Menu.Label>
-        <Menu.Item leftSection={<UserCircleIcon style={{ width: rem(14) }} />}>
+        <Menu.Item leftSection={<UserCircleIcon style={{ width: rem(14) }} />} onClick={() => navigate('/profile')}>
           {t('pages.layouts.UserMenu.profile')}
         </Menu.Item>
 
@@ -67,23 +69,23 @@ export const UserMenu: React.FC = () => {
 
         <Menu.Label>{t('pages.layouts.UserMenu.theme')}</Menu.Label>
         <Menu.Item
-          leftSection={<SunIcon style={{ width: rem(14), height: rem(14) }} />}
+          leftSection={<Checkbox size="xs" checked={colorScheme === 'light'} readOnly />}
           onClick={() => setColorScheme('light')}
-          rightSection={<Switch size="xs" checked={colorScheme === 'light'} readOnly />}
+          rightSection={<SunIcon style={{ width: rem(14), height: rem(14) }} />}
         >
           {t('pages.layouts.UserMenu.lightMode')}
         </Menu.Item>
         <Menu.Item
-          leftSection={<MoonIcon style={{ width: rem(14), height: rem(14) }} />}
+          leftSection={<Checkbox size="xs" checked={colorScheme === 'dark'} readOnly />}
           onClick={() => setColorScheme('dark')}
-          rightSection={<Switch size="xs" checked={colorScheme === 'dark'} readOnly />}
+          rightSection={<MoonIcon style={{ width: rem(14), height: rem(14) }} />}
         >
           {t('pages.layouts.UserMenu.darkMode')}
         </Menu.Item>
         <Menu.Item
-          leftSection={<ComputerDesktopIcon style={{ width: rem(14), height: rem(14) }} />}
+          leftSection={<Checkbox size="xs" checked={colorScheme === 'auto'} readOnly />}
           onClick={() => setColorScheme('auto')}
-          rightSection={<Switch size="xs" checked={colorScheme === 'auto'} readOnly />}
+          rightSection={<ComputerDesktopIcon style={{ width: rem(14), height: rem(14) }} />}
         >
           {t('pages.layouts.UserMenu.systemMode')}
         </Menu.Item>

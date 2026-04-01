@@ -38,7 +38,7 @@ export const IntelDashboard: React.FC = () => {
   const rightPanelRef = useRef<PanelImperativeHandle>(null);
 
   useEffect(() => {
-    if (auth.error) {
+    if (auth?.error) {
       console.error('Auth Error:', auth.error);
       navigate('/error', {
         replace: true,
@@ -48,7 +48,7 @@ export const IntelDashboard: React.FC = () => {
         },
       });
     }
-  }, [auth.error, navigate]);
+  }, [auth?.error, navigate]);
 
   useEffect(() => {
     registerManager('network', 'Spark', 'top-right');

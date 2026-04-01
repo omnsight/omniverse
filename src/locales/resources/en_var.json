@@ -4,6 +4,13 @@
       "Relation": "Relation"
     }
   },
+  "color": {
+    "warm-white": "Warm White",
+    "minty": "Mint Green",
+    "sky": "Sky Blue",
+    "water": "Water Blue",
+    "navy": "Navy Blue"
+  },
   "pages": {
     "ErrorPage": {
       "title": {
