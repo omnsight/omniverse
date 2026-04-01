@@ -32,7 +32,6 @@ const AuthAdapter = ({ children }: { children: React.ReactNode }) => {
   // MAPPING: Convert OIDC-Context generic user to Your App's User format
   const appUser: AuthUser | null = useMemo(() => {
     if (!auth.user || !auth.user.id_token) return null;
-    console.debug('OIDC user:', auth.user);
     return {
       id: auth.user.profile.sub,
       username: auth.user.profile.preferred_username || '',
@@ -57,6 +56,7 @@ const AuthAdapter = ({ children }: { children: React.ReactNode }) => {
       extraQueryParams: {
         client_id: CLIENT_ID,
         logout_uri: window.location.origin,
+        redirect_uri: window.location.origin,
       },
     }),
     hasRole,
