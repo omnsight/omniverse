@@ -34,7 +34,7 @@ const InsightWindowContent: React.FC = () => {
     queryKey: ['view-entities', selected?._id],
     queryFn: () =>
       getViewEntities({
-        path: {
+        query: {
           id: selected?._id!,
         },
         client: crudClient,

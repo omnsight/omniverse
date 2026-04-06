@@ -27,7 +27,7 @@ export const WebsiteFormRenderer: React.FC<Props> = ({ entity, isAdmin, onUpdate
 
     const { data: website, error: websiteError } = await updateWebsite({
       body: patch,
-      path: {
+      query: {
         id: entity._id,
       },
     });
@@ -55,7 +55,7 @@ export const WebsiteFormRenderer: React.FC<Props> = ({ entity, isAdmin, onUpdate
 
     const { data, error } = await updateWebsitePermissions({
       body: patch,
-      path: {
+      query: {
         id: entity._id,
       },
     });

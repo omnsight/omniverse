@@ -57,7 +57,7 @@ const EntityWindowContent: React.FC<EntityWindowContentProps> = ({
     queryKey: ['neighbors', selectedEntity?.data._id],
     queryFn: async () => {
       const response = await queryNeighbors({
-        path: { id: selectedEntity?.data._id || '' },
+        query: { id: selectedEntity?.data._id || '' },
         client: entityQueryClient,
       });
       console.debug('queryNeighbors response', response);

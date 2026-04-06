@@ -27,7 +27,7 @@ export const PersonFormRenderer: React.FC<Props> = ({ entity, isAdmin, onUpdated
 
     const { data: person, error: personError } = await updatePerson({
       body: patch,
-      path: {
+      query: {
         id: entity._id,
       },
     });
@@ -55,7 +55,7 @@ export const PersonFormRenderer: React.FC<Props> = ({ entity, isAdmin, onUpdated
 
     const { data, error } = await updatePersonPermissions({
       body: patch,
-      path: {
+      query: {
         id: entity._id,
       },
     });

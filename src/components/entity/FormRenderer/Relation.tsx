@@ -27,7 +27,7 @@ export const RelationFormRenderer: React.FC<Props> = ({ entity, isAdmin, onUpdat
 
     const { data: relation, error: relationError } = await updateRelation({
       body: patch,
-      path: {
+      query: {
         id: entity._id,
       },
     });
@@ -55,7 +55,7 @@ export const RelationFormRenderer: React.FC<Props> = ({ entity, isAdmin, onUpdat
 
     const { data, error } = await updateRelationPermissions({
       body: patch,
-      path: {
+      query: {
         id: entity._id,
       },
     });

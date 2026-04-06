@@ -24,7 +24,7 @@ const MonitorWindowContent: React.FC<{ selected: any }> = ({ selected }) => {
     if (!selected?._id) return;
     updateMonitoringSource({
       body: data,
-      path: {
+      query: {
         id: selected._id,
       },
     });

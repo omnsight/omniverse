@@ -52,7 +52,7 @@ export const EntityListWindowContent: React.FC = () => {
     console.debug('Updating event', id, patch);
     const { data, error, status } = await updateEvent({
       body: patch,
-      path: {
+      query: {
         id,
       },
       client: crudClient,
@@ -75,7 +75,7 @@ export const EntityListWindowContent: React.FC = () => {
     console.debug('Updating event permissions', id, patch);
     const { data, error, status } = await updateEventPermissions({
       body: patch,
-      path: {
+      query: {
         id,
       },
       client: crudClient,

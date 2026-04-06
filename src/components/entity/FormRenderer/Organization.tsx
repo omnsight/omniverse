@@ -27,7 +27,7 @@ export const OrganizationFormRenderer: React.FC<Props> = ({ entity, isAdmin, onU
 
     const { data: organization, error: organizationError } = await updateOrganization({
       body: patch,
-      path: {
+      query: {
         id: entity._id,
       },
     });
@@ -55,7 +55,7 @@ export const OrganizationFormRenderer: React.FC<Props> = ({ entity, isAdmin, onU
 
     const { data, error } = await updateOrganizationPermissions({
       body: patch,
-      path: {
+      query: {
         id: entity._id,
       },
     });
