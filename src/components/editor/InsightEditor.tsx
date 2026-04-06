@@ -129,7 +129,7 @@ export const InsightEditor: React.FC<EditorProps> = ({ insight, entities, readon
     console.debug('Updating insight', insight._id, isDirty, content, insight.analysis);
     const { data, error, status } = await updateView({
       body: { analysis: content },
-      path: {
+      query: {
         id: insight._id,
       },
       client: crudClient,
