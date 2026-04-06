@@ -37,7 +37,7 @@ export const SparkGraph: React.FC = () => {
         for (const event of events) {
           if (event._id && !expandedEventIds.current.has(event._id)) {
             expandedEventIds.current.add(event._id); // Mark as processed to avoid re-fetching.
-            const response = await queryNeighbors({ path: { id: event._id } });
+            const response = await queryNeighbors({ query: { id: event._id } });
             if (response.data) {
               addEntities(
                 {
@@ -128,7 +128,7 @@ export const SparkGraph: React.FC = () => {
   const handleRemove = async (ids: string[], isEdge: boolean) => {
     for (const id of ids) {
       if (isEdge) {
-        const { error } = await deleteRelation({ path: { id } });
+        const { error } = await deleteRelation({ query: { id } });
         if (error) {
           notifications.show({
             message: t('pages.windows.network.SparkGraph.deleteEdgeError'),
@@ -136,7 +136,7 @@ export const SparkGraph: React.FC = () => {
           });
         }
       } else {
-        const { error } = await deleteEntity({ path: { id } });
+        const { error } = await deleteEntity({ query: { id } });
         if (error) {
           notifications.show({
             message: t('pages.windows.network.SparkGraph.deleteEntityError'),

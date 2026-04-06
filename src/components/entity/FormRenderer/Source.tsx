@@ -27,7 +27,7 @@ export const SourceFormRenderer: React.FC<Props> = ({ entity, isAdmin, onUpdated
 
     const { data: source, error: sourceError } = await updateSource({
       body: patch,
-      path: {
+      query: {
         id: entity._id,
       },
     });
@@ -55,7 +55,7 @@ export const SourceFormRenderer: React.FC<Props> = ({ entity, isAdmin, onUpdated
 
     const { data, error } = await updateSourcePermissions({
       body: patch,
-      path: {
+      query: {
         id: entity._id,
       },
     });

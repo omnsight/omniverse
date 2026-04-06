@@ -82,7 +82,7 @@ const InsightListWindowContent: React.FC = () => {
     console.debug('Updating insight', id, patch);
     const { data, error, status } = await updateView({
       body: patch,
-      path: {
+      query: {
         id,
       },
       client: crudClient,
@@ -105,7 +105,7 @@ const InsightListWindowContent: React.FC = () => {
     console.debug('Updating insight permission', id, patch);
     const { data, error, status } = await updateViewPermissions({
       body: patch,
-      path: {
+      query: {
         id,
       },
       client: crudClient,

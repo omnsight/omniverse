@@ -35,7 +35,7 @@ export const EventFormRenderer: React.FC<Props> = ({
 
     const { data, error } = await updateEvent({
       body: patch,
-      path: {
+      query: {
         id: entity._id,
       },
     });
@@ -64,7 +64,7 @@ export const EventFormRenderer: React.FC<Props> = ({
 
     const { data, error } = await updateEventPermissions({
       body: patch,
-      path: {
+      query: {
         id: entity._id,
       },
     });
